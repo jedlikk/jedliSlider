@@ -1,6 +1,5 @@
 import './test.scss';
-import '../src/jedlislider.js';
-import jedliSlider from '../src/jedlislider.js';
+import jedliSlider from '../src-webpack/jedlislider.js';
 
 let sliderElement = document.querySelectorAll("[data-item='slider']")[0];
 

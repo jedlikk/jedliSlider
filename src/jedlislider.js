@@ -437,8 +437,30 @@ class jedliSlider {
         let track = this.item.querySelector("[data-jedli='track']");
 
         // If option 'pause on hover' is declarated as 'true' then add class 'pause on hover'
+        // and event listener to handle track hover on children focus
         if (this.options.pauseOnHover === "true") {
             track.classList.add("jedli-hover-pause");
+            track.setAttribute("pauseOnHover", "true");
+
+
+            // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
+            // (for accessibility, people using keyboard to naviage)
+
+
+            // Get all children
+            let trackChildren = track.querySelectorAll("a, button");
+            // Attach event listener to childrens
+            trackChildren.forEach((e) => {
+                e.addEventListener("focus", () => {
+                    console.log("hovered");
+                    track.classList.add("hovered");
+                });
+
+                e.addEventListener("focusout", () => {
+                    console.log("hovered out");
+                    track.classList.remove("hovered");
+                });
+            })
         }
 
         // Set direction of animation
@@ -459,5 +481,6 @@ class jedliSlider {
 
     }
 }
+
 
 export default jedliSlider;

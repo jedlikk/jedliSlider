@@ -53,7 +53,7 @@
 .jedli-mode-continuous .jedli-track {
   transform: translate3d(0, 0, 0);
   animation: jedli-continuous-animation infinite; }
-  .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover, .jedli-mode-continuous .jedli-track.jedli-hover-pause.hovered {
+  .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover {
     animation-play-state: paused; }
 
 @keyframes jedli-continuous-animation {

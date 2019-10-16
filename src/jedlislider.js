@@ -1,8 +1,6 @@
 // JedliSlider v 0.0.1
 // By Bar†łomiej Jedlikowski
 
-import './jedlislider.scss';
-
 class jedliSlider {
     constructor(item, options) {
         this.item = item;

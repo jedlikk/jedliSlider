@@ -1,0 +1,32 @@
+.jedli-slider {
+  position: relative; }
+
+.jedli-tracks-container {
+  position: relative;
+  z-index: 2;
+  width: 100%; }
+
+.jedli-track {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.jedli-mode-continuous .jedli-track {
+  transform: translate3d(0, 0, 0);
+  animation: jedli-continuous-animation infinite; }
+  .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover {
+    animation-play-state: paused; }
+
+@keyframes jedli-continuous-animation {
+  0% {
+    transform: translate3d(0, 0, 0); }
+  100% {
+    transform: translate3d(-50%, 0, 0); } }
+
+.jedli-slider.jedli-mode-continuous .jedli-continuous-stop {
+  animation: unset !important; }
+
+.jedli-slider .jedli-overflow-hidden, .jedli-slider.jedli-overflow-hidden {
+  overflow: hidden; }
+

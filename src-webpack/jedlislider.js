@@ -427,7 +427,7 @@ class jedliSlider {
         // Get height
         let trackHeight = track.offsetHeight;
         // Set height to trackscontainer
-        tracksContainer.style.height = trackHeight;
+        tracksContainer.style.height = trackHeight + "px";
     }
 
     // Init continuous animation

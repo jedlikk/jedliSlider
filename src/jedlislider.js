@@ -316,11 +316,10 @@ class jedliSlider {
     // Initialize 'default' mode
     initDefault() {
         // Add class default to slider
-        this.item.classList.add("jedli-mode-continuous");
+        this.item.classList.add("jedli-mode-default");
 
         // Check if there is enough slides to rotate
         this.defaultStructure()
-
     }
 
     // Create structure for default slider:

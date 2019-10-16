@@ -1,7 +1,6 @@
 import './test.scss';
 import jedliSlider from '../src-webpack/jedlislider.js';
 
-console.log("test");
 
 let sliderElement = document.querySelectorAll("[data-item='slider']")[0];
 
@@ -48,5 +47,12 @@ let sliderDefaultSame = new jedliSlider(sliderDefaultSameElement, {
     "mode": "default",
     "slidesWidth": "equal",
     "visibleSlides": "4",
+    "slidesToScroll": 1,
     "speed": "600",
+})
+
+// Get prev and next buttons and pin action to them
+let buttonNext = document.querySelector("[data-action='slider-default-next']");
+buttonNext.addEventListener('click', () => {
+    sliderDefaultSame.slideNext();
 })

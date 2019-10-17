@@ -123,7 +123,20 @@ class jedliSlider {
                     if (this.noOfSlides > +this.options.visibleSlides || this.options.visibleSlides === "auto") {
                         switch (this.options.mode) {
                             case "default":
-                                this.initDefault();
+                                // Check if there is enouth slides to rotate
+                                if (this.ifEnoughToRotate()) {
+                                    // Check if slider has already created structure
+                                    if (this.item.getAttribute("jedli-structure") === "created") {
+
+                                    }
+                                    else {
+                                        // If not, create structure
+                                        this.defaultStructure()
+                                    }
+                                }
+                                else {
+                                    this.destroyContinuous();
+                                }
                                 break;
 
                             case "continuous":
@@ -319,7 +332,10 @@ class jedliSlider {
         this.item.classList.add("jedli-mode-default");
 
         // Check if there is enough slides to rotate
-        this.defaultStructure()
+        if (this.ifEnoughToRotate()) {
+            // If true, create slider structure to rotate
+            this.defaultStructure()
+        }
     }
 
     // Create structure for default slider:
@@ -327,13 +343,13 @@ class jedliSlider {
         return new Promise((resolve, reject) => {
 
             // Get track 
-            let track = this.item.querySelectorAll("[data-jedli='track']")[0];
+            const track = this.item.querySelectorAll("[data-jedli='track']")[0];
 
             // Add attr structure created to slider
             this.item.setAttribute("jedli-structure", "created");
 
             // Clone slides
-            let slides = this.item.querySelectorAll("[data-jedli='slide']");
+            const slides = this.item.querySelectorAll("[data-jedli='slide']");
             slides.forEach((e) => {
                 let clonedSlide = e.cloneNode(true);
 
@@ -343,8 +359,8 @@ class jedliSlider {
                 let clonedSlide2 = clonedSlide.cloneNode(true);
 
                 // append and prepend to track
-                // track.prepend(clonedSlide);
-                // track.appendChild(clonedSlide2);
+                track.prepend(clonedSlide);
+                track.appendChild(clonedSlide2);
             });
 
             resolve("Continuous structure created");
@@ -449,12 +465,12 @@ class jedliSlider {
             // Attach event listener to childrens
             trackChildren.forEach((e) => {
                 e.addEventListener("focus", () => {
-                    console.log("hovered");
+                    // Add class to stop slider on focus
                     track.classList.add("hovered");
                 });
 
                 e.addEventListener("focusout", () => {
-                    console.log("hovered out");
+                    // Remove class to stop slider on focusout
                     track.classList.remove("hovered");
                 });
             })
@@ -476,5 +492,51 @@ class jedliSlider {
         track.style.animationDuration = continuousSpeed;
         track.style.animationTimingFunction = this.options.easing;
 
+    }
+
+    // ## NAVIGATION FUNCTIONS ##
+
+    slideNext() {
+        // Check if mode is one of this where function should work
+        // For this moment those mods are:
+        // default, 
+        if (this.options.mode === "default") {
+            // Caluclate distance 
+            const distance = this.calculateChangeDistance('next');
+
+            // Animate change
+            this.animateTrackChange();
+        }
+    }
+
+    // Calculate distance of single change
+    calculateChangeDistance(direction) {
+        // Calculate width of single slide
+        const slideWidth = this.item.querySelectorAll("[data-jedli='slide']")[0].getBoundingClientRect().width;
+
+        // Multiple * number of slides to scroll
+        let distanceToScroll = slideWidth * +this.options.slidesToScroll;
+
+        // If direction == 'prev' multiple distane * -1
+        direction === "prev" ? distanceToScroll *= -1 : '';
+
+
+        // Return distance to scroll
+        return distanceToScroll;
+    }
+
+    // Animate change of track
+    animateTrackChange(distance) {
+        // Get track
+        const track = this.item.querySelector("[data-jedli='track']");
+        // Get current transform position
+        const currentPosition = +track.style.transform;
+
+        // Calculate new position
+        const newPosition = currentPosition + distance;
+
+        // Set new position
+        track.style.transform = newPosition;
+        console.log(track.style.transform);
     }
 }

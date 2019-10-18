@@ -33,6 +33,14 @@
                 }
             }
         }
+
+        &-default {
+            .jedli {
+                &-track {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 

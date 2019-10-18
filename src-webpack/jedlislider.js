@@ -228,37 +228,60 @@ class jedliSlider {
 
     // Init slider with right mode
     modeHandler() {
-        // Check if number of slides is greater than option.visibleSlides or options.visibleSlides is set to auto
-        if (this.noOfSlides > +this.options.visibleSlides || this.options.visibleSlides === "auto") {
-            switch (this.options.mode) {
-                case "default":
-                    this.initDefault();
-                    break;
+        switch (this.options.mode) {
+            case "default":
+                this.initDefault();
+                break;
 
-                case "continuous":
-                    this.initContinuous();
-                    break;
-            }
+            case "continuous":
+                this.initContinuous();
+                break;
         }
     }
 
     // Set all slides to same, specific width
     setSlidesWidth() {
-        // Calculate wanted size
-        // Where size of one slide is tracks Container width / options.visibleSlides
-        let tracksContainer = this.item.querySelectorAll("[data-jedli=tracks-container]")[0];
+        // If mode is continous
+        if (this.options.mode === "continuous") {
+            // size of one slide is tracks Container width / options.visibleSlides
+            const tracksContainer = this.item.querySelectorAll("[data-jedli=tracks-container]")[0];
 
-        let wantedSize = tracksContainer.offsetWidth / this.options.visibleSlides + "px";
+            const wantedSize = tracksContainer.offsetWidth / this.options.visibleSlides + "px";
 
-        // Add those size to slides
-        let track = this.item.querySelectorAll("[data-jedli='track']")[0];
-        let slides = track.querySelectorAll("[data-jedli='slide']");
-        slides.forEach((element) => {
-            // Set specific styles
-            element.style.width = wantedSize;
-            element.style.minWidth = wantedSize;
-            element.style.maxWidth = wantedSize;
-        });
+            // Check if calculated size is different than current
+            if (wantedSize != +this.item.getAttribute("jedli-slide-size")) {
+                // Add thise size to slides
+                const track = this.item.querySelectorAll("[data-jedli='track']")[0];
+                const slides = track.querySelectorAll("[data-jedli='slide']");
+                slides.forEach((element) => {
+                    // Set specific styles
+                    element.style.width = wantedSize;
+                    element.style.minWidth = wantedSize;
+                    element.style.maxWidth = wantedSize;
+                });
+
+                // Add this size to slider
+                this.item.setAttribute("jedli-slide-size", wantedSize);
+            }
+        }
+        else {
+            // If not 
+            // Size is percent value 100 / options.visibleSlides
+            const wantedSize = (100 / +this.options.visibleSlides).toFixed(2) + "%";
+            // Check if calculated size is different than current
+            if (wantedSize != +this.item.getAttribute("jedli-slide-size")) {
+
+                const slides = this.item.querySelectorAll("[data-jedli='slide']");
+                slides.forEach((element) => {
+                    // Set specific styles
+                    element.style.width = wantedSize;
+                    element.style.minWidth = wantedSize;
+                    element.style.maxWidth = wantedSize;
+                });
+                // Add this size to slider
+                this.item.setAttribute("jedli-slide-size", wantedSize);
+            }
+        }
     }
 
     // Get number of slides
@@ -332,7 +355,6 @@ class jedliSlider {
     initDefault() {
         // Add class default to slider
         this.item.classList.add("jedli-mode-default");
-
         // Check if there is enough slides to rotate
         if (this.ifEnoughToRotate()) {
             // If true, create slider structure to rotate
@@ -352,7 +374,7 @@ class jedliSlider {
 
             // Clone slides
             const slides = this.item.querySelectorAll("[data-jedli='slide']");
-            slides.forEach((e) => {
+            slides.forEach((e, i) => {
                 let clonedSlide = e.cloneNode(true);
 
                 // Add attr cloned to slide
@@ -361,9 +383,22 @@ class jedliSlider {
                 let clonedSlide2 = clonedSlide.cloneNode(true);
 
                 // append and prepend to track
-                track.prepend(clonedSlide);
+                // If its first element, prepend to track. If not first -> append to first cloned element
+                if (i === 0) {
+                    track.prepend(clonedSlide);
+                }
+                else {
+                    track.querySelectorAll("[jedli-cloned='true']")[0].after(clonedSlide);
+                }
+
                 track.appendChild(clonedSlide2);
             });
+
+            // Add attr and styles with transform to track
+            // Wherere default transform is number of slides * percentage * -1 width of slide
+            let defaultTransform = -1 * +this.noOfSlides * +this.item.getAttribute("jedli-slide-size").replace('%', '') + '%';
+            track.setAttribute("jedli-transform", defaultTransform);
+            track.style.transform = "translate3d(" + defaultTransform + ", 0, 0)";
 
             resolve("Continuous structure created");
         });
@@ -532,14 +567,13 @@ class jedliSlider {
         // Get track
         const track = this.item.querySelector("[data-jedli='track']");
         // Get current transform position
-        const currentPosition = +track.style.transform;
+        const currentPosition = +track.getAttribute("jedli-transform");
 
         // Calculate new position
         const newPosition = currentPosition + distance;
 
         // Set new position
         track.style.transform = newPosition;
-        console.log(track.style.transform);
     }
 }
 

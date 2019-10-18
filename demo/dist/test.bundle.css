@@ -56,6 +56,9 @@
   .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover, .jedli-mode-continuous .jedli-track.jedli-hover-pause.hovered {
     animation-play-state: paused; }
 
+.jedli-mode-default .jedli-track {
+  width: 100%; }
+
 @keyframes jedli-continuous-animation {
   0% {
     transform: translate3d(0, 0, 0); }

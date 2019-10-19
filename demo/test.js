@@ -49,6 +49,8 @@ let sliderDefaultSame = new jedliSlider(sliderDefaultSameElement, {
     "visibleSlides": "4",
     "slidesToScroll": 1,
     "speed": "600",
+    "easing": "ease-out",
+    "infinite": "false",
 })
 
 // Get prev and next buttons and pin action to them

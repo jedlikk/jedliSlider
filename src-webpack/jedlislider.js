@@ -11,6 +11,7 @@ class jedliSlider {
         // Default options
         this.defaultOptions = {
             "mode": "default",
+            "infinite": "false",
             "visibleSlides": "1",
             "slidesToScroll": "1",
             "speed": "400",
@@ -49,7 +50,6 @@ class jedliSlider {
 
     // Create basic structure of slider
     init() {
-
         // Add attributes and classes to slider container
         this.item.classList.add("jedli-slider");
 
@@ -382,13 +382,36 @@ class jedliSlider {
                 // Clone cloned element to be able to prepend and append
                 let clonedSlide2 = clonedSlide.cloneNode(true);
 
+                // Set jedli-index attr to elements
+
+
+                // Where index of default elements are they number in order + 1
+                // ** 0 will be missing because if not two elements would have 0
+                e.setAttribute("jedli-index", i + 1);
+
+                // Element of cloned before are they negative number in order but in negative numbers
+                // Slide will be i + amount of slides * -1)
+                clonedSlide.setAttribute("jedli-index", (i + this.noOfSlides) * -1);
+
+                // Element of cloned after are they number in order + amount of slides
+                clonedSlide2.setAttribute("jedli-index", i + this.noOfSlides);
+
+
+
                 // append and prepend to track
-                // If its first element, prepend to track. If not first -> append to first cloned element
+                // If its first element, prepend to track. 
+                // If not first -> append to element with jedli-index equal to negative i + 1
                 if (i === 0) {
                     track.prepend(clonedSlide);
                 }
                 else {
-                    track.querySelectorAll("[jedli-cloned='true']")[0].after(clonedSlide);
+                    if (i === 0) {
+                        track.prepend(clonedSlide);
+                    }
+                    else {
+                        let currentIndex = (i) * -1;
+                        track.querySelector("[jedli-cloned='true'][jedli-index='" + currentIndex + "']").after(clonedSlide);
+                    }
                 }
 
                 track.appendChild(clonedSlide2);
@@ -399,6 +422,16 @@ class jedliSlider {
             let defaultTransform = -1 * +this.noOfSlides * +this.item.getAttribute("jedli-slide-size").replace('%', '') + '%';
             track.setAttribute("jedli-transform", defaultTransform);
             track.style.transform = "translate3d(" + defaultTransform + ", 0, 0)";
+
+            // Add attr jedli-active to slides in viewport
+            this.ifInViewportHandler();
+
+            // Add easing after 50 ms to avoid animation on start
+            setTimeout(() => {
+                // Add easing to track
+                this.easingHandler(track);
+            }, 50)
+
 
             resolve("Continuous structure created");
         });
@@ -534,29 +567,67 @@ class jedliSlider {
     // ## NAVIGATION FUNCTIONS ##
 
     slideNext() {
+
+        if (this.options.mode === "default") {
+
+            // If slider should move -> do it
+            if (this.ifShouldMoveHandler("next")) {
+                // Caluclate distance 
+                const distance = this.calculateChangeDistance('next', this.options.slidesToScroll);
+
+                // Animate change
+                this.animateTrackChange(distance).then(
+                    (resolve) => {
+                        this.ifInViewportHandler();
+
+                        // Check if slider has option infinite set to true
+                        if (this.options.infinite === "true") {
+                            // If true move slider to better position to keep feeling of infinite
+                            this.setBetterPositionHandler();
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    // Check if slider should move
+    ifShouldMoveHandler(direction) {
         // Check if mode is one of this where function should work
         // For this moment those mods are:
         // default, 
-        if (this.options.mode === "default") {
-            // Caluclate distance 
-            const distance = this.calculateChangeDistance('next');
 
-            // Animate change
-            this.animateTrackChange();
+        if (this.options.mode === "default") {
+
+            // And check if slider has option infinite set to true
+            // If not, check if slider should move (active slide is not the last one)
+            if (this.options.infinite === "false") {
+                // Get active slides
+                const activeslides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+
+                // Check if there is enough slides to rotate, depends of direction
+                if (direction === "next") {
+                    // If next -> Check if 
+                    let indexOfActive = activeslides[0].index;
+                    console.log(indexOfActive);
+                }
+            }
+        }
+        else {
+            return false;
         }
     }
 
     // Calculate distance of single change
-    calculateChangeDistance(direction) {
+    calculateChangeDistance(direction, noOfSlides) {
         // Calculate width of single slide
-        const slideWidth = this.item.querySelectorAll("[data-jedli='slide']")[0].getBoundingClientRect().width;
+        const slideWidth = this.item.getAttribute("jedli-slide-size").replace("%", "");
 
-        // Multiple * number of slides to scroll
-        let distanceToScroll = slideWidth * +this.options.slidesToScroll;
+        // Multiple * number of noOfSlides
+        let distanceToScroll = +slideWidth * +noOfSlides;
 
         // If direction == 'prev' multiple distane * -1
         direction === "prev" ? distanceToScroll *= -1 : '';
-
 
         // Return distance to scroll
         return distanceToScroll;
@@ -564,16 +635,75 @@ class jedliSlider {
 
     // Animate change of track
     animateTrackChange(distance) {
-        // Get track
-        const track = this.item.querySelector("[data-jedli='track']");
-        // Get current transform position
-        const currentPosition = +track.getAttribute("jedli-transform");
+        return new Promise((resolve, reject) => {
+            // Get track
+            const track = this.item.querySelector("[data-jedli='track']");
+            // Get current transform position
+            const currentPosition = +track.getAttribute("jedli-transform").replace("%", "");
 
-        // Calculate new position
-        const newPosition = currentPosition + distance;
+            // Calculate new position
+            const newPosition = currentPosition + distance + "%";
 
-        // Set new position
-        track.style.transform = newPosition;
+            // Set new position
+            track.setAttribute("jedli-transform", newPosition);
+            track.style.transform = "translate3d(" + newPosition + ", 0, 0)";
+
+            // Wait for animation to finish and return resolve
+            // Where timout time is speed declarated in options
+            setTimeout(() => {
+                resolve("Animation finished");
+            }, this.options.speed);
+        });
+    }
+
+    // #####
+    // HELPERS
+    // #####
+
+    // Set easing and speed to target element
+    easingHandler(target) {
+        // add this easing to slider class
+        this.easing = "transform " + (this.options.speed / 1000) + "s " + this.options.easing;
+
+        // And to track
+        target.style.transition = this.easing;
+    }
+
+    // Check if elements is in viewport if true add attr jedli-active and remove jedli-active from other elements
+    ifInViewportHandler() {
+        const track = this.item.querySelectorAll("[data-jedli='track']")[0];
+
+        // Get all slides
+        const slides = this.item.querySelectorAll("[data-jedli='slide']");
+
+        // Boolean variable to store if element is in viewport
+        let ifInViewport = false;
+        // Loop through all and get the ones that are in viewport
+        slides.forEach((e) => {
+            // Get informations about element
+            let elementRect = e.getBoundingClientRect();
+            // Get left position
+            let left = elementRect.left;
+            // Get right position
+            let right = elementRect.right;
+
+            // Check if in viewport
+            // If element is in viewport add atrr jedli-active = true and class jedli-active
+            // If not -> remove attr and class
+            if (left >= 0 && right <= window.innerWidth) {
+                e.setAttribute("jedli-active", "true");
+                e.classList.add("jedli-active");
+            }
+            else {
+                e.setAttribute("jedli-active", "false");
+                e.classList.remove("jedli-active");
+            }
+        });
+    }
+
+    // Move slider to better position without transition to keep feeling of 'carousel'
+    setBetterPositionHandler() {
+        console.log("set better position");
     }
 }
 

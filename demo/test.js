@@ -46,8 +46,9 @@ let sliderDefaultSameElement = document.querySelectorAll("[data-item='slider-def
 let sliderDefaultSame = new jedliSlider(sliderDefaultSameElement, {
     "mode": "default",
     "slidesWidth": "equal",
-    "visibleSlides": "4",
-    "slidesToScroll": 1,
+    "visibleSlides": 4,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
     "speed": "600",
 })
 
@@ -55,4 +56,21 @@ let sliderDefaultSame = new jedliSlider(sliderDefaultSameElement, {
 let buttonNext = document.querySelector("[data-action='slider-default-next']");
 buttonNext.addEventListener('click', () => {
     sliderDefaultSame.slideNext();
+})
+
+// Get prev and next buttons and pin action to them
+let buttonPrev = document.querySelector("[data-action='slider-default-prev']");
+buttonPrev.addEventListener('click', () => {
+    sliderDefaultSame.slidePrev();
+})
+
+
+// 
+let goToSlide = document.querySelector("[data-action='go-to-slide']");
+goToSlide.addEventListener('click', () => {
+
+    // Get value from input number
+    const value = +document.querySelector("[data-item='slide-index']").value;
+
+    sliderDefaultSame.goToSlide(value);
 })

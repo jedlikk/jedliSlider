@@ -16,6 +16,7 @@ class jedliSlider {
             "speed": "400",
             "arrows": "false",
             "autoplay": "false",
+            "infinite": "false",
             "autoplayDuration": "400",
             "draggable": "true",
             "dots": "false",
@@ -24,6 +25,7 @@ class jedliSlider {
             "overflow": "hidden",
             "pauseOnHover": "false",
             "direction": "left",
+            "preventOverScroll": "true",
         }
 
         // Set options to default
@@ -94,6 +96,12 @@ class jedliSlider {
 
         // Set tracksContainer height to be equal to tracks
         this.setTracksContainerHeight();
+
+        // Check if slider should have overflow hidden
+        if (this.options.overflow === "hidden") {
+            // If hidden -> add overflow hidden to trackscontainer
+            tracksContainer.style.overflow = "hidden";
+        }
 
         // Add overflow hidden or visible, depends of options.overflow
         switch (this.options.overflow) {
@@ -369,34 +377,26 @@ class jedliSlider {
             // Get track 
             const track = this.item.querySelectorAll("[data-jedli='track']")[0];
 
-            // Add attr structure created to slider
+            // Add attr structure-created to slider
             this.item.setAttribute("jedli-structure", "created");
 
-            // Clone slides
+            // Add attr jedli-active to first (options.visibleSlides) slides
+            // And add numeric index to sldies
             const slides = this.item.querySelectorAll("[data-jedli='slide']");
             slides.forEach((e, i) => {
-                let clonedSlide = e.cloneNode(true);
+                // Add index number to slide
+                e.setAttribute("jedli-index", i + 1);
 
-                // Add attr cloned to slide
-                clonedSlide.setAttribute("jedli-cloned", "true");
-                // Clone cloned element to be able to prepend and append
-                let clonedSlide2 = clonedSlide.cloneNode(true);
-
-                // append and prepend to track
-                // If its first element, prepend to track. If not first -> append to first cloned element
-                if (i === 0) {
-                    track.prepend(clonedSlide);
+                // Check if i + 1 is smaller then visible slides
+                if (i < +this.options.visibleSlides) {
+                    // If true, add attr active to element
+                    e.setAttribute("jedli-active", "true");
                 }
-                else {
-                    track.querySelectorAll("[jedli-cloned='true']")[0].after(clonedSlide);
-                }
-
-                track.appendChild(clonedSlide2);
-            });
+            })
 
             // Add attr and styles with transform to track
             // Wherere default transform is number of slides * percentage * -1 width of slide
-            let defaultTransform = -1 * +this.noOfSlides * +this.item.getAttribute("jedli-slide-size").replace('%', '') + '%';
+            let defaultTransform = 0;
             track.setAttribute("jedli-transform", defaultTransform);
             track.style.transform = "translate3d(" + defaultTransform + ", 0, 0)";
 
@@ -533,30 +533,304 @@ class jedliSlider {
 
     // ## NAVIGATION FUNCTIONS ##
 
+    // Go to next slide
     slideNext() {
-        // Check if mode is one of this where function should work
-        // For this moment those mods are:
-        // default, 
-        if (this.options.mode === "default") {
+        // Check if track should move
+        if (this.ifShouldMove("next")) {
             // Caluclate distance 
-            const distance = this.calculateChangeDistance('next');
+            const distance = this.calculateChangeDistance('next', this.options.slidesToScroll);
 
             // Animate change
-            this.animateTrackChange();
+            this.animateTrackChange(distance).then(
+                (resolve) => {
+                    // Update active slides
+                    this.updateActiveSldies().then(
+                        (resolve) => {
+                            // Remove attr preventing change
+                            this.item.setAttribute("jedli-prevent-change", "false");
+                        }
+                    );
+                }
+            );
         }
     }
 
+    // Go to prev slide
+    slidePrev() {
+        // Check if track should move
+        if (this.ifShouldMove("prev")) {
+            // Caluclate distance 
+            const distance = this.calculateChangeDistance('prev', this.options.slidesToScroll);
+
+            // Animate change
+            this.animateTrackChange(distance).then(
+                (resolve) => {
+                    // Update active slides
+                    this.updateActiveSldies().then(
+                        (resolve) => {
+                            // Remove attr preventing change
+                            this.item.setAttribute("jedli-prevent-change", "false");
+                        }
+                    );
+                }
+            );
+        }
+    }
+
+    // Go to specific slide
+    goToSlide(slideIndex) {
+        // Check if this slide is "next" or "prev" to current slider position
+        const wantedSlideDirection = this.checkWantedSlideDirection(slideIndex);
+
+        // Check if wantedslideDirection is "false" which means that slide is not found, or is currently active
+        if (wantedSlideDirection === "false") {
+            return false;
+        }
+        else {
+            // Check if track should move
+            if (this.ifShouldMove(wantedSlideDirection)) {
+                // Calculate how much slides slider needs to scroll to specific slide
+                const slidesToScroll = this.calculateDistanceInSlides(wantedSlideDirection, slideIndex);
+
+                // Caluclate distance 
+                const distance = this.calculateChangeDistance(wantedSlideDirection, slidesToScroll);
+
+                // Animate change
+                this.animateTrackChange(distance).then(
+                    (resolve) => {
+                        // Update active slides
+                        this.updateActiveSldies().then(
+                            (resolve) => {
+                                // Remove attr preventing change
+                                this.item.setAttribute("jedli-prevent-change", "false");
+                            }
+                        );
+                    }
+                );
+            }
+        }
+    }
+
+    // Check if this slide is "next" or "prev" to current slider position
+    checkWantedSlideDirection(slideIndex) {
+        // Check if there is such slide
+        if (this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + slideIndex + "']").length > 0) {
+            // If true
+            // Get active slides 
+            const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+
+            // Check if index of wanted slide is smaller than index of first active slide
+            const firstActiveIndex = +activeSlides[0].getAttribute("jedli-index");
+            if (slideIndex < firstActiveIndex) {
+                // If true, return prev
+                return "prev";
+            }
+            else {
+                // If false, check if index of wanted slide is greater than index of last of active slide
+                const lastActiveIndex = +activeSlides[activeSlides.length - 1].getAttribute("jedli-index");
+                if (slideIndex > lastActiveIndex) {
+                    return "next";
+                }
+                else {
+                    // If slide is not any of those, return false to stop change
+                    return false;
+                }
+            }
+        }
+        else {
+            // If not return false to stop change
+            return false;
+        }
+    }
+
+    // Calculate how much slides slider needs to scroll to specific slide
+    calculateDistanceInSlides(direction, slideIndex) {
+        // Check depends of direciton, how much slides is between wanted one and currently last/first active
+
+        // Variable for distance
+        var distance;
+
+        // Get active slides
+        const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+        if (direction === "prev") {
+            // If direction is prev, get first active slide
+            const firstActiveIndex = +activeSlides[0].getAttribute("jedli-index");
+
+            // Calculate difference between first and wanted slide
+            distance = firstActiveIndex - slideIndex;
+        }
+
+        if (direction === "next") {
+            // If direction is prev, get first active slide
+            const lastActiveIndex = +activeSlides[activeSlides.length - 1].getAttribute("jedli-index");
+
+            // Calculate difference between first and wanted slide
+            distance = slideIndex - lastActiveIndex;
+        }
+
+
+        // If direction is not next and prev, then return 0. And slider wont move
+        if (direction != "prev" && direction != "next") {
+            distance = 0;
+        }
+
+        return distance;
+    }
+
+    // Check if track should move
+    ifShouldMove(direction) {
+        // Check if slider currently is animating
+        if (this.item.getAttribute("jedli-prevent-change") === "true") {
+            return false;
+        }
+        else {
+            // Check if mode is one of this where function should work
+            // For this moment those mods are:
+            // default, 
+            if (this.options.mode === "default") {
+                // Check if options.infinite is set to true
+                if (this.options.infinite === "false") {
+                    // If not, check if next/prev slide is the last one to move
+                    // Get active slides 
+                    const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+
+                    if (direction === "next") {
+                        // If direction is set to next
+                        // Check if there is  any slide after last with jedli-active
+
+                        // get last active slide
+                        const lastActive = activeSlides[activeSlides.length - 1];
+
+                        // Get index of last active
+                        const index = +lastActive.getAttribute("jedli-index");
+
+                        // Check if there is slide with bigger index
+                        if (this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + (index + 1) + "']").length > 0) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                    if (direction === "prev") {
+                        // If direction is set to prev
+                        // Check if there is  any slide before first with jedli-active
+
+                        // get last active slide
+                        const firstActive = activeSlides[0];
+
+                        // Get index of first active
+                        const index = +firstActive.getAttribute("jedli-index");
+
+                        // Check if there is slide with bigger index
+                        if (this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + (index - 1) + "']").length > 0) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    updateActiveSldies(direction) {
+        return new Promise((resolve, reject) => {
+            // Get slides that are in 'viewport' of slides container
+            const tracksContainer = this.item.querySelector("[data-jedli='tracks-container']");
+            // Get positions in viewport of tracksContainer
+            let tracksContainerRect = tracksContainer.getBoundingClientRect();
+
+            // Get slides
+            const slides = this.item.querySelectorAll("[data-jedli='slide']");
+            // Loop through slides
+            slides.forEach((e, i) => {
+                // Check if slides is in tracksContainer viewport
+                let slideRect = e.getBoundingClientRect();
+
+                // Check if in biewport
+                // Slide is in viewport when:
+                // Slide left value is greater or equal to tracksContainer left value
+                // Slide right value is smaller or equal to tracksContainer right value
+
+                if (slideRect.left >= tracksContainerRect.left && slideRect.right <= tracksContainerRect.right) {
+                    // if in viewport add attr jedli-active
+                    e.setAttribute("jedli-active", "true");
+                }
+                else {
+                    // if not in viewport remove attr jedli-active
+                    e.setAttribute("jedli-active", "false");
+                }
+            })
+
+            resolve("activeSlidesUpdated");
+        })
+    }
+
+    // Prevent slider from overScroll - fix distance to scroll, so first/last slide will always at start/end of container
+    preventOverScroll(direction, slidesToScroll) {
+        // Get active slides
+        const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+        // Get slides 
+        const slides = this.item.querySelectorAll("[data-jedli='slide']");
+
+        // Variable for fixed amount of slides to scroll
+        let fixedSlidesToScroll
+
+        if (direction === "prev") {
+            // If direction is prev, get first active slide and first slide
+            const firstIndex = +slides[0].getAttribute("jedli-index");
+            const firstActiveIndex = +activeSlides[0].getAttribute("jedli-index");
+
+            // Check if there is enough slides to scroll wanted amount of slides
+            if (firstActiveIndex - slidesToScroll >= firstIndex) {
+                // If true -> don't change amount of slidesToScroll
+                fixedSlidesToScroll = slidesToScroll;
+            }
+            else {
+                // If there is not enough slides, than set left amount of slides as slidesToScroll
+                fixedSlidesToScroll = firstActiveIndex - firstIndex;
+            }
+        }
+
+        if (direction === "next") {
+            // If direction is prev, get first active slide and first slide
+            const lastIndex = +slides[slides.length - 1].getAttribute("jedli-index");
+            const lastActiveIndex = +activeSlides[activeSlides.length - 1].getAttribute("jedli-index");
+
+            // Check if there is enough slides to scroll wanted amount of slides
+            if (lastActiveIndex + slidesToScroll <= lastIndex) {
+                // If true -> don't change amount of slidesToScroll
+                fixedSlidesToScroll = slidesToScroll;
+            }
+            else {
+                // If there is not enough slides, than set left amount of slides as slidesToScroll
+                fixedSlidesToScroll = lastIndex - lastActiveIndex;
+            }
+        }
+
+        // Return fixed value
+        return fixedSlidesToScroll;
+    }
+
     // Calculate distance of single change
-    calculateChangeDistance(direction) {
+    calculateChangeDistance(direction, slidesToScroll) {
+        // Check if options.preventOverScroll is set to true
+        if (this.options.preventOverScroll === "true") {
+            // If true, fix amount of slides to scroll
+            slidesToScroll = this.preventOverScroll(direction, slidesToScroll);
+        }
+
         // Calculate width of single slide
-        const slideWidth = this.item.querySelectorAll("[data-jedli='slide']")[0].getBoundingClientRect().width;
+        const slideWidth = +this.item.getAttribute("jedli-slide-size").replace("%", "");
 
         // Multiple * number of slides to scroll
-        let distanceToScroll = slideWidth * +this.options.slidesToScroll;
+        let distanceToScroll = slideWidth * +slidesToScroll;
 
         // If direction == 'prev' multiple distane * -1
-        direction === "prev" ? distanceToScroll *= -1 : '';
-
+        direction === "next" ? distanceToScroll *= -1 : '';
 
         // Return distance to scroll
         return distanceToScroll;
@@ -564,16 +838,33 @@ class jedliSlider {
 
     // Animate change of track
     animateTrackChange(distance) {
-        // Get track
-        const track = this.item.querySelector("[data-jedli='track']");
-        // Get current transform position
-        const currentPosition = +track.getAttribute("jedli-transform");
+        return new Promise((resolve, reject) => {
+            // Get track
+            const track = this.item.querySelector("[data-jedli='track']");
 
-        // Calculate new position
-        const newPosition = currentPosition + distance;
+            // Add transition to track
+            track.style.transition = "transform " + this.options.speed / 1000 + "s " + this.options.easing;
 
-        // Set new position
-        track.style.transform = newPosition;
+            // Add attr to prevent multiclick
+            this.item.setAttribute("jedli-prevent-change", "true");
+
+            // Get current transform position
+            const currentPosition = +track.getAttribute("jedli-transform").replace("%", "");
+
+            // Calculate new position
+            const newPosition = currentPosition + distance + "%";
+
+            // Set new position
+            track.style.transform = "translate3d(" + newPosition + ", 0, 0)";
+
+            // Update jedli-transform attr
+            track.setAttribute("jedli-transform", newPosition);
+
+            // Wait for animation to finish and then resolve
+            setTimeout(() => {
+                resolve("Animation finished");
+            }, +this.options.speed + 50);
+        });
     }
 }
 

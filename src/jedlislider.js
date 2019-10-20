@@ -325,50 +325,6 @@ class jedliSlider {
         }
     }
 
-    // ### DEFAULT MODE
-    // Initialize 'default' mode
-    initDefault() {
-        // Add class default to slider
-        this.item.classList.add("jedli-mode-default");
-
-        // Check if there is enough slides to rotate
-        if (this.ifEnoughToRotate()) {
-            // If true, create slider structure to rotate
-            this.defaultStructure()
-        }
-    }
-
-    // Create structure for default slider:
-    defaultStructure() {
-        return new Promise((resolve, reject) => {
-
-            // Get track 
-            const track = this.item.querySelectorAll("[data-jedli='track']")[0];
-
-            // Add attr structure created to slider
-            this.item.setAttribute("jedli-structure", "created");
-
-            // Clone slides
-            const slides = this.item.querySelectorAll("[data-jedli='slide']");
-            slides.forEach((e) => {
-                let clonedSlide = e.cloneNode(true);
-
-                // Add attr cloned to slide
-                clonedSlide.setAttribute("jedli-cloned", "true");
-                // Clone cloned element to be able to prepend and append
-                let clonedSlide2 = clonedSlide.cloneNode(true);
-
-                // append and prepend to track
-                track.prepend(clonedSlide);
-                track.appendChild(clonedSlide2);
-            });
-
-            resolve("Continuous structure created");
-        });
-    }
-
-    // ### END OF DEFAULT MODE ###
-
     // ### CONTINUOUS MODE ### 
 
     // Initialize 'continuous' mode
@@ -493,6 +449,52 @@ class jedliSlider {
         track.style.animationTimingFunction = this.options.easing;
 
     }
+
+    // ### END OF CONTINUOUS MODE ###
+
+    // ### DEFAULT MODE
+    // Initialize 'default' mode
+    initDefault() {
+        // Add class default to slider
+        this.item.classList.add("jedli-mode-default");
+
+        // Check if there is enough slides to rotate
+        if (this.ifEnoughToRotate()) {
+            // If true, create slider structure to rotate
+            this.defaultStructure()
+        }
+    }
+
+    // Create structure for default slider:
+    defaultStructure() {
+        return new Promise((resolve, reject) => {
+
+            // Get track 
+            const track = this.item.querySelectorAll("[data-jedli='track']")[0];
+
+            // Add attr structure created to slider
+            this.item.setAttribute("jedli-structure", "created");
+
+            // Clone slides
+            const slides = this.item.querySelectorAll("[data-jedli='slide']");
+            slides.forEach((e) => {
+                let clonedSlide = e.cloneNode(true);
+
+                // Add attr cloned to slide
+                clonedSlide.setAttribute("jedli-cloned", "true");
+                // Clone cloned element to be able to prepend and append
+                let clonedSlide2 = clonedSlide.cloneNode(true);
+
+                // append and prepend to track
+                track.prepend(clonedSlide);
+                track.appendChild(clonedSlide2);
+            });
+
+            resolve("Continuous structure created");
+        });
+    }
+
+    // ### END OF DEFAULT MODE ###
 
     // ## NAVIGATION FUNCTIONS ##
 

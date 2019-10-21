@@ -1,0 +1,552 @@
+<html>
+
+<head>
+    <title>jedliSlider by Bartłomiej Jedlikowski</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400&subset=latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="demo/dist/demo.bundle.css">
+</head>
+
+<body>
+    <section class="section section-hero">
+        <h1 class="page-title">jedliSlider</h1>
+        <div class="underline">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+            <span class="line line-4"></span>
+            <span class="line line-5"></span>
+            <span class="line line-6"></span>
+            <span class="line line-7"></span>
+            <span class="line line-8"></span>
+        </div>
+        <span class="page-subtitle text-alfa">Fully responsive, modern carousel in pure JS</span>
+    </section>
+    <article class="section section-article">
+        <div class="section-container">
+            <h2 class="section-title title-underline-delta">What is jedliSlider?</h2>
+            <div class="section-description text-beta">
+                <p>jedliSlider is lightweight carousel with multiple options and modes to use on your page, created in
+                    pure
+                    (vanilla)
+                    javascript and css.</p>
+            </div>
+        </div>
+    </article>
+    <article class="section section-article">
+        <div class="section-container">
+            <h2 class="section-title title-underline-gamma">Why jedliSlider?</h2>
+            <div class="section-description text-beta">
+                <p>Because it’s lightweight, easy to use, modern and will have all options that you want. Some popular
+                    carousels
+                    still use floats and a lot of
+                    unnecessary scripts/styles. My intention was to create one slider, that will contain all things i
+                    missed
+                    in other carousels. With as low code and css as possible. So you don't need to override some
+                    default styles and download multiple libraries for specific types of carousels.</p>
+                <br>
+                <h3 class="text-epsilon title-underline-epsilon">advantages of jedliSlider:</h3>
+                <ul class="text-center">
+                    <li>lightweight - 9.5KB minified</li>
+                    <li>Modern and fast - slider is build on flexbox, so there is no need to recalculate width of slides
+                        on resize, css will do it itself (not for continuous mode)</li>
+                    <li>no dependencies</li>
+                    <li>no unnecessary styles</li>
+                    <li>easy to use</li>
+                    <li>just let me know about things, modes or options you want and i will add them</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+    <article class="section section-article">
+        <div class="section-container">
+            <h2 class="section-title title-underline-theta">Compatibility</h2>
+            <div class="section-description text-beta">
+                <p>jedliSlider is built on css flexbox. So will be compatible with every browser that supports flexbox.
+                </p>
+            </div>
+        </div>
+    </article>
+    <article class="section section-status">
+        <div class="section-container">
+            <h2 class="section-title color-important weight-regular">Status:</h2>
+            <div class="section-description text-beta">
+                <p>There are currently two working modes:</p>
+                <ul>
+                    <li>continuous - fully implemented</li>
+                    <li>default - partial support, more info <a href="#mode-default" class="weight-regular">here</a>
+                    </li>
+                </ul>
+                <p>More will be added soon</p>
+            </div>
+        </div>
+    </article>
+    <article class="section section-article">
+        <div class="section-container">
+            <h2 class="section-title title-underline-eta">Features soon:</h2>
+            <div class="section-description text-beta">
+                <ul>
+                    <li>Inifnite carousel for 'default' mode</li>
+                    <li>Touch (drag) support for default mode</li>
+                    <li>Creating arrows from options</li>
+                    <li>Creating nav from options</li>
+                    <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
+                        levels
+                        of highlightness and animation between levels</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+
+
+    <section id="examples" class="section section-examples">
+        <div class="section-container">
+            <h2 class="section-title">Examples:</h2>
+            <h3 class="text-beta weight-regular color-important">continuous mode, slides to equal, direction right</h3>
+            <div class="example-slider" data-item="slider-continuous-equal">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                        <code>
+let sliderContinuousEqual = new jedliSlider(document.querySelector("[data-item='slider-continuous-equal']"), {
+    "mode": "continuous",
+    "slidesWidth": "equal",
+    "visibleSlides": "4",
+    "speed": "5",
+    "direction": "right",
+})
+                        </code>
+                    </pre>
+            </div>
+
+            <h3 class="text-beta weight-regular color-important">continuous mode, slides to auto, direction left,
+                pauseOnHover true</h3>
+            <div class="example-slider" data-item="slider-continuous-equal-left">
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 1</span>
+                </a>
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 2</span>
+                </a>
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 3</span>
+                </a>
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 4</span>
+                </a>
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 5</span>
+                </a>
+                <a href="" title="test" class="example-slide">
+                    <span>Slide 6</span>
+                </a>
+            </div>
+
+            <div class="code-snippet">
+                <pre>
+                            <code>
+let sliderContinuousEqualLeft = new jedliSlider(document.querySelector("[data-item='slider-continuous-equal-left']"), {
+    "mode": "continuous",
+    "slidesWidth": "equal",
+    "visibleSlides": "4",
+    "speed": "5",
+    "direction": "left",
+    "pauseOnHover": "true"
+})
+                            </code>
+                        </pre>
+            </div>
+
+            <h3 class="text-beta weight-regular color-important">continuous mode, slides to auto</h3>
+            <span class="text-beta weight-regular">*resize window and see when slider will start to
+                rotate*</span>
+            <div class="example-slider" data-item="slider-continuous-auto">
+                <div class="example-slide example-slide-auto">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide example-slide-auto">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide example-slide-auto">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide example-slide-auto">
+                    <span>Slide 4</span>
+                </div>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                        <code>
+let sliderContinuousAuto = new jedliSlider(document.querySelector("[data-item='slider-continuous-auto']"), {
+    "mode": "continuous",
+    "slidesWidth": "auto",
+    "visibleSlides": "auto",
+    "speed": "5",
+    "direction": "right",
+})
+                        </code>
+                    </pre>
+            </div>
+
+
+            <h3 class="text-beta weight-regular color-important">default mode, slidesToScroll 2, preventOverScroll set
+                to true</h3>
+            <div class="example-slider" data-item="slider-default-equal">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 7</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 8</span>
+                </div>
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-default-equal-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-default-equal-next'>next</button>
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button" data-action='slider-default-equal-to-slide'>Go to
+                    slide</button>
+                <input class="example-slider-nav-input" type="number" data-item='slider-default-equal-slide-index'
+                    value="1">
+            </div>
+            <div class="code-snippet">
+                <pre>
+                        <code>
+let sliderDefaultEqual2 = new jedliSlider(document.querySelector("[data-item='slider-default-equal-2']"), {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "visibleSlides": 5,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
+    "speed": "600",
+    "preventOverScroll": "false",
+})
+
+// Nav for sliderDefaultEqual
+
+// Prev slide
+document.querySelector("[data-action='slider-default-equal-2-prev']").addEventListener("click", () => {
+    sliderDefaultEqual2.slidePrev();
+})
+
+// Next slide
+document.querySelector("[data-action='slider-default-equal-2-next']").addEventListener("click", () => {
+    sliderDefaultEqual2.slideNext();
+})
+                        </code>
+                    </pre>
+            </div>
+
+            <h3 class="text-beta weight-regular color-important">default mode, slidesToScroll 2, preventOverScroll set
+                to false</h3>
+            <div class="example-slider" data-item="slider-default-equal-2">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 7</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 8</span>
+                </div>
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-default-equal-2-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-default-equal-2-next'>next</button>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                            <code>
+let sliderDefaultEqual = new jedliSlider(document.querySelector("[data-item='slider-default-equal']"), {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "visibleSlides": 5,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
+    "speed": "600",
+})
+
+// Nav for sliderDefaultEqual
+
+// Prev slide
+document.querySelector("[data-action='slider-default-equal-prev']").addEventListener("click", () => {
+    sliderDefaultEqual.slidePrev();
+})
+
+// Next slide
+document.querySelector("[data-action='slider-default-equal-next']").addEventListener("click", () => {
+    sliderDefaultEqual.slideNext();
+})
+                            </code>
+                        </pre>
+            </div>
+        </div>
+    </section>
+
+    <span class="break bg-alfa"></span>
+
+    <article id="options" class="section section-article section-options bg-alfa-alternative">
+        <div class="section-container">
+            <h2 class="section-title title-underline-delta">Options:</h2>
+            <div class="section-description text-beta">
+                <h3 class="text-beta weight-regular color-important">mode</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">default</span> - normal, typical carousel, where you can change slides
+                        by arrows or by
+                        swap (swap is
+                        not working yet)</li>
+                    <li><span class="color-beta">continuous</span> - smooth, infinite animation, going all the time</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">slidesWidth</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">equal</span> - All slides have same, specified from js size</li>
+                    <li><span class="color-beta">auto</span> - width of every slides can be different, specifed from
+                        css, in 'continuous' mode slider will animate if width of all slides is greater than container
+                        width (not working in
+                        'default' mode yet)</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">visibleSlides</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Any int number greater than 0</li>
+                    <li><span class="color-beta">auto</span> - if slidesWidth is set to 'auto'</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">slidesToScroll</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Any int number greater than 0</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">speed</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Any int number greater than or equal 0 </li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">easing</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Any CSS3 easing, can be default like 'ease-out' or cubic-bezier</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">overflow</h3>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">hidden</span> - Add overflow hidden to track container.
+                    </li>
+                    <li><span class="color-beta">anything different than hidden (even empty space)</span> - Slider won't
+                        have overflow hidden
+                    </li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">preventOverScroll</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">true</span> - Slider will recalculate distance to animate when wanted
+                        amount of slides to scroll is greater than amount of slides. <br>For example: (You are at 4th
+                        and
+                        5th slide, there are 6 slides. But your slides to scroll is 2. With this option set to true
+                        instead of going 2 slides, slider will move only by 1 slide.</li>
+                    <li><span class="color-beta">false</span> - Slider will not recalculate distance. <br>For example:
+                        (You
+                        are at 4th and 5th slide, there are 6 slides. But your slides to scroll is 2. With this option
+                        set to false your slide will move by 2 slides anyway, leaving empty space for missing slides
+                    </li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">pauseOnHover</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">true</span> - Carousel will stop animation on hover,
+                        or for accessibility reasons - on focus at any element inside slider</li>
+                    <li><span class="color-beta">false</span> - Slider won't stop on hover</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">direction</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">left</span> - Make carousel rotate from right to left</li>
+                    <li><span class="color-beta">right</span> - Make carousel rotate from left to right</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">responsive</h3>
+                <span class="text-beta weight-regular">Set new options to work from specified breakpoint</span>
+                <span class="text-beta weight-regular">example:</span>
+                <div class="code-snippet">
+                    <pre>
+                        <code>
+"responsive": [
+    {
+        "breakpoint": 992,
+        "options": {
+            "visibleSlides": 3
+        }
+    },
+    {
+        "breakpoint": 768,
+        "options": {
+            "visibleSlides": 2
+        }
+    }
+]
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </article>
+    <article id="list-of-options" class="section section-article section-options bg-alfa-alternative">
+        <div class="section-container">
+            <h2 class="section-title title-underline-gamma">List of options:</h2>
+            <div class="section-description text-beta">
+                <table class="section-table">
+                    <tr>
+                        <td>Option:</td>
+                        <td>Default:</td>
+                        <td>Description:</td>
+                    </tr>
+                    <tr>
+                        <td>mode</td>
+                        <td>default</td>
+                        <td>jedliSlider contain few different modes, types of carousels. Select wanted one. This option
+                            define how almost all of other options will work</td>
+                    </tr>
+                    <tr>
+                        <td>slidesWidth</td>
+                        <td>equal</td>
+                        <td>determinate if all slides should be same size, specified by slider; or width of every slides
+                            can be different, specifed from css</td>
+                    </tr>
+                    <tr>
+                        <td>visibleSlides</td>
+                        <td>1</td>
+                        <td>This option works when "slidesWidth" is set to "equal". Determinate how much slides will be
+                            visible</td>
+                    </tr>
+                    <tr>
+                        <td>slidesToScroll</td>
+                        <td>1</td>
+                        <td>By how many slides should slider move, on action "nextSlide" or "prevSlide"</td>
+                    </tr>
+                    <tr>
+                        <td>speed</td>
+                        <td>400</td>
+                        <td>Transition duration of one single change. In "continuous" mode speed is amount of ms per
+                            every single px</td>
+                    </tr>
+                    <tr>
+                        <td>easing</td>
+                        <td>linear</td>
+                        <td>Define easing of slider move animation</td>
+                    </tr>
+                    <tr>
+                        <td>overflow</td>
+                        <td>hidden</td>
+                        <td>Define if slider should have overflow hidden or not</td>
+                    </tr>
+                    <tr>
+                        <td>pauseOnHover</td>
+                        <td>false</td>
+                        <td>This option works in "continuous" mode. Determinate if carousel should stop animation on
+                            hover, or for accessibility reasons - on focus at any element inside slider</td>
+                    </tr>
+                    <tr>
+                        <td>direction</td>
+                        <td>left</td>
+                        <td>This option works in "continuous" mode. determinate if carousel should rotate from left to
+                            right, or right to left</td>
+                    </tr>
+                    <tr>
+                        <td>preventOverScroll</td>
+                        <td>true</td>
+                        <td>This option works in "default" mode. Determinate if slider should recalculate distance to
+                            animate when wanted amount of slides to scroll is greater than amount of slides. For
+                            example: (You are at 4th and 5th slide, there are 6 slides. But your slides to scroll is 2.
+                            With this option set to true instead of going 2 slides, slider will move only by 1 slide.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>responsive</td>
+                        <td>-</td>
+                        <td>Set new options to work from specified breakpoint</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <span>by Bartłomiej Jedlikowski</span>
+        <a href="https://www.linkedin.com/in/jedlibartlomiej/"
+            title="go to linkedin">https://www.linkedin.com/in/jedlibartlomiej/</a>
+    </footer>
+
+    <script type="text/javascript" src="./demo/dist/demo.bundle.js"></script>
+</body>
+
+</html>

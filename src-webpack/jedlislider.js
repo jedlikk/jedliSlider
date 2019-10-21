@@ -11,6 +11,7 @@ class jedliSlider {
         // Default options
         this.defaultOptions = {
             "mode": "default",
+            "slidesWidth": "equal",
             "visibleSlides": "1",
             "slidesToScroll": "1",
             "speed": "400",
@@ -20,7 +21,6 @@ class jedliSlider {
             "autoplayDuration": "400",
             "draggable": "true",
             "dots": "false",
-            "slidesWidth": "equal",
             "easing": "linear",
             "overflow": "hidden",
             "pauseOnHover": "false",
@@ -94,8 +94,6 @@ class jedliSlider {
         // Append trackContainer to slider
         tracksContainer.appendChild(track);
 
-        // Set tracksContainer height to be equal to tracks
-        this.setTracksContainerHeight();
 
         // Check if slider should have overflow hidden
         if (this.options.overflow === "hidden") {
@@ -115,6 +113,8 @@ class jedliSlider {
             .then(
                 (resolve) => {
                     this.modeHandler();
+                    // Set tracksContainer height to be equal to tracks
+                    this.setTracksContainerHeight();
                 }
             )
     }
@@ -467,7 +467,7 @@ class jedliSlider {
         });
     }
 
-    // Set size of tracksContainer to width of track
+    // Set size of tracksContainer to height of track
     setTracksContainerHeight() {
         // Get tracksContainer
         let tracksContainer = this.item.querySelectorAll("[data-jedli='tracks-container']")[0];
@@ -754,8 +754,7 @@ class jedliSlider {
                 // Slide is in viewport when:
                 // Slide left value is greater or equal to tracksContainer left value
                 // Slide right value is smaller or equal to tracksContainer right value
-
-                if (slideRect.left >= tracksContainerRect.left && slideRect.right <= tracksContainerRect.right) {
+                if (Math.round(slideRect.left) >= Math.round(tracksContainerRect.left) && Math.round(slideRect.right) <= Math.round(tracksContainerRect.right)) {
                     // if in viewport add attr jedli-active
                     e.setAttribute("jedli-active", "true");
                 }

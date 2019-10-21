@@ -63,6 +63,13 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## How to use
 
+### Instal via npm
+
+"npm install jedlislider"
+
+[NPM](https://www.npmjs.com/package/jedlislider)
+
+
 ### If you work with webpack
 just import src-webpack/jedlislider.js
 

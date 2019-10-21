@@ -283,6 +283,30 @@ body {
         }
     }
 
+    &-status {
+        background: rgba($color-important, 0.1);
+    }
+
+    &-new {
+        .section {
+            &-title {
+                margin-bottom: 5px;
+            }
+
+            &-subtitle {
+                margin-bottom: 25px;
+            }
+        }
+
+        .section-description {
+            ul {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+
     &-examples {
         .section-container {
             width: 100%;

@@ -269,26 +269,36 @@ let sliderContinuousAuto = new jedliSlider(document.querySelector("[data-item='s
             <div class="code-snippet">
                 <pre>
                         <code>
-let sliderDefaultEqual2 = new jedliSlider(document.querySelector("[data-item='slider-default-equal-2']"), {
+let sliderDefaultEqual = new jedliSlider(document.querySelector("[data-item='slider-default-equal']"), {
     "mode": "default",
     "slidesWidth": "equal",
     "visibleSlides": 5,
     "easing": "ease-out",
     "slidesToScroll": 2,
     "speed": "600",
-    "preventOverScroll": "false",
+    "preventOverScroll": "true",
 })
 
 // Nav for sliderDefaultEqual
 
 // Prev slide
-document.querySelector("[data-action='slider-default-equal-2-prev']").addEventListener("click", () => {
-    sliderDefaultEqual2.slidePrev();
+document.querySelector("[data-action='slider-default-equal-prev']").addEventListener("click", () => {
+    sliderDefaultEqual.slidePrev();
 })
 
 // Next slide
-document.querySelector("[data-action='slider-default-equal-2-next']").addEventListener("click", () => {
-    sliderDefaultEqual2.slideNext();
+document.querySelector("[data-action='slider-default-equal-next']").addEventListener("click", () => {
+    sliderDefaultEqual.slideNext();
+})
+
+// Go to specific slide
+let sliderDefaultEqualGoToSlide = document.querySelector("[data-action='slider-default-equal-to-slide']");
+sliderDefaultEqualGoToSlide.addEventListener('click', () => {
+
+    // Get value from input number
+    const value = +document.querySelector("[data-item='slider-default-equal-slide-index']").value;
+
+    sliderDefaultEqual.goToSlide(value);
 })
                         </code>
                     </pre>

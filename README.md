@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.7.7-blue.svg)
+![](https://img.shields.io/badge/version-0.7.8-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,7 @@ continuous - fully implemented
 default - partial support, (check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options))
 
 ## What's new?
-### v. 0.7.7
+### v. 0.7.8
 - Created DEMO page
 - Added default mode with 'infinity' set to false.
 - #defaultMode - Added functionality for 'go to next slide'

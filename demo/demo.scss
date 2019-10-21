@@ -235,6 +235,22 @@ body {
         background: $color-alfa;
     }
 
+    &-how-to {
+        .section-description {
+            h3 {
+                margin-bottom: 0;
+            }
+
+            p {
+                margin-bottom: 15px;
+            }
+        }
+
+        .between {
+            margin-bottom: 25px;
+        }
+    }
+
     &-options {
         .subtitle {
             padding-top: 25px;

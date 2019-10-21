@@ -14,9 +14,13 @@
 
 .jedli-mode-continuous .jedli-track {
   transform: translate3d(0, 0, 0);
-  animation: jedli-continuous-animation infinite; }
+  animation: jedli-continuous-animation infinite;
+  align-items: center; }
   .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover, .jedli-mode-continuous .jedli-track.jedli-hover-pause.hovered {
     animation-play-state: paused; }
+
+.jedli-mode-default .jedli-track {
+  width: 100%; }
 
 @keyframes jedli-continuous-animation {
   0% {

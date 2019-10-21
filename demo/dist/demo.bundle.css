@@ -119,6 +119,12 @@ body {
     padding-bottom: 100px; }
   .section-article {
     background: #fdfdfd; }
+  .section-how-to .section-description h3 {
+    margin-bottom: 0; }
+  .section-how-to .section-description p {
+    margin-bottom: 15px; }
+  .section-how-to .between {
+    margin-bottom: 25px; }
   .section-options .subtitle {
     padding-top: 25px; }
   .section-options li {

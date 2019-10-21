@@ -7,6 +7,7 @@
 
     &-tracks-container {
         position: relative;
+    
         z-index: 2;
         width: 100%;
     }
@@ -24,12 +25,21 @@
                 &-track {
                     transform: translate3d(0, 0, 0);
                     animation: jedli-continuous-animation infinite;
+                    align-items: center;
 
                     &.jedli-hover-pause {
                         &:hover, &.hovered {
                             animation-play-state: paused;
                         }
                     }
+                }
+            }
+        }
+
+        &-default {
+            .jedli {
+                &-track {
+                    width: 100%;
                 }
             }
         }

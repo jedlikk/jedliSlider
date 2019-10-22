@@ -55,6 +55,7 @@
                     <li>no dependencies</li>
                     <li>no unnecessary styles</li>
                     <li>easy to use</li>
+                    <li>You don't have to create structure, slider will do it for you</li>
                     <li>just let me know about things, modes or options you want and i will add them</li>
                 </ul>
             </div>
@@ -100,7 +101,7 @@
             </div>
         </div>
     </article>
-    <article class="section section-article">
+    <article class="section section-article bg-alfa-alternative">
         <div class="section-container">
             <h2 class="section-title title-underline-eta">Features soon:</h2>
             <div class="section-description text-beta">
@@ -117,6 +118,54 @@
         </div>
     </article>
 
+    <article id="how-to-use" class="section section-article section-how-to">
+        <div class="section-container">
+            <h2 class="section-title title-underline-eta">How to use:</h2>
+            <div class="section-description text-beta">
+                <h3 class="text-epsilon">Install via npm</h3>
+                <p>"npm install jedlislider"</p>
+                <a href="https://www.npmjs.com/package/jedlislider" target="_blank"
+                    title="Go to npm jedlislider">jedliSlider at NPM</a>
+                <h3 class="text-epsilon">If you work with webpack</h3>
+                <p>just import src-webpack/jedlislider.js</p>
+                <span class="between"></span>
+                <h3 class="text-epsilon">If you work without webpack</h3>
+                <p> add this files to your wesbite by script and link tag:</p>
+                <ul>
+                    <li>dist/jedlislider.bundle.css</li>
+                    <li>src/jedlislider.js</li>
+                </ul>
+                <br>
+                <h3 class="text-epsilon title-underline-gamma">Initialization</h3>
+                <p>Simple html structure</p>
+                <div class="code-snippet">
+                    <pre>
+                        <code>
+&lt;div data-item="slider"&gt;
+    &lt;div&gt;
+        slide 1
+    &lt;/div&gt;
+    &lt;div&gt;
+        slide 2
+    &lt;/div&gt;
+    &lt;div&gt;
+        slide 3
+    &lt;/div&gt;
+&lt;/div&gt;
+                        </code>
+                    </pre>
+                </div>
+                <p>Simple initialization</p>
+                <div class="code-snippet">
+                    <pre>
+                                    <code>
+let slider = new jedliSlider(document.querySelector("[data-item='slider']"));
+                                    </code>
+                                </pre>
+                </div>
+            </div>
+        </div>
+    </article>
 
     <section id="examples" class="section section-examples">
         <div class="section-container">
@@ -367,26 +416,7 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
         </div>
     </section>
 
-    <article id="how-to-use" class="section section-article section-how-to">
-        <div class="section-container">
-            <h2 class="section-title title-underline-eta">How to use:</h2>
-            <div class="section-description text-beta">
-                <h3 class="text-epsilon">Install via npm</h3>
-                <p>"npm install jedlislider"</p>
-                <a href="https://www.npmjs.com/package/jedlislider" target="_blank"
-                    title="Go to npm jedlislider">jedliSlider at NPM</a>
-                <h3 class="text-epsilon">If you work with webpack</h3>
-                <p>just import src-webpack/jedlislider.js</p>
-                <span class="between"></span>
-                <h3 class="text-epsilon">If you work without webpack</h3>
-                <p> add this files to your wesbite by script and link tag:</p>
-                <ul>
-                    <li>dist/jedlislider.bundle.css</li>
-                    <li>src/jedlislider.js</li>
-                </ul>
-            </div>
-        </div>
-    </article>
+    <span class="break bg-alfa"></span>
 
     <article id="options" class="section section-article section-options bg-alfa-alternative">
         <div class="section-container">

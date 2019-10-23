@@ -199,6 +199,14 @@ body {
         min-width: 180px; }
       .section-examples .example-slide-auto:nth-of-type(6), .section-examples .example-slide-auto:nth-of-type(12) {
         min-width: 230px; }
+      .section-examples .example-slide-auto-continuous:nth-of-type(1), .section-examples .example-slide-auto-continuous:nth-of-type(5) {
+        min-width: 200px; }
+      .section-examples .example-slide-auto-continuous:nth-of-type(2), .section-examples .example-slide-auto-continuous:nth-of-type(6) {
+        min-width: 250px; }
+      .section-examples .example-slide-auto-continuous:nth-of-type(3), .section-examples .example-slide-auto-continuous:nth-of-type(7) {
+        min-width: 150px; }
+      .section-examples .example-slide-auto-continuous:nth-of-type(4), .section-examples .example-slide-auto-continuous:nth-of-type(8) {
+        min-width: 215px; }
     .section-examples .example-slide::before {
       content: '';
       display: block;

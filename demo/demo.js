@@ -83,6 +83,30 @@ window.addEventListener('load', () => {
     document.querySelector("[data-action='slider-default-equal-2-next']").addEventListener("click", () => {
         sliderDefaultEqual2.slideNext();
     })
+
+    let sliderDefaultEqualInfinite = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 5,
+        "speed": "600",
+        "preventOverScroll": "false",
+        // "overflow": "visible",
+    })
+
+    // Nav for sliderDefaultEqual
+
+    // Prev slide
+    document.querySelector("[data-action='slider-default-equal-infinite-prev']").addEventListener("click", () => {
+        sliderDefaultEqualInfinite.slidePrev();
+    })
+
+    // Next slide
+    document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
+        sliderDefaultEqualInfinite.slideNext();
+    })
 })
 
 

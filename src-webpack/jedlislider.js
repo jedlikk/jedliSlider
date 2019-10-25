@@ -918,9 +918,10 @@ class jedliSlider {
         if (trackTransform > 0)
             direction = "prev";
 
-        // If track is equal to 0, do nothing
+        // If track is equal to 0, direction is 'none'
         if (trackTransform === 0)
-            return false;
+            direction = "none"
+
 
         // Check if there is enough non-active slides 
         // (if number of non active slides is greater or equal options.slidesToScroll)
@@ -951,13 +952,13 @@ class jedliSlider {
             if (noOfNonActive < +this.options.slidesToScroll) {
                 // If true -> Move block to other side (where distance is number of slides * percentage width of every slides * 2)
                 const distance = +blockStart.getAttribute("jedli-position").replace("%", "") * 2
-                blockStart.style.right = "";
+                blockStart.style.right = "unset";
                 blockStart.style.left = distance + "%";
             }
             else {
                 // If not, move block back to his side
                 const distance = blockStart.getAttribute("jedli-position")
-                blockStart.style.left = "";
+                blockStart.style.left = "unset";
                 blockStart.style.right = distance;
             }
         }
@@ -981,15 +982,28 @@ class jedliSlider {
             if (noOfNonActive < +this.options.slidesToScroll) {
                 // If true -> Move block to other side (where distance is number of slides * percentage width of every slides * 2)
                 const distance = +blockEnd.getAttribute("jedli-position").replace("%", "") * 2
-                blockEnd.style.left = "";
+                blockEnd.style.left = "unset";
                 blockEnd.style.right = distance + "%";
             }
             else {
                 // If not, move block back to his side
                 const distance = blockEnd.getAttribute("jedli-position")
-                blockEnd.style.right = "";
+                blockEnd.style.right = "unset";
                 blockEnd.style.left = distance;
             }
+        }
+
+        // If direction is 'none', then reset to default state
+        if (direction === "none") {
+            const blockEnd = this.item.querySelector("[data-jedli='slides-block'][jedli-block='end']");
+            const blockStart = this.item.querySelector("[data-jedli='slides-block'][jedli-block='start']");
+            const distance = blockEnd.getAttribute("jedli-position");
+
+            blockStart.style.left = "unset";
+            blockStart.style.right = distance;
+
+            blockEnd.style.right = "unset";
+            blockEnd.style.left = distance;
         }
     }
 

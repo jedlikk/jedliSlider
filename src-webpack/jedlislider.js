@@ -612,14 +612,14 @@ class jedliSlider {
                     // Update active slides
                     this.updateActiveSldies().then(
                         (resolve) => {
-                            // Remove attr preventing change
-                            this.item.setAttribute("jedli-prevent-change", "false");
-
-                            // Check if infinite carousel is enabled
+                            // Check if infinite is set to true
                             if (this.options.infinite === "true") {
-                                // If true, check if track should reset position
+                                // Update position of track to keep feeling of infinite carousel
                                 this.updateInfiniteTrackPosition();
                             }
+
+                            // Remove attr preventing change
+                            this.item.setAttribute("jedli-prevent-change", "false");
                         }
                     );
                 }
@@ -640,14 +640,14 @@ class jedliSlider {
                     // Update active slides
                     this.updateActiveSldies().then(
                         (resolve) => {
-                            // Remove attr preventing change
-                            this.item.setAttribute("jedli-prevent-change", "false");
-
-                            // Check if infinite carousel is enabled
+                            // Check if infinite is set to true
                             if (this.options.infinite === "true") {
-                                // If true, check if track should reset position
+                                // Update position of track to keep feeling of infinite carousel
                                 this.updateInfiniteTrackPosition();
                             }
+
+                            // Remove attr preventing change
+                            this.item.setAttribute("jedli-prevent-change", "false");
                         }
                     );
                 }
@@ -670,6 +670,12 @@ class jedliSlider {
                 // Calculate how much slides slider needs to scroll to specific slide
                 const slidesToScroll = this.calculateDistanceInSlides(wantedSlideDirection, slideIndex);
 
+                // Check if infinite is set to true
+                if (this.options.infinite == true) {
+                    // Update position of cloned blocks to keep feeling of infinite carousel
+                    this.updateInfiniteBlocksPosition();
+                }
+
                 // Caluclate distance 
                 const distance = this.calculateChangeDistance(wantedSlideDirection, slidesToScroll);
 
@@ -679,6 +685,12 @@ class jedliSlider {
                         // Update active slides
                         this.updateActiveSldies().then(
                             (resolve) => {
+                                // Check if infinite is set to true
+                                if (this.options.infinite === "true") {
+                                    // Update position of track to keep feeling of infinite carousel
+                                    this.updateInfiniteTrackPosition();
+                                }
+
                                 // Remove attr preventing change
                                 this.item.setAttribute("jedli-prevent-change", "false");
                             }
@@ -862,7 +874,6 @@ class jedliSlider {
         // If there are currently active slides check if there is enough slides on both sides to scroll
         if (activeSlides.length > 0) {
             // Move blocks with slides from one side to another, if there is no enough space to keep infinite carousel
-            this.updateInfniteBlocksPosition();
             return false;
         }
         else {
@@ -895,7 +906,9 @@ class jedliSlider {
                         (resolve) => {
                             // Remove attr preventing change
                             this.item.setAttribute("jedli-prevent-change", "false");
-                            this.updateInfniteBlocksPosition();
+
+                            // Reset infinite blocks position
+                            this.resetInfiniteblocksPosition();
                         }
                     );
                 }
@@ -904,7 +917,8 @@ class jedliSlider {
     }
 
     // Move blocks with slides from one side to another, if there is no enough space to keep infinite carousel
-    updateInfniteBlocksPosition() {
+    updateInfiniteBlocksPosition(specified) {
+
         // Check if track was transformed in 'prev' or 'next' site
         // Get track transform
         const trackTransform = +this.item.querySelector("[data-jedli='track']").getAttribute("jedli-transform").replace("%", "");
@@ -995,16 +1009,20 @@ class jedliSlider {
 
         // If direction is 'none', then reset to default state
         if (direction === "none") {
-            const blockEnd = this.item.querySelector("[data-jedli='slides-block'][jedli-block='end']");
-            const blockStart = this.item.querySelector("[data-jedli='slides-block'][jedli-block='start']");
-            const distance = blockEnd.getAttribute("jedli-position");
-
-            blockStart.style.left = "unset";
-            blockStart.style.right = distance;
-
-            blockEnd.style.right = "unset";
-            blockEnd.style.left = distance;
+            this.resetInfiniteblocksPosition();
         }
+    }
+
+    resetInfiniteblocksPosition() {
+        const blockEnd = this.item.querySelector("[data-jedli='slides-block'][jedli-block='end']");
+        const blockStart = this.item.querySelector("[data-jedli='slides-block'][jedli-block='start']");
+        const distance = blockEnd.getAttribute("jedli-position");
+
+        blockStart.style.left = "unset";
+        blockStart.style.right = distance;
+
+        blockEnd.style.right = "unset";
+        blockEnd.style.left = distance;
     }
 
     // Prevent slider from overScroll - fix distance to scroll, so first/last slide will always at start/end of container
@@ -1077,6 +1095,7 @@ class jedliSlider {
     // Animate change of track
     animateTrackChange(distance, prevAnimation) {
         return new Promise((resolve, reject) => {
+
             // Get track
             const track = this.item.querySelector("[data-jedli='track']");
 
@@ -1103,16 +1122,22 @@ class jedliSlider {
             // Update jedli-transform attr
             track.setAttribute("jedli-transform", newPosition);
 
+            // Check if infinite is set to true
+            if (this.options.infinite === "true") {
+                // Update position of track to keep feeling of infinite carousel
+                this.updateInfiniteBlocksPosition();
+            }
+
             // Wait for animation to finish and then resolve
             // But if prevAnimation is set to true, wait much briefly
             if (prevAnimation === true) {
                 setTimeout(() => {
                     resolve("Animation finished");
-                    console.log("done");
                 }, 15);
             }
             else {
                 setTimeout(() => {
+
                     resolve("Animation finished");
                 }, +this.options.speed + 20);
             }

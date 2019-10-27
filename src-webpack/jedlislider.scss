@@ -83,5 +83,7 @@
 }
 
 .jedli-slider .jedli-overflow-hidden, .jedli-slider.jedli-overflow-hidden {
-    overflow: hidden;
+    .jedli-tracks-container {
+        overflow: hidden;
+    }
 }

@@ -93,6 +93,9 @@ window.addEventListener('load', () => {
         "slidesToScroll": 5,
         "speed": "600",
         "preventOverScroll": "false",
+        "arrows": "true",
+        "arrowPrev": "<button type='button'>TEST PREV</button>",
+        "arrowNext": "<button type='button'>TEST NEXT</button>",
         // "overflow": "visible",
     })
 

@@ -415,6 +415,6 @@ body {
 .jedli-slider.jedli-mode-continuous .jedli-continuous-stop {
   animation: unset !important; }
 
-.jedli-slider .jedli-overflow-hidden, .jedli-slider.jedli-overflow-hidden {
+.jedli-slider .jedli-overflow-hidden .jedli-tracks-container, .jedli-slider.jedli-overflow-hidden .jedli-tracks-container {
   overflow: hidden; }
 

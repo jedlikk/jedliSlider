@@ -454,6 +454,86 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
             <button class="example-slider-nav-button example-slider-nav-next"
                 data-action='slider-default-equal-infinite-next'>next</button>
         </div>
+        <div class="code-snippet">
+            <pre>
+                        <code>
+let sliderDefaultEqualInfinite = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite']"), {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "infinite": "true",
+    "visibleSlides": 5,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
+    "speed": "600",
+    "preventOverScroll": "false",
+})
+
+// Nav for sliderDefaultEqual
+
+// Prev slide
+document.querySelector("[data-action='slider-default-equal-infinite-prev']").addEventListener("click", () => {
+    sliderDefaultEqualInfinite.slidePrev();
+})
+
+// Next slide
+document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
+    sliderDefaultEqualInfinite.slideNext();
+})
+                        </code>
+                    </pre>
+        </div>
+
+        <h3 class="text-beta weight-regular color-important">default mode, infinite true, autoplay true</h3>
+        <div class="example-slider example-slider-inifnite" data-item="slider-default-equal-infinite-autoplay">
+            <div class="example-slide">
+                <span>Slide 1</span>
+            </div>
+            <div class="example-slide">
+                <span>Slide 2</span>
+            </div>
+            <div class="example-slide">
+                <span>Slide 3</span>
+            </div>
+            <div class="example-slide">
+                <span>Slide 4</span>
+            </div>
+            <div class="example-slide">
+                <span>Slide 5</span>
+            </div>
+            <div class="example-slide">
+                <span>Slide 6</span>
+            </div>
+
+        </div>
+        </div>
+        <div class="code-snippet">
+            <pre>
+                    <code>
+let sliderDefaultEqualInfinite = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite']"), {
+"mode": "default",
+"slidesWidth": "equal",
+"infinite": "true",
+"visibleSlides": 5,
+"easing": "ease-out",
+"slidesToScroll": 2,
+"speed": "600",
+"preventOverScroll": "false",
+})
+
+// Nav for sliderDefaultEqual
+
+// Prev slide
+document.querySelector("[data-action='slider-default-equal-infinite-prev']").addEventListener("click", () => {
+sliderDefaultEqualInfinite.slidePrev();
+})
+
+// Next slide
+document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
+sliderDefaultEqualInfinite.slideNext();
+})
+                    </code>
+                </pre>
+        </div>
         </div>
     </section>
 

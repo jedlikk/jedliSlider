@@ -30,6 +30,9 @@ class jedliSlider {
             "arrows": "false",
             "arrowPrev": "",
             "arrowNext": "",
+            "autoplay": "false",
+            "autoplaySpeed": "1500",
+            "autoplayDirection": "right",
         }
 
         // Set options to default
@@ -142,6 +145,12 @@ class jedliSlider {
                     if (this.noOfSlides > +this.options.visibleSlides || this.options.visibleSlides === "auto") {
                         switch (this.options.mode) {
                             case "default":
+                                // Reinit position of blocks
+                                this.reInitInfiniteBlocksPosition();
+
+                                // Update active slides
+                                this.updateActiveSlides();
+
                                 // Check if there is enouth slides to rotate
                                 if (this.ifEnoughToRotate()) {
                                     // Check if slider has already created structure
@@ -154,7 +163,7 @@ class jedliSlider {
                                     }
                                 }
                                 else {
-                                    this.destroyContinuous();
+                                    this.destroyDefault();
                                 }
                                 break;
 
@@ -254,6 +263,60 @@ class jedliSlider {
                 this.initContinuous();
                 break;
         }
+    }
+
+    // Handle autplay
+    autoplayHandler() {
+        // Set interval, where time to repeat is option.autoplaySpeed
+        window.setInterval(() => {
+            // Check if slider has attr to prevent move
+            if (this.item.getAttribute("jedli-prevent-autoplay") === "true") {
+                // If true, do nothing
+                return false;
+            }
+            else {
+                // If not, animate
+
+                // Check direction
+                // If right, trigger slideNext
+                if (this.options.autoplayDirection === "right")
+                    this.slideNext();
+
+                // If left, trigger slidePrev
+                if (this.options.autoplayDirection === "left")
+                    this.slidePrev();
+            }
+
+        }, +this.options.autoplaySpeed);
+
+        const track = this.item.querySelector("[data-jedli='track']");
+        // Add attr to prevent autoplay on track hover, or focus on anything inside
+        track.addEventListener("mouseover", () => {
+            this.item.setAttribute("jedli-prevent-autoplay", "true");
+        })
+
+        track.addEventListener("mouseout", () => {
+            this.item.setAttribute("jedli-prevent-autoplay", "false");
+        })
+
+        // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
+        // (for accessibility, people using keyboard to naviage)
+
+
+        // Get all children
+        let trackChildren = track.querySelectorAll("a, button");
+        // Attach event listener to childrens
+        trackChildren.forEach((e) => {
+            e.addEventListener("focus", () => {
+                // Add class to stop slider on focus
+                this.item.setAttribute("jedli-prevent-autoplay", "true");
+            });
+
+            e.addEventListener("focusout", () => {
+                // Remove class to stop slider on focusout
+                this.item.setAttribute("jedli-prevent-autoplay", "false");
+            });
+        })
     }
 
     // Set all slides to same, specific width
@@ -378,7 +441,7 @@ class jedliSlider {
             arrowPrev = addToString(arrowPrev, " jedli-action='prev' ");
         }
         else
-            arrowPrev = "<button type='button' jedli-action='prev' >PREV</button>";
+            arrowPrev = "<button type='button' class='jedli-arrow jedli-arrow-prev' jedli-action='prev' >PREV</button>";
 
         if (this.options.arrowNext.length > 0) {
             // If true, set arrowNext as specified and add attr jedli-action='next'
@@ -386,7 +449,7 @@ class jedliSlider {
             arrowNext = addToString(arrowNext, " jedli-action='next' ");
         }
         else
-            arrowNext = "<button type='button' jedli-action='next' >NEXT</button>";
+            arrowNext = "<button type='button' class='jedli-arrow jedli-arrow-next' jedli-action='next' >NEXT</button>";
 
         // Add arrows to slider
         this.item.insertAdjacentHTML("afterbegin", arrowPrev);
@@ -431,6 +494,12 @@ class jedliSlider {
                 (resolve) => {
                     // Update active (visible) slides
                     this.updateActiveSlides();
+
+                    // Check if autoplay is set to true
+                    if (this.options.autoplay === "true") {
+                        // If true, init autoplay
+                        this.autoplayHandler();
+                    }
                 }
             )
         }
@@ -508,6 +577,19 @@ class jedliSlider {
 
             resolve("Continuous structure created");
         });
+    }
+
+    reInitInfiniteBlocksPosition() {
+        // Get blockStart and blockEnd
+        const blockStart = this.item.querySelectorAll("[data-jedli='slides-block'][jedli-block='start']");;
+        const blockEnd = this.item.querySelectorAll("[data-jedli='slides-block'][jedli-block='end']");
+
+        // Add wanted styles to both cloned blocks
+        if (blockStart.length > 0)
+            this.setInfnitePosition(blockStart[0], "start");
+
+        if (blockEnd.length > 0)
+            this.setInfnitePosition(blockEnd[0], "end");
     }
 
     // Set position of help blocks, calculating numbers of slides

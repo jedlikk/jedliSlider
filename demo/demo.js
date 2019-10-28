@@ -90,12 +90,14 @@ window.addEventListener('load', () => {
         "infinite": "true",
         "visibleSlides": 5,
         "easing": "ease-out",
-        "slidesToScroll": 5,
+        "slidesToScroll": 2,
         "speed": "600",
         "preventOverScroll": "false",
-        "arrows": "true",
-        "arrowPrev": "<button type='button'>TEST PREV</button>",
-        "arrowNext": "<button type='button'>TEST NEXT</button>",
+        // "autoplay": "true",
+        // autoplayDirection: "left",
+        // "arrows": "true",
+        // "arrowPrev": "<button type='button' class='custom-arrow custom-prev'>TEST PREV</button>",
+        // "arrowNext": "<button type='button' class='custom-arrow custom-prev'>TEST NEXT</button>",
         // "overflow": "visible",
     })
 
@@ -109,6 +111,24 @@ window.addEventListener('load', () => {
     // Next slide
     document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
         sliderDefaultEqualInfinite.slideNext();
+    })
+
+    let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-autoplay']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 2,
+        "speed": "600",
+        "preventOverScroll": "false",
+        "autoplay": "true",
+        "autoplaySpeed": "1000",
+        // autoplayDirection: "left",
+        // "arrows": "true",
+        // "arrowPrev": "<button type='button' class='custom-arrow custom-prev'>TEST PREV</button>",
+        // "arrowNext": "<button type='button' class='custom-arrow custom-prev'>TEST NEXT</button>",
+        // "overflow": "visible",
     })
 })
 

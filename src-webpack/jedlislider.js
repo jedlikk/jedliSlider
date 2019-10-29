@@ -270,7 +270,8 @@ class jedliSlider {
         // Set interval, where time to repeat is option.autoplaySpeed
         window.setInterval(() => {
             // Check if slider has attr to prevent move
-            if (this.item.getAttribute("jedli-prevent-autoplay") === "true") {
+            // Or browser tab is inactive
+            if (this.item.getAttribute("jedli-prevent-autoplay") === "true" || document.visibilityState === "hidden") {
                 // If true, do nothing
                 return false;
             }
@@ -289,34 +290,37 @@ class jedliSlider {
 
         }, +this.options.autoplaySpeed);
 
-        const track = this.item.querySelector("[data-jedli='track']");
-        // Add attr to prevent autoplay on track hover, or focus on anything inside
-        track.addEventListener("mouseover", () => {
-            this.item.setAttribute("jedli-prevent-autoplay", "true");
-        })
+        // If option pauseOnHover is set to true
+        if (this.options.pauseOnHover === "true") {
 
-        track.addEventListener("mouseout", () => {
-            this.item.setAttribute("jedli-prevent-autoplay", "false");
-        })
-
-        // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
-        // (for accessibility, people using keyboard to naviage)
-
-
-        // Get all children
-        let trackChildren = track.querySelectorAll("a, button");
-        // Attach event listener to childrens
-        trackChildren.forEach((e) => {
-            e.addEventListener("focus", () => {
-                // Add class to stop slider on focus
+            const track = this.item.querySelector("[data-jedli='track']");
+            // Add attr to prevent autoplay on track hover, or focus on anything inside
+            track.addEventListener("mouseover", () => {
                 this.item.setAttribute("jedli-prevent-autoplay", "true");
-            });
+            })
 
-            e.addEventListener("focusout", () => {
-                // Remove class to stop slider on focusout
+            track.addEventListener("mouseout", () => {
                 this.item.setAttribute("jedli-prevent-autoplay", "false");
-            });
-        })
+            })
+
+
+            // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
+            // (for accessibility, people using keyboard to naviage)
+            // Get all children
+            let trackChildren = track.querySelectorAll("a, button");
+            // Attach event listener to childrens
+            trackChildren.forEach((e) => {
+                e.addEventListener("focus", () => {
+                    // Add class to stop slider on focus
+                    this.item.setAttribute("jedli-prevent-autoplay", "true");
+                });
+
+                e.addEventListener("focusout", () => {
+                    // Remove class to stop slider on focusout
+                    this.item.setAttribute("jedli-prevent-autoplay", "false");
+                });
+            })
+        }
     }
 
     // Set all slides to same, specific width

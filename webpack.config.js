@@ -9,8 +9,8 @@ module.exports = {
         // "demo": path.resolve(__dirname, './demo/demo.js')
     },
     output: {
-        // path: path.resolve(__dirname, './demo/dist'),
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, './demo/dist'),
+        // path: path.resolve(__dirname, './dist'),
         filename: '[name].bundle.js'
     },
     module: {

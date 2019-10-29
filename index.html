@@ -60,7 +60,7 @@
                 <br>
                 <h3 class="text-epsilon title-underline-epsilon">advantages of jedliSlider:</h3>
                 <ul class="text-center">
-                    <li>lightweight - 9.5KB minified</li>
+                    <li>lightweight</li>
                     <li>Modern and fast - slider is build on flexbox, so there is no need to recalculate width of slides
                         on resize, css will do it itself (not for continuous mode)</li>
                     <li>no dependencies</li>
@@ -88,8 +88,7 @@
                 <p>There are currently two working modes:</p>
                 <ul>
                     <li>continuous - fully implemented</li>
-                    <li>default - partial support, (check available options <a href="#options"
-                            title="go to options">here</a></li>
+                    <li>default - (check available options <a href="#options" title="go to options">here</a></li>
                 </ul>
                 <p>More will be
                     added soon</p>
@@ -99,15 +98,15 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.7.8</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.8.8</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Created DEMO page</li>
-                    <li>Added default mode with 'infinity' set to false.</li>
-                    <li>#defaultMode - Added functionality for 'go to next slide'</li>
-                    <li>#defaultMode - Added functionality for 'go to prev slide'</li>
-                    <li>#defaultMode - Added functionality for 'go to specific slide'</li>
-                    <li>Added option 'overflow hidden'</li>
+                    <li>Added 'Infinite' option</li>
+                    <li>Added 'autoplay' option</li>
+                    <li>Added 'autoplaySpeed' option</li>
+                    <li>Added 'autoplayDirection' option</li>
+                    <li>Added option to generate arrows</li>
+                    <li>Added option to generate arrows with custom html</li>
                 </ul>
             </div>
         </div>
@@ -117,10 +116,10 @@
             <h2 class="section-title title-underline-eta">Features soon:</h2>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Inifnite carousel for 'default' mode</li>
                     <li>Touch (drag) support for default mode</li>
-                    <li>Creating arrows from options</li>
+                    <li>goToSlide() for default mode with infinite option set to true</li>
                     <li>Creating nav from options</li>
+                    <li>Creating dots from options</li>
                     <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
                         levels
                         of highlightness and animation between levels</li>
@@ -447,82 +446,84 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                 </div>
 
             </div>
-        </div>
-        <div class="example-slider-nav">
-            <button class="example-slider-nav-button example-slider-nav-prev"
-                data-action='slider-default-equal-infinite-prev'>prev</button>
-            <button class="example-slider-nav-button example-slider-nav-next"
-                data-action='slider-default-equal-infinite-next'>next</button>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-default-equal-infinite-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-default-equal-infinite-next'>next</button>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                            <code>
+    let sliderDefaultEqualInfinite = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 2,
+        "speed": "600",
+        "preventOverScroll": "false",
+    })
+    
+    // Nav for sliderDefaultEqual
+    
+    // Prev slide
+    document.querySelector("[data-action='slider-default-equal-infinite-prev']").addEventListener("click", () => {
+        sliderDefaultEqualInfinite.slidePrev();
+    })
+    
+    // Next slide
+    document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
+        sliderDefaultEqualInfinite.slideNext();
+    })
+                            </code>
+                        </pre>
+            </div>
+
+            <h3 class="text-beta weight-regular color-important">default mode, infinite true, autoplay true,
+                pauseOnHover true</h3>
+            <div class="example-slider example-slider-inifnite" data-item="slider-default-equal-infinite-autoplay">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+
+            </div>
         </div>
         <div class="code-snippet">
             <pre>
                         <code>
-let sliderDefaultEqualInfinite = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite']"), {
-    "mode": "default",
-    "slidesWidth": "equal",
-    "infinite": "true",
-    "visibleSlides": 5,
-    "easing": "ease-out",
-    "slidesToScroll": 2,
-    "speed": "600",
-    "preventOverScroll": "false",
-})
-
-// Nav for sliderDefaultEqual
-
-// Prev slide
-document.querySelector("[data-action='slider-default-equal-infinite-prev']").addEventListener("click", () => {
-    sliderDefaultEqualInfinite.slidePrev();
-})
-
-// Next slide
-document.querySelector("[data-action='slider-default-equal-infinite-next']").addEventListener("click", () => {
-    sliderDefaultEqualInfinite.slideNext();
-})
+    let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-autoplay']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 2,
+        "speed": "600",
+        "preventOverScroll": "false",
+        "autoplay": "true",
+        "autoplaySpeed": "2500",
+        "pauseOnHover": "true",
+    })
                         </code>
                     </pre>
         </div>
-
-        <h3 class="text-beta weight-regular color-important">default mode, infinite true, autoplay true</h3>
-        <div class="example-slider example-slider-inifnite" data-item="slider-default-equal-infinite-autoplay">
-            <div class="example-slide">
-                <span>Slide 1</span>
-            </div>
-            <div class="example-slide">
-                <span>Slide 2</span>
-            </div>
-            <div class="example-slide">
-                <span>Slide 3</span>
-            </div>
-            <div class="example-slide">
-                <span>Slide 4</span>
-            </div>
-            <div class="example-slide">
-                <span>Slide 5</span>
-            </div>
-            <div class="example-slide">
-                <span>Slide 6</span>
-            </div>
-
-        </div>
-        </div>
-        <div class="code-snippet">
-            <pre>
-                    <code>
-let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-autoplay']"), {
-    "mode": "default",
-    "slidesWidth": "equal",
-    "infinite": "true",
-    "visibleSlides": 5,
-    "easing": "ease-out",
-    "slidesToScroll": 2,
-    "speed": "600",
-    "preventOverScroll": "false",
-    "autoplay": "true",
-    "autoplaySpeed": "1000",
-})
-                    </code>
-                </pre>
         </div>
         </div>
     </section>
@@ -604,11 +605,61 @@ let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector(
                     </li>
                 </ul>
 
-                <h3 class="subtitle text-beta weight-regular color-important">pauseOnHover</h3>
-                <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
+                <h3 class="subtitle text-beta weight-regular color-important">arrows</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
                 <span class="text-beta weight-regular">availabile options:</span>
                 <ul>
-                    <li><span class="color-beta">true</span> - Carousel will stop animation on hover,
+                    <li><span class="color-beta">true</span> - Arrows will be generated, default or custom if
+                        'arrowPrev' or 'arrowNext' is defined</li>
+                    <li><span class="color-beta">false</span> - arrows won't be genreated'</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">prevArrow/nextArrow</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Allow to put custom html code as arrow prev. Slider will automatically
+                        add attr to handle change. It's necessary to set 'arrows' option to true, to generate custom
+                        arrows</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">infinite</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">true</span> - Set carousel to work as infinite, without end.</li>
+                    <li><span class="color-beta">false</span> - Stop carousel from working as inifnite</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">autoplay</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">true</span> - Slider will automatically go to next/prev slide after
+                        specified time</li>
+                    <li><span class="color-beta">false</span> - Stop autoplay</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">autoplaySpeed</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>Any int number greater than 0, </li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">autoplayDirection</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">left</span> - after specified time go to next slide</li>
+                    <li><span class="color-beta">right</span> - after specified time go to prev slide</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">pauseOnHover</h3>
+                <span class="text-beta color-beta weight-regular"></span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">true</span> - Carousel will stop animation or autoplay on hover,
                         or for accessibility reasons - on focus at any element inside slider</li>
                     <li><span class="color-beta">false</span> - Slider won't stop on hover</li>
                 </ul>
@@ -699,8 +750,8 @@ let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector(
                     <tr>
                         <td>pauseOnHover</td>
                         <td>false</td>
-                        <td>This option works in "continuous" mode. Determinate if carousel should stop animation on
-                            hover, or for accessibility reasons - on focus at any element inside slider</td>
+                        <td>Determinate if carousel should stop animation or autoplay on hover,
+                            or for accessibility reasons - on focus at any element inside slider</td>
                     </tr>
                     <tr>
                         <td>direction</td>
@@ -715,6 +766,44 @@ let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector(
                             animate when wanted amount of slides to scroll is greater than amount of slides. For
                             example: (You are at 4th and 5th slide, there are 6 slides. But your slides to scroll is 2.
                             With this option set to true instead of going 2 slides, slider will move only by 1 slide.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>infinite</td>
+                        <td>false</td>
+                        <td>This option works in "default" mode. Set carousel to work as infinite, without end.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>autoplay</td>
+                        <td>false</td>
+                        <td>Slider will automatically go to next/prev slide after specified time. Slider will stop
+                            change on track hover
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>autoplaySpeed</td>
+                        <td>1500</td>
+                        <td>Time after next/prev event will be triggered
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>autoplayDirection</td>
+                        <td>right</td>
+                        <td>Determinate if slider after specified amount of time should go to next or prev slide
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>arrows</td>
+                        <td>false</td>
+                        <td>Determinate if slider should create arrows to navigate
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>arrowPrev / arrowNext</td>
+                        <td>-</td>
+                        <td>Allows to create arrows with custom html. Attr to handle next/prev action will be added
+                            automatically. It's necessary to set "arrows" option to true.
                         </td>
                     </tr>
                     <tr>

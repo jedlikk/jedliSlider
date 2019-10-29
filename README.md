@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.8.8-blue.svg)
+![](https://img.shields.io/badge/version-0.8.9-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -20,11 +20,11 @@ Because it’s lightweight, easy to use, modern and will have all options that y
 ## Status
 There are currently two working modes:
 
-continuous - fully implemented
-default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options))
+- continuous - fully implemented
+- default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.8.8
+### v. 0.8.9
 - Added 'Infinite' option,
 - Added 'autoplay' option,
 - Added 'autoplaySpeed' option

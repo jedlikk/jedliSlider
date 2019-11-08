@@ -1,0 +1,664 @@
+// Variables
+$color-alfa: #fdfdfd;
+$color-alfa-alternative: #f6f6f6;
+$color-beta: #78E7D4;
+$color-gamma: #0571a4;
+$color-delta: #052B44;
+$color-epsilon: #087d2f;
+$color-zeta: #E3383F;
+$color-eta: #F2A341;
+$color-theta: #9E4705;
+
+
+$color-important: #E3383F;
+
+$color-psi: #000000;
+$color-omega: #ffffff;
+
+
+// Reset styles
+h1, h2, h3, h3, h5  p, span, li, ul, ol, a, pre, code{
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    &, &:focus, &:active, &:hover {
+        color: $color-gamma;
+        text-decoration: none;
+    }
+}
+
+ul, ol {
+    text-align: left;
+}
+
+* {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 300;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: $color-alfa-alternative;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 60px;
+    line-height: 65px;
+    margin-bottom: 25px;
+}
+
+// Text styles
+.text {
+    &-alfa {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    &-beta {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    &-gamma {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    &-delta {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    &-epsilon {
+        font-size: 24px;
+        line-height: 28px;
+    }
+}
+
+// Font weights
+.weight {
+    &-light {
+        font-weight: 300;
+    }
+
+    &-regular {
+        font-weight: 400;
+    }
+}
+
+// Colors
+.color {
+    &-alfa {
+
+    }
+
+    &-beta {
+        color: $color-gamma;
+    }
+
+    &-highlight {
+        color: $color-delta;
+    }
+
+    &-important {
+        color: $color-important;
+    }
+}
+
+// Backgrounds
+.bg {
+    &-alfa {
+        background: $color-alfa !important;
+
+        &-alternative {
+            background: $color-alfa-alternative !important;
+        }
+    }
+}
+
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// Sections
+
+.section {
+    padding: 30px 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-container {
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &-title {
+        @extend .text-alfa;
+        margin-bottom: 20px;
+    }
+
+    .title-underline {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 50%;
+            transform: translate(-50%);
+            width: calc(100% + 20px);
+            height: 0.20rem;
+
+            @media (max-width: 768px) {
+              height: 0.15rem;
+            }
+        }
+
+        &-gamma {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-gamma;
+            }
+        }
+
+        &-delta {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-delta;
+            }
+        }
+
+        &-epsilon {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-epsilon;
+            }
+        }
+
+        &-theta {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-theta;
+            }
+        }
+
+        &-eta {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-eta;
+            }
+        }
+
+        &-zeta {
+            @extend .title-underline;
+
+            &::after {
+                background: $color-zeta;
+            }
+        }
+    }
+
+    &-description {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & > * {
+            margin-bottom: 15px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &-hero {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+
+    &-article {
+        background: $color-alfa;
+    }
+
+    &-how-to {
+        .section-description {
+            h3 {
+                margin-bottom: 0;
+            }
+
+            p {
+                margin-bottom: 15px;
+            }
+        }
+
+        .between {
+            margin-bottom: 25px;
+        }
+    }
+
+    &-options {
+        .subtitle {
+            padding-top: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .section {
+            &-table {
+                $table-border-color: rgba($color-delta, 0.5);
+                background: $color-alfa;
+                border: 0.1rem solid $table-border-color;
+                border-spacing: 0;
+                text-align: center;
+
+                tr {
+
+                    &:nth-of-type(odd) {
+                        background: rgba($color-psi, 0.05);
+                    }
+
+                    &:first-child {
+                        background: rgba($color-psi, 0.1);
+                    }
+
+                    &::last-child {
+                        td {
+                            border-bottom: none;
+                        }
+                    }
+                }
+
+                td {
+                    padding: 5px 15px;
+                    border-right: 0.1rem solid $table-border-color;
+                    border-bottom: 0.1rem solid $table-border-color;
+
+                    &:last-child {
+                        border-right: none;
+                        text-align: start;
+                    }
+                }
+            }
+        }
+    }
+
+    &-status {
+        background: rgba($color-important, 0.1);
+    }
+
+    &-new {
+        .section {
+            &-title {
+                margin-bottom: 5px;
+            }
+
+            &-subtitle {
+                margin-bottom: 25px;
+            }
+        }
+
+        .section-description {
+            ul {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+
+    &-examples {
+        .section-container {
+            width: 100%;
+        }
+
+        .example {
+            &-slider {
+                margin: 50px 0 20px;
+                width: 100%;
+
+                &-nav {
+                    margin-bottom: 15px;
+                    display: flex;
+                    justify-content: center;
+
+                    &-button {
+                        padding: 5px 25px;
+                        display: flex;
+                        align-items: center;
+                        border: 0.1rem solid $color-delta;
+                        background: $color-delta;
+                        color: $color-omega;
+                        margin: 0 15px;
+                        font-size: 12px;
+                        transition: background 0.3s ease-out;
+
+                        &:hover, &:focus, &:active {
+                            background: $color-gamma;
+                        }
+                    }
+
+                    &-input {
+                        padding: 5px 5px;
+                        border: 0.1rem solid $color-delta;
+                    }
+                }
+            }
+
+            &-slide {
+                position: relative;
+                background: $color-eta;
+                border: 0.1rem solid $color-omega;
+
+                &-auto {
+                    display: block;
+
+                    &:nth-of-type(1), &:nth-of-type(7) {
+                        min-width: 200px;
+                    }
+
+                    &:nth-of-type(2), &:nth-of-type(8) {
+                        min-width: 250px;
+                    }
+                    
+                    &:nth-of-type(3), &:nth-of-type(9) {
+                        min-width: 150px;
+                    }
+
+                    &:nth-of-type(4), &:nth-of-type(10) {
+                        min-width: 215px;
+                    }
+
+                    &:nth-of-type(5), &:nth-of-type(11) {
+                        min-width: 180px;
+                    }
+
+                    &:nth-of-type(6), &:nth-of-type(12) {
+                        min-width: 230px;
+                    }
+
+                    &-continuous {
+                        &:nth-of-type(1), &:nth-of-type(5) {
+                            min-width: 200px;
+                        }
+    
+                        &:nth-of-type(2), &:nth-of-type(6) {
+                            min-width: 250px;
+                        }
+                        
+                        &:nth-of-type(3), &:nth-of-type(7) {
+                            min-width: 150px;
+                        }
+    
+                        &:nth-of-type(4), &:nth-of-type(8) {
+                            min-width: 215px;
+                        }
+                    }
+                }
+
+                &::before {
+                    content: '';
+                    display: block;
+                    width: 100%;
+                    padding-top: 100%;
+                }
+
+                & > * {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+
+        .code-snippet {
+            margin-bottom: 50px;
+        }
+    }
+}
+
+.code-snippet {
+    background: rgba($color-psi, 0.8);
+    color: $color-omega;
+    text-align: start;
+    padding: 15px 60px;
+}
+
+.break {
+    height: 60px;
+    width: 100%;
+    display: block;
+}
+
+.footer {
+    background: rgba($color-psi, 0.9);
+    color: $color-omega;
+    padding: 15px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+        margin-top: 5px;
+    }
+}
+
+// Underline
+.underline {
+    position: relative;
+    height: 4rem;
+    width: 600px;
+    max-width: 100%;
+    margin-bottom: 40px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      margin: 0;
+    }
+
+    @media (max-width: 350px) {
+    }
+
+    .line {
+      position: absolute;
+      height: 0.20rem;
+
+      @media (max-width: 768px) {
+        height: 0.15rem;
+      }
+
+      &-1 {
+        width: 30%;
+        top: 0.8rem;
+        left: -2%;
+        background: $color-zeta;
+        animation: 35s line-animation-1 linear infinite;
+      }
+
+      &-2 {
+        width: 30%;
+        top: 1.2rem;
+        left: 40%;
+        background: $color-beta;
+        animation: 35s line-animation-2 linear infinite;
+      }
+
+      &-3 {
+        width: 55%;
+        top: 2rem;
+        right: 5%;
+        background: $color-eta;
+        animation: 25s line-animation-3 linear infinite;
+
+      }
+
+      &-4 {
+        width: 25%;
+        top: 0.4rem;
+        right: -5%;
+        background: $color-delta;
+        animation: 35s line-animation-4 linear infinite;
+
+      }
+
+      &-5 {
+        width: 20%;
+        top: 1.6rem;
+        left: 17%;
+        background: $color-delta;
+        animation: 35s line-animation-5 linear infinite;
+      }
+
+      &-6 {
+        width: 15%;
+        top: 0;
+        left: 30%;
+        background: $color-eta;
+        animation: 35s line-animation-6 linear infinite;
+      }
+
+      &-7 {
+        width: 20%;
+        top: 0;
+        left: 55%;
+        background: $color-zeta;
+        animation: 35s line-animation-7 linear infinite;
+      }
+
+      &-8 {
+        width: 35%;
+        top: 2.5rem;
+        left: 0;
+        background: $color-beta;
+        animation: 35s line-animation-8 linear infinite;
+
+      }
+    }
+  }
+
+
+// Animations
+
+@keyframes line-animation-1 {
+    50% {
+      left: 70%;
+    }
+ 
+    100% {
+      left: -2%;
+    }
+ }
+ 
+ @keyframes line-animation-2 {
+   35% {
+     left: 5%;
+   }
+ 
+   80% {
+     left: 70%;
+   }
+ 
+   100% {
+     left: 40%;
+   }
+ }
+ 
+ @keyframes line-animation-3 {
+   10% {
+     right: -5%;
+   }
+ 
+   50% {
+     right: 45%;
+   }
+ 
+   100% {
+     right: 5%;
+   }
+ }
+ 
+ @keyframes line-animation-4 {
+   50% {
+     right: 80%;
+   }
+ 
+   100% {
+     right: -5%;
+   }
+ }
+ 
+ @keyframes line-animation-5 {
+   15% {
+     left: -5%;
+   }
+ 
+   60% {
+     left: 90%;
+   }
+ 
+   100% {
+     left: 17%;
+   }
+ }
+ 
+ @keyframes line-animation-6 {
+   20% {
+     left: 90%;
+   }
+ 
+   70% {
+     left: -5%;
+   }
+ 
+   100% {
+     left: 30%;
+   }
+ }
+ 
+ @keyframes line-animation-7 {
+   30% {
+     left: -5%;
+   }
+ 
+   80% {
+     left: 80%;
+   }
+ 
+   100% {
+     left: 55%;
+   }
+ }
+ 
+ @keyframes line-animation-8 {
+   50% {
+     left: 80%;
+   }
+ 
+ 
+   100% {
+     left: 0;
+   }
+ }
+ 
+ 

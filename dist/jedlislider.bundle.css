@@ -14,9 +14,27 @@
 
 .jedli-mode-continuous .jedli-track {
   transform: translate3d(0, 0, 0);
-  animation: jedli-continuous-animation infinite; }
+  animation: jedli-continuous-animation infinite;
+  align-items: center; }
   .jedli-mode-continuous .jedli-track.jedli-hover-pause:hover, .jedli-mode-continuous .jedli-track.jedli-hover-pause.hovered {
     animation-play-state: paused; }
+
+.jedli-mode-default .jedli-track {
+  width: 100%;
+  position: relative; }
+
+.jedli-mode-default .jedli-slides-block {
+  display: flex;
+  width: 100%;
+  height: 100%; }
+  .jedli-mode-default .jedli-slides-block.jedli-cloned {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); }
+  .jedli-mode-default .jedli-slides-block-start {
+    right: 100%; }
+  .jedli-mode-default .jedli-slides-block-end {
+    left: 100%; }
 
 @keyframes jedli-continuous-animation {
   0% {
@@ -27,6 +45,6 @@
 .jedli-slider.jedli-mode-continuous .jedli-continuous-stop {
   animation: unset !important; }
 
-.jedli-slider .jedli-overflow-hidden, .jedli-slider.jedli-overflow-hidden {
+.jedli-slider .jedli-overflow-hidden .jedli-tracks-container, .jedli-slider.jedli-overflow-hidden .jedli-tracks-container {
   overflow: hidden; }
 

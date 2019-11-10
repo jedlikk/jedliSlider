@@ -844,6 +844,7 @@ class jedliSlider {
                 // Caluclate distance 
                 const distance = this.calculateChangeDistance(wantedSlideDirection, slidesToScroll);
 
+                console.log(wantedSlideDirection, slidesToScroll);
                 // Animate change
                 this.animateTrackChange(distance, false, isDragEvent).then(
                     (resolve) => {
@@ -873,15 +874,33 @@ class jedliSlider {
     }
 
     // Check if this slide is "next" or "prev" to current slider position
-    checkWantedSlideDirection(slideIndex) {
+    checkWantedSlideDirection(slideIndex, isDragEvent = false) {
         // Check if there is such slide
         // But if infiniteIndex is set to true, get by jedli-infinite-index instead of jedli-index
         let indexAttr;
-        if (this.options.infinite == "true") {
+        if (isDragEvent === true) {
             indexAttr = "jedli-infinite-index";
         }
         else {
-            indexAttr = "jedli-index";
+
+            // Check if slider is 'infinite', if true, calculate which way will be shorter
+            if (!this.options.infinite == "true") {
+                indexAttr = "jedli-index";
+            }
+            else {
+                // Calculate which way will be shorter
+
+                // Check if slide with this index exists
+                if (this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + slideIndex + "']").length > 0) {
+                    // If true, get currently active slides
+                    const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+
+                    // Check if infinite index of first active slide is 
+                }
+                else {
+                    return false;
+                }
+            }
         }
 
         if (this.item.querySelectorAll("[data-jedli='slide'][" + indexAttr + "='" + slideIndex + "']").length > 0) {
@@ -891,7 +910,6 @@ class jedliSlider {
 
             // Check if index of wanted slide is smaller than index of first active slide
             const firstActiveIndex = +activeSlides[0].getAttribute(indexAttr);
-
             if (slideIndex < firstActiveIndex) {
                 // If true, return prev
                 return "prev";

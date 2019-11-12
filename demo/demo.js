@@ -132,7 +132,7 @@ window.addEventListener('load', () => {
         "slidesToScroll": 2,
         "speed": "600",
         "preventOverScroll": "false",
-        // "autoplay": "true",
+        "autoplay": "true",
         "autoplaySpeed": "2000",
         "pauseOnHover": "true",
         // autoplayDirection: "left",

@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.8.11-blue.svg)
+![](https://img.shields.io/badge/version-0.9.13-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,7 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.9.12
+### v. 0.9.13
 - Added functionality for touch/drag in 'default' mode. With and without 'infinite' set to true
 - Updated 'How to use'
 - Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of slider in 'default' mode with infinite set to false
@@ -40,10 +40,10 @@ There are currently two working modes:
 
 ### Features soon:
 
-- Touch (drag) support for default mode
 - goToSlide() for default mode with infinite option set to true
 - Creating nav from options
 - Creating dots from options
+- Filtering slides
 - 'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some levels of highlightness and animation between levels
 
 ## List of options

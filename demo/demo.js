@@ -114,13 +114,13 @@ window.addEventListener('load', () => {
     })
 
     // Go to specific slide
-    let sliderDefaultEqualInfiniteGoToSlide = document.querySelector("[data-action='slider-default-equal-infinite-to-slide']");
-    sliderDefaultEqualInfiniteGoToSlide.addEventListener('click', () => {
-        // Get value from input number
-        const value = +document.querySelector("[data-item='slider-default-equal-infinite-index']").value;
+    // let sliderDefaultEqualInfiniteGoToSlide = document.querySelector("[data-action='slider-default-equal-infinite-to-slide']");
+    // sliderDefaultEqualInfiniteGoToSlide.addEventListener('click', () => {
+    //     // Get value from input number
+    //     const value = +document.querySelector("[data-item='slider-default-equal-infinite-index']").value;
 
-        sliderDefaultEqualInfinite.goToSlide(value);
-    })
+    //     sliderDefaultEqualInfinite.goToSlide(value);
+    // })
 
 
     let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-autoplay']"), {

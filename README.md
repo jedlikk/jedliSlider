@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.8.9-blue.svg)
+![](https://img.shields.io/badge/version-0.8.11-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,12 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.8.9
+### v. 0.9.12
+- Added functionality for touch/drag in 'default' mode. With and without 'infinite' set to true
+- Updated 'How to use'
+- Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of slider in 'default' mode with infinite set to false
+
+### Previous update
 - Added 'Infinite' option,
 - Added 'autoplay' option,
 - Added 'autoplaySpeed' option
@@ -52,6 +57,7 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 | slidesWidth       | equal    | determinate if all slides should be same size, specified by slider; or width of every slides can be different, specifed from css                                                                                                                                                                                                                                           |
 | visibleSlides     | 1        | This option works when "slidesWidth" is set to "equal"\. Determinate how much slides will be visible                                                                                                                                                                                                                                                                       |
 | slidesToScroll    | 1        | By how many slides should slider move, on action "nextSlide" or "prevSlide"                                                                                                                                                                                                                                                                                                |
+| draggable          | true   | Works only in 'default'mode, turn on/off touch/drag support                                                                                                                                                                                                                                                                                                                     |
 | speed             | 400      | Transition duration of one single change\. In "continuous" mode speed is amount of ms per every single px                                                                                                                                                                                                                                                                  |
 | easing            | linear   | Define easing of slider move animation                                                                                                                                                                                                                                                                                                                                     |
 | overflow          | hidden   | Define if slider should have overflow hidden or not                                                                                                                                                                                                                                                                                                                        |
@@ -78,11 +84,18 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 
 ### If you work with webpack
-just import src-webpack/jedlislider.js
+Import slider:
+import jedliSlider from 'jedlislider/src-webpack/jedlislider.js'
+
+and import styles (one of this):
+- CSS: import 'jedlislider/dist/jedlislider.bundle.css'
+- SCSS: import 'jedlislider/src-webpack/jedlislider.scss'
 
 ### If you work without webpack, add this files to your wesbite by script and link tag:
 
-- dist/jedlislider.bundle.css
-- src/jedlislider.js
+- JS: jedlislider/src/jedlislider.js
 
+And one of this:
+- CSS: jedlislider/dist/jedlislider.bundle.css
+- SCSS: jedlislider/src/jedlislider.scss
 

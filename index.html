@@ -50,7 +50,7 @@
         <div class="section-container">
             <h2 class="section-title title-underline-gamma">Why jedliSlider?</h2>
             <div class="section-description text-beta">
-                <p>Because it’s lightweight, easy to use, modern and will have all options that you want. Some popular
+                <p>Because it’s easy to use, modern and will have all options that you want. Some popular
                     carousels
                     still use floats and a lot of
                     unnecessary scripts/styles. My intention was to create one slider, that will contain all things i
@@ -60,7 +60,6 @@
                 <br>
                 <h3 class="text-epsilon title-underline-epsilon">advantages of jedliSlider:</h3>
                 <ul class="text-center">
-                    <li>lightweight</li>
                     <li>Modern and fast - slider is build on flexbox, so there is no need to recalculate width of slides
                         on resize, css will do it itself (not for continuous mode)</li>
                     <li>no dependencies</li>
@@ -98,10 +97,23 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.8.11</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.9.13</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>ADDED MISSING JS CODE FOR 0.8.9 UPDATE</li>
+                    <li><strong style="font-weight: bold;">Added functionality for touch/drag</strong> in 'default'
+                        mode. With and without
+                        'infinite' set to true
+                    </li>
+                    <li>Updated 'How to use'</li>
+                    <li>Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of
+                        slider in 'default' mode with infinite set to false</li>
+                </ul>
+            </div>
+            <br>
+            <br>
+            <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
+            <div class="section-description text-beta">
+                <ul>
                     <li>Added 'Infinite' option</li>
                     <li>Added 'autoplay' option</li>
                     <li>Added 'autoplaySpeed' option</li>
@@ -117,10 +129,10 @@
             <h2 class="section-title title-underline-eta">Features soon:</h2>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Touch (drag) support for default mode</li>
                     <li>goToSlide() for default mode with infinite option set to true</li>
                     <li>Creating nav from options</li>
                     <li>Creating dots from options</li>
+                    <li>Filtering slides</li>
                     <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
                         levels
                         of highlightness and animation between levels</li>
@@ -138,13 +150,21 @@
                 <a href="https://www.npmjs.com/package/jedlislider" target="_blank"
                     title="Go to npm jedlislider">jedliSlider at NPM</a>
                 <h3 class="text-epsilon">If you work with webpack</h3>
-                <p>just import src-webpack/jedlislider.js</p>
+                <p>Import slider:</p>
+                <p>import jedliSlider from 'jedlislider/src-webpack/jedlislider.js'</p>
+                <p>and import styles (one of this):</p>
+                <ul>
+                    <li>CSS: import 'jedlislider/dist/jedlislider.bundle.css'</li>
+                    <li>SCSS: import 'jedlislider/src-webpack/jedlislider.scss'</li>
+                </ul>
                 <span class="between"></span>
                 <h3 class="text-epsilon">If you work without webpack</h3>
                 <p> add this files to your wesbite by script and link tag:</p>
                 <ul>
-                    <li>dist/jedlislider.bundle.css</li>
-                    <li>src/jedlislider.js</li>
+                    <li>JS: jedlislider/src/jedlislider.js</li>
+                    <p>And one of this:</p>
+                    <li>CSS: jedlislider/dist/jedlislider.bundle.css</li>
+                    <li>SCSS: jedlislider/src/jedlislider.scss</li>
                 </ul>
                 <br>
                 <h3 class="text-epsilon title-underline-gamma">Initialization</h3>
@@ -166,14 +186,14 @@
                         </code>
                     </pre>
                 </div>
-                <p>Simple initialization</p>
+                <!-- <p>Simple initialization</p>
                 <div class="code-snippet">
                     <pre>
                                     <code>
 let slider = new jedliSlider(document.querySelector("[data-item='slider']"));
                                     </code>
                                 </pre>
-                </div>
+                </div> -->
             </div>
         </div>
     </article>
@@ -453,6 +473,12 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                 <button class="example-slider-nav-button example-slider-nav-next"
                     data-action='slider-default-equal-infinite-next'>next</button>
             </div>
+            <!-- <div class="example-slider-nav">
+                <button class="example-slider-nav-button" data-action='slider-default-equal-infinite-to-slide'>Go to
+                    slide</button>
+                <input class="example-slider-nav-input" type="number" data-item='slider-default-equal-infinite-index'
+                    value="1">
+            </div> -->
             <div class="code-snippet">
                 <pre>
                             <code>
@@ -566,6 +592,14 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                 <span class="text-beta weight-regular">availabile options:</span>
                 <ul>
                     <li>Any int number greater than 0</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">draggable</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>true</li>
+                    <li>false</li>
                 </ul>
 
                 <h3 class="subtitle text-beta weight-regular color-important">speed</h3>
@@ -731,6 +765,11 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                         <td>slidesToScroll</td>
                         <td>1</td>
                         <td>By how many slides should slider move, on action "nextSlide" or "prevSlide"</td>
+                    </tr>
+                    <tr>
+                        <td>draggable</td>
+                        <td>true</td>
+                        <td>Works only in 'default'mode, turn on/off touch/drag support </td>
                     </tr>
                     <tr>
                         <td>speed</td>

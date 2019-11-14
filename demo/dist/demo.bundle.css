@@ -221,6 +221,10 @@ body {
       display: flex;
       justify-content: center;
       align-items: center; }
+  .section-examples .example-nav {
+    display: flex; }
+    .section-examples .example-nav-item {
+      border: none; }
   .section-examples .code-snippet {
     margin-bottom: 50px; }
 

@@ -113,14 +113,6 @@ window.addEventListener('load', () => {
         sliderDefaultEqualInfinite.slideNext();
     })
 
-    // Go to specific slide
-    let sliderDefaultEqualInfiniteGoToSlide = document.querySelector("[data-action='slider-default-equal-infinite-to-slide']");
-    sliderDefaultEqualInfiniteGoToSlide.addEventListener('click', () => {
-        // Get value from input number
-        const value = +document.querySelector("[data-item='slider-default-equal-infinite-index']").value;
-
-        sliderDefaultEqualInfinite.goToSlide(value);
-    })
 
 
     let sliderDefaultEqualInfiniteAutoplay = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-autoplay']"), {
@@ -132,7 +124,7 @@ window.addEventListener('load', () => {
         "slidesToScroll": 2,
         "speed": "600",
         "preventOverScroll": "false",
-        // "autoplay": "true",
+        "autoplay": "true",
         "autoplaySpeed": "2000",
         "pauseOnHover": "true",
         // autoplayDirection: "left",
@@ -140,6 +132,21 @@ window.addEventListener('load', () => {
         // "arrowPrev": "<button type='button' class='custom-arrow custom-prev'>TEST PREV</button>",
         // "arrowNext": "<button type='button' class='custom-arrow custom-prev'>TEST NEXT</button>",
         // "overflow": "visible",
+    })
+
+    // Get nav element
+    let exampleNav = document.querySelector("[data-item='example-nav']");
+    let sliderDefaultEqualInfiniteNav = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-nav']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 2,
+        "speed": "600",
+        "preventOverScroll": "false",
+        "generateNav": "true",
+        "navContainer": exampleNav,
     })
 })
 

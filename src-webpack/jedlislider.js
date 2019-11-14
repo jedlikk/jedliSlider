@@ -37,6 +37,8 @@ class jedliSlider {
             "autoplay": "false",
             "autoplaySpeed": "1500",
             "autoplayDirection": "right",
+            "generateNav": "false",
+            "navContainer": "",
         }
 
         // Set options to default
@@ -107,6 +109,10 @@ class jedliSlider {
         // Add arrows if 'arrows' option is set to true
         if (this.options.arrows === "true")
             this.createArrows();
+
+        // Generate nav functionality if 'generateNav' option is set to true
+        if (this.options.generateNav === "true")
+            this.generateNav();
 
 
         // Check if slider should have overflow hidden
@@ -485,6 +491,29 @@ class jedliSlider {
         }
     }
 
+    generateNav() {
+        // Get nav container from options
+        const navContainer = this.options.navContainer;
+        // Check if navContainer exists
+        if (navContainer) {
+            // Find all elements with jedli target
+            const navElements = navContainer.querySelectorAll("[jedli-target]");
+            if (navElements.length > 0) {
+                navElements.forEach((e) => {
+                    // Add goToSlide functionality to this element
+                    // Where wanted slidee is jedli-target
+                    let target = +e.getAttribute("jedli-target");
+                    e.addEventListener("click", () => {
+                        this.goToSlide(target);
+                    })
+                })
+            }
+            else {
+                console.warn("Nav elements not found. Add elements with attr jedli-target='Here Number of slide' to your nav");
+            }
+        }
+    }
+
     // ### DEFAULT MODE
     // Initialize 'default' mode
     initDefault() {
@@ -835,45 +864,55 @@ class jedliSlider {
                     const visibleSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
                     const firstVisible = +visibleSlides[0].getAttribute("jedli-infinite-index");
                     const lastVisible = +visibleSlides[visibleSlides.length - 1].getAttribute("jedli-infinite-index");
-
-
-                    // Get indexes of wanted slides
-                    // And:
-                    // Calculate distance to currently active slides
-                    let distancePrev = [+this.noOfSlides, 0];
-                    let distanceNext = [+this.noOfSlides];
+                    // Check if any of slides is currently active
+                    let alreadyActive = false;
                     wantedSlides.forEach((e) => {
-                        let elementIndex = +e.getAttribute("jedli-infinite-index");
+                        // If any of slides is currently active, add attr to prevent function
+                        if (e.getAttribute("jedli-active") === "true") {
+                            alreadyActive = true;
+                        }
+                    })
 
-                        // Distance prev
-                        let currentDistance = Math.abs(firstVisible - elementIndex);
-                        if (currentDistance < distancePrev[0]) {
-                            distancePrev[0] = currentDistance;
-                            distancePrev[1] = elementIndex;
+                    // Prevent function if any of wanted slides is currently active
+                    if (alreadyActive === false) {
+                        // Get indexes of wanted slides
+                        // And:
+                        // Calculate distance to currently active slides
+                        let distancePrev = [+this.noOfSlides, 0];
+                        let distanceNext = [+this.noOfSlides];
+                        wantedSlides.forEach((e) => {
+                            let elementIndex = +e.getAttribute("jedli-infinite-index");
+
+                            // Distance prev
+                            let currentDistance = Math.abs(firstVisible - elementIndex);
+                            if (currentDistance < distancePrev[0]) {
+                                distancePrev[0] = currentDistance;
+                                distancePrev[1] = elementIndex;
+                            }
+
+                            // Distance next
+                            currentDistance = Math.abs(elementIndex - lastVisible);
+                            if (currentDistance < distanceNext[0]) {
+                                distanceNext[0] = currentDistance;
+                                distanceNext[1] = elementIndex;
+                            }
+                        });
+
+                        // Update slideDirection and slideIndex to infinite index
+                        if (distancePrev[0] === distanceNext[0]) {
+                            wantedSlideDirection = 'next';
+                            slideIndex = distanceNext[1];
                         }
 
-                        // Distance next
-                        currentDistance = Math.abs(elementIndex - lastVisible);
-                        if (currentDistance < distanceNext[0]) {
-                            distanceNext[0] = currentDistance;
-                            distanceNext[1] = elementIndex;
+                        if (distancePrev[0] < distanceNext[0]) {
+                            wantedSlideDirection = 'prev';
+                            slideIndex = distancePrev[1];
                         }
-                    });
 
-                    // Update slideDirection and slideIndex to infinite index
-                    if (distancePrev[0] === distanceNext[0]) {
-                        wantedSlideDirection = 'next';
-                        slideIndex = distanceNext[1];
-                    }
-
-                    if (distancePrev[0] < distanceNext[0]) {
-                        wantedSlideDirection = 'prev';
-                        slideIndex = distancePrev[1];
-                    }
-
-                    if (distancePrev[0] > distanceNext[0]) {
-                        wantedSlideDirection = 'next';
-                        slideIndex = distanceNext[1];
+                        if (distancePrev[0] > distanceNext[0]) {
+                            wantedSlideDirection = 'next';
+                            slideIndex = distanceNext[1];
+                        }
                     }
                 }
                 else {

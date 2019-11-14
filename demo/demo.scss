@@ -430,6 +430,14 @@ body {
                     align-items: center;
                 }
             }
+
+            &-nav {
+                display: flex;
+
+                &-item {
+                    border: none;
+                }
+            }
         }
 
         .code-snippet {

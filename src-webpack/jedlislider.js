@@ -825,8 +825,67 @@ class jedliSlider {
             wantedSlideDirection = specificDirection;
         }
         else {
-            // Check if this slide is "next" or "prev" to current slider position
-            wantedSlideDirection = this.checkWantedSlideDirection(slideIndex, isDragEvent);
+            // Check if slider is in infinite option and is not drag event
+            if (this.options.infinite === "true" && isDragEvent === false) {
+                // If true, calculate which slide is closer (because every slide is cloned two times)
+                // Get all slides with this index
+                const wantedSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + slideIndex + "']");
+                if (wantedSlides.length > 0) {
+                    // Get index of first and last visible slide
+                    const visibleSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+                    const firstVisible = +visibleSlides[0].getAttribute("jedli-infinite-index");
+                    const lastVisible = +visibleSlides[visibleSlides.length - 1].getAttribute("jedli-infinite-index");
+
+
+                    // Get indexes of wanted slides
+                    // And:
+                    // Calculate distance to currently active slides
+                    let distancePrev = [+this.noOfSlides, 0];
+                    let distanceNext = [+this.noOfSlides];
+                    wantedSlides.forEach((e) => {
+                        let elementIndex = +e.getAttribute("jedli-infinite-index");
+
+                        // Distance prev
+                        let currentDistance = Math.abs(firstVisible - elementIndex);
+                        if (currentDistance < distancePrev[0]) {
+                            distancePrev[0] = currentDistance;
+                            distancePrev[1] = elementIndex;
+                        }
+
+                        // Distance next
+                        currentDistance = Math.abs(elementIndex - lastVisible);
+                        if (currentDistance < distanceNext[0]) {
+                            distanceNext[0] = currentDistance;
+                            distanceNext[1] = elementIndex;
+                        }
+                    });
+
+                    // Update slideDirection and slideIndex to infinite index
+                    if (distancePrev[0] === distanceNext[0]) {
+                        wantedSlideDirection = 'next';
+                        slideIndex = distanceNext[1];
+                    }
+
+                    if (distancePrev[0] < distanceNext[0]) {
+                        wantedSlideDirection = 'prev';
+                        slideIndex = distancePrev[1];
+                    }
+
+                    if (distancePrev[0] > distanceNext[0]) {
+                        wantedSlideDirection = 'next';
+                        slideIndex = distanceNext[1];
+                    }
+                }
+                else {
+                    // If there is no such slides, return false
+                    wantedSlideDirection = false;
+                }
+            }
+            else {
+                // If not, calculate slide direction depends of given slide and if isDragEvent
+                // Check if this slide is "next" or "prev" to current slider position
+                wantedSlideDirection = this.checkWantedSlideDirection(slideIndex, isDragEvent);
+            }
         }
 
         // Check if wantedslideDirection is "false" which means that slide is not found, or is currently active
@@ -1595,7 +1654,7 @@ class jedliSlider {
             // Calculate difference between current and inital position
             const differenceX = (initialPosition[0] - currentPosition[0]);
             // Calculate difference between current and last position
-            const differenceCurrent = (+this.currentTransform[0] - currentPosition[0]);
+            let differenceCurrent = (+this.currentTransform[0] - currentPosition[0]);
 
             // Calculate distance to move
             // where distance to move is current transform position (defined from normal change) + diffrenceX
@@ -1613,7 +1672,8 @@ class jedliSlider {
 
             // If direction is equal to 0, go to last known direction
             if (differenceCurrent === 0) {
-                direction = this.lastDirection;
+                // direction = this.lastDirection;
+                differenceCurrent = differenceX;
             }
 
             // Direction prev if differenceX is negative number

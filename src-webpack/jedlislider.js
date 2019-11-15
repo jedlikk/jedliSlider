@@ -64,7 +64,8 @@ class jedliSlider {
 
     // Create basic structure of slider
     init() {
-        this.eventInit();
+        this.eventBeforeInit();
+
         // Add attributes and classes to slider container
         this.item.classList.add("jedli-slider");
 
@@ -532,7 +533,13 @@ class jedliSlider {
             this.defaultStructure().then(
                 (resolve) => {
                     // Update active (visible) slides
-                    this.updateActiveSlides();
+                    this.updateActiveSlides().then(
+                        (resolve) => {
+                            // Fire after init event
+                            this.eventAfterInit();
+                        }
+                    );
+
 
                     // Check if autoplay is set to true
                     if (this.options.autoplay === "true") {
@@ -673,7 +680,12 @@ class jedliSlider {
             this.continuousStructure()
                 .then(
                     (resolve) => {
-                        this.initContinuousAnimation();
+                        this.initContinuousAnimation().then(
+                            (resolve) => {
+                                // Fire after init event
+                                this.eventAfterInit();
+                            }
+                        );
                     }
                 );
         }
@@ -737,53 +749,55 @@ class jedliSlider {
 
     // Init continuous animation
     initContinuousAnimation() {
+        return new Promise((resolve, reject) => {
+            // Get tracks
+            let track = this.item.querySelector("[data-jedli='track']");
 
-        // Get tracks
-        let track = this.item.querySelector("[data-jedli='track']");
-
-        // If option 'pause on hover' is declarated as 'true' then add class 'pause on hover'
-        // and event listener to handle track hover on children focus
-        if (this.options.pauseOnHover === "true") {
-            track.classList.add("jedli-hover-pause");
-            track.setAttribute("pauseOnHover", "true");
-
-
-            // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
-            // (for accessibility, people using keyboard to naviage)
+            // If option 'pause on hover' is declarated as 'true' then add class 'pause on hover'
+            // and event listener to handle track hover on children focus
+            if (this.options.pauseOnHover === "true") {
+                track.classList.add("jedli-hover-pause");
+                track.setAttribute("pauseOnHover", "true");
 
 
-            // Get all children
-            let trackChildren = track.querySelectorAll("a, button");
-            // Attach event listener to childrens
-            trackChildren.forEach((e) => {
-                e.addEventListener("focus", () => {
-                    // Add class to stop slider on focus
-                    track.classList.add("hovered");
-                });
+                // Add listeners to every children, to handle 'pause on hover' when link inside is focused 
+                // (for accessibility, people using keyboard to naviage)
 
-                e.addEventListener("focusout", () => {
-                    // Remove class to stop slider on focusout
-                    track.classList.remove("hovered");
-                });
-            })
-        }
 
-        // Set direction of animation
-        if (this.options.direction === "left") {
-            track.style.animationDirection = "normal";
-        }
+                // Get all children
+                let trackChildren = track.querySelectorAll("a, button");
+                // Attach event listener to childrens
+                trackChildren.forEach((e) => {
+                    e.addEventListener("focus", () => {
+                        // Add class to stop slider on focus
+                        track.classList.add("hovered");
+                    });
 
-        if (this.options.direction === "right") {
-            track.style.animationDirection = "reverse";
-        }
+                    e.addEventListener("focusout", () => {
+                        // Remove class to stop slider on focusout
+                        track.classList.remove("hovered");
+                    });
+                })
+            }
 
-        // Add styles for animation purposes to track
-        // If mode == continuous, options.speed is speed for every px of track width
-        let speed = this.options.speed * track.offsetWidth
-        let continuousSpeed = speed / 1000 + "s";
-        track.style.animationDuration = continuousSpeed;
-        track.style.animationTimingFunction = this.options.easing;
+            // Set direction of animation
+            if (this.options.direction === "left") {
+                track.style.animationDirection = "normal";
+            }
 
+            if (this.options.direction === "right") {
+                track.style.animationDirection = "reverse";
+            }
+
+            // Add styles for animation purposes to track
+            // If mode == continuous, options.speed is speed for every px of track width
+            let speed = this.options.speed * track.offsetWidth
+            let continuousSpeed = speed / 1000 + "s";
+            track.style.animationDuration = continuousSpeed;
+            track.style.animationTimingFunction = this.options.easing;
+
+            resolve("Continuous animation initialized");
+        })
     }
 
     // ## NAVIGATION FUNCTIONS ##
@@ -936,6 +950,7 @@ class jedliSlider {
             }
         }
 
+
         // Check if wantedslideDirection is "false" which means that slide is not found, or is currently active
         if (wantedSlideDirection === false) {
             return false;
@@ -995,12 +1010,8 @@ class jedliSlider {
         else {
 
             // Check if slider is 'infinite', if true, calculate which way will be shorter
-            if (!this.options.infinite == "true") {
-                indexAttr = "jedli-index";
-            }
-            else {
+            if (this.options.infinite === "true") {
                 // Calculate which way will be shorter
-
                 // Check if slide with this index exists
                 if (this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + slideIndex + "']").length > 0) {
                     // If true, get currently active slides
@@ -1011,6 +1022,9 @@ class jedliSlider {
                 else {
                     return false;
                 }
+            }
+            else {
+                indexAttr = "jedli-index";
             }
         }
 
@@ -1799,16 +1813,28 @@ class jedliSlider {
 
     // EVENTS
 
-    eventInit() {
-        const eventInit = new CustomEvent(
-            'init',
+    eventBeforeInit() {
+        const eventBeforeInit = new CustomEvent(
+            'beforeInit',
             {
                 bubbles: false,
                 cancelable: false,
             }
         )
 
-        this.item.dispatchEvent(eventInit);
+        this.item.dispatchEvent(eventBeforeInit);
+    }
+
+    eventAfterInit() {
+        const eventAfterInit = new CustomEvent(
+            'afterInit',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventAfterInit);
     }
 
     eventBeforeChange() {

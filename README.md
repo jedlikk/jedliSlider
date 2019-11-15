@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.9.13-blue.svg)
+![](https://img.shields.io/badge/version-0.10.14-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,27 +24,60 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.9.13
+### v. 0.10.14
+- Added option to generate nav, on your custom html. See example [here](http://jedlikk.github.io/jedliSlider/#generated-nav)
+- Added function 'goToSlide' for default mode with inifnite option set to true
+- Added events 'init', 'beforeChange', 'afterChange'
+- Fixed bug with dragging, where click was enough to move slider
+
+### Previous update
 - Added functionality for touch/drag in 'default' mode. With and without 'infinite' set to true
 - Updated 'How to use'
 - Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of slider in 'default' mode with infinite set to false
 
-### Previous update
-- Added 'Infinite' option,
-- Added 'autoplay' option,
-- Added 'autoplaySpeed' option
-- Added 'autoplayDirection' option
-- Added option to generate arrows
-- Added option to generate arrows with custom html
-
 
 ### Features soon:
 
-- goToSlide() for default mode with infinite option set to true
-- Creating nav from options
 - Creating dots from options
+- Creating dots with custom html
 - Filtering slides
 - 'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some levels of highlightness and animation between levels
+
+## How to use
+
+### Instal via npm
+
+"npm install jedlislider"
+
+[NPM](https://www.npmjs.com/package/jedlislider)
+
+
+### If you work with webpack
+Import slider:
+import jedliSlider from 'jedlislider/src-webpack/jedlislider.js'
+
+and import styles (one of this):
+- CSS: import 'jedlislider/dist/jedlislider.bundle.css'
+- SCSS: import 'jedlislider/src-webpack/jedlislider.scss'
+
+### If you work without webpack, add this files to your wesbite by script and link tag:
+
+- JS: jedlislider/src/jedlislider.js
+
+And one of this:
+- CSS: jedlislider/dist/jedlislider.bundle.css
+- SCSS: jedlislider/src/jedlislider.scss
+
+## Events
+- init (it's important to declarate init event before initialization of slider)
+- beforeChange
+- afterChange
+
+### How to catch events?
+1. get your html element (for example by document.getElementById())
+2. add event listener (for example element.addEventListener('beforeChange), () => {}))
+3. ??
+4. Profit
 
 ## List of options
 
@@ -71,31 +104,7 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 | autoplayDirection     | right | Determinate if slider after specified amount of time should go to next or prev slide                                                                     |
 | arrows                | false | Determinate if slider should create arrows to navigate                                                                                                   |
 | arrowPrev / arrowNext | \-    | Allows to create arrows with custom html\. Attr to handle next/prev action will be added automatically\. It's necessary to set "arrows" option to true\. |
+| generateNave                | false | Determinate if slider should look for navContainer to generate nav                                                                                                 |
+| navContainer                | \- | Html element in which slider will look for elements with jedli-target attributes. Value of jedli-target in those elements will determinate index of slider to go To.                                                                                                 |
 
-
-
-## How to use
-
-### Instal via npm
-
-"npm install jedlislider"
-
-[NPM](https://www.npmjs.com/package/jedlislider)
-
-
-### If you work with webpack
-Import slider:
-import jedliSlider from 'jedlislider/src-webpack/jedlislider.js'
-
-and import styles (one of this):
-- CSS: import 'jedlislider/dist/jedlislider.bundle.css'
-- SCSS: import 'jedlislider/src-webpack/jedlislider.scss'
-
-### If you work without webpack, add this files to your wesbite by script and link tag:
-
-- JS: jedlislider/src/jedlislider.js
-
-And one of this:
-- CSS: jedlislider/dist/jedlislider.bundle.css
-- SCSS: jedlislider/src/jedlislider.scss
 

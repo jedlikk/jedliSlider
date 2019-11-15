@@ -97,7 +97,19 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.9.13</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.10.14</span>
+            <div class="section-description text-beta">
+                <ul>
+                    <li>Added option to generate nav, on your custom html. See example <a href="#generated-nav">here</a>
+                    </li>
+                    <li>Added function 'goToSlide' for default mode with inifnite option set to true</li>
+                    <li>Added events 'init', 'beforeChange', 'afterChange'</li>
+                    <li>Fixed bug with dragging, where click was enough to move slider</li>
+                </ul>
+            </div>
+            <br>
+            <br>
+            <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
             <div class="section-description text-beta">
                 <ul>
                     <li><strong style="font-weight: bold;">Added functionality for touch/drag</strong> in 'default'
@@ -109,19 +121,6 @@
                         slider in 'default' mode with infinite set to false</li>
                 </ul>
             </div>
-            <br>
-            <br>
-            <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
-            <div class="section-description text-beta">
-                <ul>
-                    <li>Added 'Infinite' option</li>
-                    <li>Added 'autoplay' option</li>
-                    <li>Added 'autoplaySpeed' option</li>
-                    <li>Added 'autoplayDirection' option</li>
-                    <li>Added option to generate arrows</li>
-                    <li>Added option to generate arrows with custom html</li>
-                </ul>
-            </div>
         </div>
     </article>
     <article class="section section-article bg-alfa-alternative">
@@ -129,9 +128,8 @@
             <h2 class="section-title title-underline-eta">Features soon:</h2>
             <div class="section-description text-beta">
                 <ul>
-                    <li>goToSlide() for default mode with infinite option set to true</li>
-                    <li>Creating nav from options</li>
                     <li>Creating dots from options</li>
+                    <li>Creating dots with custom html</li>
                     <li>Filtering slides</li>
                     <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
                         levels
@@ -555,7 +553,8 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                             </code>
                         </pre>
             </div>
-            <h3 class="text-beta weight-regular color-important">default mode, infinite true, generated nav</h3>
+            <h3 id="generated-nav" class="text-beta weight-regular color-important">default mode, infinite true,
+                generated nav</h3>
             <div class="example-slider example-slider-inifnite" data-item="slider-default-equal-infinite-nav">
                 <div class="example-slide">
                     <span>Slide 1</span>
@@ -595,9 +594,102 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
             <div class="code-snippet">
                 <pre>
                             <code>
-        test
+Basic nav structure:
+
+attr/id/class whatever to get this element
+and add to your buttons attr jedli-target with number of slide that you want it to move
+
+&lt;div data-item="example-nav"&gt;
+    &lt;button jedli-target="1" &gt;
+        go to 1
+    &lt;/button&gt;
+    &lt;button jedli-target="2" &gt;
+        go to 2
+    &lt;/button&gt;
+    &lt;button jedli-target="3" &gt;
+        go to 3
+    &lt;/button&gt;
+&lt;/div&gt;
+
+let sliderDefaultEqualInfiniteNav = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-nav']"), {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "infinite": "true",
+    "visibleSlides": 5,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
+    "speed": "600",
+
+    OPTIONS FOR NAV
+    "generateNav": "true",
+    "navContainer": document.querySelector("[data-item='example-nav']"),
+})
                             </code>
                         </pre>
+            </div>
+            <h3 class="text-beta weight-regular color-important">Catch events</h3>
+            <p>Open console and play with this slider to see effects</p>
+            <div class="example-slider example-slider-inifnite" data-item="slider-default-events">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-events-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-events-next'>next</button>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                                <code>
+*Get block with slider
+let sliderEventsContainer = document.querySelector("[data-item='slider-default-events']");
+
+*Catch event init 
+*You have to declarate init event before declaration of slider
+sliderEventsContainer.addEventListener('init', () => {
+    console.log("Init");
+})
+
+let sliderEventsInit = new jedliSlider(sliderEventsContainer, {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "infinite": "true",
+    "visibleSlides": 5,
+    "easing": "ease-out",
+    "slidesToScroll": 2,
+    "speed": "600",
+    "preventOverScroll": "false",
+})
+
+*Catch event beforeChange
+sliderEventsContainer.addEventListener('beforeChange', () => {
+    console.log("Before change");
+})
+
+*Catch event afterChange
+sliderEventsContainer.addEventListener('afterChange', () => {
+    console.log("After change");
+})
+                                </code>
+                            </pre>
             </div>
         </div> <!-- END OFsection container -->
         </div>
@@ -747,6 +839,23 @@ document.querySelector("[data-action='slider-default-equal-next']").addEventList
                     <li><span class="color-beta">true</span> - Carousel will stop animation or autoplay on hover,
                         or for accessibility reasons - on focus at any element inside slider</li>
                     <li><span class="color-beta">false</span> - Slider won't stop on hover</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">generateNav</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>true</li>
+                    <li>false</li>
+                </ul>
+
+                <h3 class="subtitle text-beta weight-regular color-important">navContainer</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta color-beta weight-regular">Needs 'generateNav' option set to true</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>html element in which slider will look for elements with 'jedli-target' attributes</li>
+                    <li>Se example <a href="#generated-nav" title="go to generated nav">here</a></li>
                 </ul>
 
                 <h3 class="subtitle text-beta weight-regular color-important">direction</h3>

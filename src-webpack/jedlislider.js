@@ -64,6 +64,7 @@ class jedliSlider {
 
     // Create basic structure of slider
     init() {
+        this.eventInit();
         // Add attributes and classes to slider container
         this.item.classList.add("jedli-slider");
 
@@ -809,6 +810,8 @@ class jedliSlider {
                             // Remove attr preventing change and drag
                             this.item.setAttribute("jedli-prevent-change", "false");
                             this.item.setAttribute("jedli-prevent-drag", "false");
+
+                            this.eventAfterChange();
                         }
                     );
                 }
@@ -838,6 +841,8 @@ class jedliSlider {
                             // Remove attr preventing change and drag
                             this.item.setAttribute("jedli-prevent-change", "false");
                             this.item.setAttribute("jedli-prevent-drag", "false");
+
+                            this.eventAfterChange();
                         }
                     );
                 }
@@ -914,6 +919,10 @@ class jedliSlider {
                             slideIndex = distanceNext[1];
                         }
                     }
+                    else {
+                        // If wanted slide is already active, return false
+                        wantedSlideDirection = false;
+                    }
                 }
                 else {
                     // If there is no such slides, return false
@@ -961,6 +970,7 @@ class jedliSlider {
 
                                     // Update position of track to keep feeling of infinite carousel
                                     this.updateInfiniteTrackPosition();
+                                    this.eventAfterChange();
                                 }
 
                                 // Remove attr preventing change and drag
@@ -1548,6 +1558,9 @@ class jedliSlider {
             // Get track
             const track = this.item.querySelector("[data-jedli='track']");
 
+            // Fire event beforeChange
+            this.eventBeforeChange();
+
             // Check if attr prevAnimation is set to true
             if (prevAnimation === true) {
                 // If true, remove transition
@@ -1781,6 +1794,45 @@ class jedliSlider {
                 this.goToSlide(visibleSlides[visibleSlides.length - 1], true, "next");
             }
         }
+    }
+
+
+    // EVENTS
+
+    eventInit() {
+        const eventInit = new CustomEvent(
+            'init',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventInit);
+    }
+
+    eventBeforeChange() {
+        const eventBeforeChange = new CustomEvent(
+            'beforeChange',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventBeforeChange);
+    }
+
+    eventAfterChange() {
+        const eventAfterChange = new CustomEvent(
+            'afterChange',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventAfterChange);
     }
 }
 

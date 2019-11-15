@@ -136,7 +136,9 @@ window.addEventListener('load', () => {
 
     // Get nav element
     let exampleNav = document.querySelector("[data-item='example-nav']");
-    let sliderDefaultEqualInfiniteNav = new jedliSlider(document.querySelector("[data-item='slider-default-equal-infinite-nav']"), {
+    let sliderInifniteNavContainer = document.querySelector("[data-item='slider-default-equal-infinite-nav']");
+
+    let sliderDefaultEqualInfiniteNav = new jedliSlider(sliderInifniteNavContainer, {
         "mode": "default",
         "slidesWidth": "equal",
         "infinite": "true",
@@ -147,6 +149,42 @@ window.addEventListener('load', () => {
         "preventOverScroll": "false",
         "generateNav": "true",
         "navContainer": exampleNav,
+    })
+
+    // Get nav element
+
+    let sliderEventsContainer = document.querySelector("[data-item='slider-default-events']");
+
+    sliderEventsContainer.addEventListener('init', () => {
+        console.log("Init");
+    })
+
+    let sliderEventsInit = new jedliSlider(sliderEventsContainer, {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 5,
+        "easing": "ease-out",
+        "slidesToScroll": 2,
+        "speed": "600",
+        "preventOverScroll": "false",
+    })
+
+    sliderEventsContainer.addEventListener('beforeChange', () => {
+        console.log("Before change");
+    })
+
+    sliderEventsContainer.addEventListener('afterChange', () => {
+        console.log("After change");
+    })
+
+    document.querySelector("[data-action='slider-events-prev']").addEventListener("click", () => {
+        sliderEventsInit.slidePrev();
+    })
+
+    // Next slide
+    document.querySelector("[data-action='slider-events-next']").addEventListener("click", () => {
+        sliderEventsInit.slideNext();
     })
 })
 

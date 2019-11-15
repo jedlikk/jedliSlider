@@ -5,12 +5,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: {
-        // "jedlislider": path.resolve(__dirname, './src-webpack/jedlislider.js'),
-        "demo": path.resolve(__dirname, './demo/demo.js')
+        "jedlislider": path.resolve(__dirname, './src-webpack/jedlislider.js'),
+        // "demo": path.resolve(__dirname, './demo/demo.js')
     },
     output: {
-        path: path.resolve(__dirname, './demo/dist'),
-        // path: path.resolve(__dirname, './dist'),
+        // path: path.resolve(__dirname, './demo/dist'),
+        path: path.resolve(__dirname, './dist'),
         filename: '[name].bundle.js'
     },
     module: {

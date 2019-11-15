@@ -155,8 +155,12 @@ window.addEventListener('load', () => {
 
     let sliderEventsContainer = document.querySelector("[data-item='slider-default-events']");
 
-    sliderEventsContainer.addEventListener('init', () => {
-        console.log("Init");
+    sliderEventsContainer.addEventListener('beforeInit', () => {
+        console.log("beforeInit");
+    })
+
+    sliderEventsContainer.addEventListener('afterInit', () => {
+        console.log("afterInit");
     })
 
     let sliderEventsInit = new jedliSlider(sliderEventsContainer, {

@@ -97,7 +97,7 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.10.14</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.10.15</span>
             <div class="section-description text-beta">
                 <ul>
                     <li>Added option to generate nav, on your custom html. See example <a href="#generated-nav">here</a>
@@ -106,6 +106,7 @@
                     <li>Added events 'init', 'beforeChange', 'afterChange'</li>
                     <li>Added info to demo and README about events and functions</li>
                     <li>Fixed bug with dragging, where click was enough to move slider</li>
+                    <li>Fixed bug with 'goToSlide' function for non infinite slider</li>
                 </ul>
             </div>
             <br>
@@ -692,14 +693,13 @@ sliderEventsContainer.addEventListener('afterChange', () => {
         </div>
     </section>
 
-    <span class="break bg-alfa"></span>
-
-    <article id="events" class="section section-article section-options bg-alfa-alternative">
+    <article id="events" class="section section-article section-options bg-alfa">
         <div class="section-container">
             <h2 class="section-title title-underline-delta">Events:</h2>
             <div class="section-description text-beta">
-                <h3 class="text-beta weight-regular color-important">init</h3>
-                <span class="text-beta weight-regular">It's imortant to define eventListener for init event BEFORE
+                <h3 class="text-beta weight-regular color-important">beforeInit</h3>
+                <h3 class="text-beta weight-regular color-important">afterInit</h3>
+                <span class="text-beta weight-regular">It's imortant to define eventListener for init events BEFORE
                     initialization of slider</span>
                 <h3 class="text-beta weight-regular color-important">beforeChange</h3>
                 <h3 class="text-beta weight-regular color-important">afterChange</h3>
@@ -708,9 +708,13 @@ sliderEventsContainer.addEventListener('afterChange', () => {
                     <pre>
                         <code>
 *Catch event init 
-*You have to declarate init event before declaration of slider
-document.querySelector("[your-slider]").addEventListener('init', () => {
-    console.log("Init");
+*You have to declarate init events before declaration of slider
+document.querySelector("[your-slider]").addEventListener('beforeInit', () => {
+    console.log("beforeInit");
+})
+
+document.querySelector("[your-slider]").addEventListener('afterInit', () => {
+    console.log("afterInit");
 })
 
 *Catch event beforeChange
@@ -729,7 +733,7 @@ document.querySelector("[your-slider]").addEventListener('afterChange', () => {
         </div>
     </article>
 
-    <article id="functions" class="section section-article section-options bg-alfa-alternative">
+    <article id="functions" class="section section-article section-options bg-alfa">
         <div class="section-container">
             <h2 class="section-title title-underline-delta">Functions:</h2>
             <div class="section-description text-beta">

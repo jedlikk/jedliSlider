@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.10.14-blue.svg)
+![](https://img.shields.io/badge/version-0.10.15-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,11 +24,12 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.10.14
+### v. 0.10.15
 - Added option to generate nav, on your custom html. See example [here](http://jedlikk.github.io/jedliSlider/#generated-nav)
 - Added function 'goToSlide' for default mode with inifnite option set to true
 - Added events 'init', 'beforeChange', 'afterChange'
 - Fixed bug with dragging, where click was enough to move slider
+- Fixed bug with 'goToSlide' function for non infinite slider
 
 ### Previous update
 - Added functionality for touch/drag in 'default' mode. With and without 'infinite' set to true
@@ -71,7 +72,9 @@ And one of this:
 ## Events
 See more [here](http://jedlikk.github.io/jedliSlider/#events
 
-- init (it's important to declarate init event before initialization of slider)
+- beforeInit
+- afterInit
+ (it's important to declarate init events before initialization of slider)
 - beforeChange
 - afterChange
 

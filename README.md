@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.10.15-blue.svg)
+![](https://img.shields.io/badge/version-0.10.16-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,7 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.10.15
+### v. 0.10.16
 - Added option to generate nav, on your custom html. See example [here](http://jedlikk.github.io/jedliSlider/#generated-nav)
 - Added function 'goToSlide' for default mode with inifnite option set to true
 - Added events 'init', 'beforeChange', 'afterChange'
@@ -70,7 +70,7 @@ And one of this:
 - SCSS: jedlislider/src/jedlislider.scss
 
 ## Events
-See more [here](http://jedlikk.github.io/jedliSlider/#events
+See more [here](http://jedlikk.github.io/jedliSlider/#events)
 
 - beforeInit
 - afterInit
@@ -85,7 +85,7 @@ See more [here](http://jedlikk.github.io/jedliSlider/#events
 4. Profit
 
 ## Functions
-See more [here](http://jedlikk.github.io/jedliSlider/#functions
+See more [here](http://jedlikk.github.io/jedliSlider/#functions)
 
 - prevSlide() -> Go to prev slide or slides if 'slidesToScroll is greater than 1'
 - nextSlide() -> Go to next slide or slides if 'slidesToScroll is greater than 1'

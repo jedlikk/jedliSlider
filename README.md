@@ -69,6 +69,8 @@ And one of this:
 - SCSS: jedlislider/src/jedlislider.scss
 
 ## Events
+See more [here](http://jedlikk.github.io/jedliSlider/#events
+
 - init (it's important to declarate init event before initialization of slider)
 - beforeChange
 - afterChange
@@ -78,6 +80,13 @@ And one of this:
 2. add event listener (for example element.addEventListener('beforeChange), () => {}))
 3. ??
 4. Profit
+
+## Functions
+See more [here](http://jedlikk.github.io/jedliSlider/#functions
+
+- prevSlide() -> Go to prev slide or slides if 'slidesToScroll is greater than 1'
+- nextSlide() -> Go to next slide or slides if 'slidesToScroll is greater than 1'
+- goToSlide() -> Go to specific slide
 
 ## List of options
 

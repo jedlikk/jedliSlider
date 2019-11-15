@@ -1,4 +1,4 @@
-// JedliSlider v 0.0.1
+// JedliSlider v 0.10.14
 // By Bar†łomiej Jedlikowski
 
 import './jedlislider.scss';

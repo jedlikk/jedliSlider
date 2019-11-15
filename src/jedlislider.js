@@ -1,4 +1,4 @@
-// JedliSlider v 0.0.1
+// JedliSlider v 0.10.14
 // By Bar†łomiej Jedlikowski
 
 class jedliSlider {
@@ -13,6 +13,7 @@ class jedliSlider {
         // Default options
         this.defaultOptions = {
             "mode": "default",
+            "infinite": "false",
             "slidesWidth": "equal",
             "visibleSlides": "1",
             "slidesToScroll": "1",
@@ -34,6 +35,8 @@ class jedliSlider {
             "autoplay": "false",
             "autoplaySpeed": "1500",
             "autoplayDirection": "right",
+            "generateNav": "false",
+            "navContainer": "",
         }
 
         // Set options to default
@@ -59,7 +62,7 @@ class jedliSlider {
 
     // Create basic structure of slider
     init() {
-
+        this.eventInit();
         // Add attributes and classes to slider container
         this.item.classList.add("jedli-slider");
 
@@ -105,6 +108,10 @@ class jedliSlider {
         // Add arrows if 'arrows' option is set to true
         if (this.options.arrows === "true")
             this.createArrows();
+
+        // Generate nav functionality if 'generateNav' option is set to true
+        if (this.options.generateNav === "true")
+            this.generateNav();
 
 
         // Check if slider should have overflow hidden
@@ -483,6 +490,29 @@ class jedliSlider {
         }
     }
 
+    generateNav() {
+        // Get nav container from options
+        const navContainer = this.options.navContainer;
+        // Check if navContainer exists
+        if (navContainer) {
+            // Find all elements with jedli target
+            const navElements = navContainer.querySelectorAll("[jedli-target]");
+            if (navElements.length > 0) {
+                navElements.forEach((e) => {
+                    // Add goToSlide functionality to this element
+                    // Where wanted slidee is jedli-target
+                    let target = +e.getAttribute("jedli-target");
+                    e.addEventListener("click", () => {
+                        this.goToSlide(target);
+                    })
+                })
+            }
+            else {
+                console.warn("Nav elements not found. Add elements with attr jedli-target='Here Number of slide' to your nav");
+            }
+        }
+    }
+
     // ### DEFAULT MODE
     // Initialize 'default' mode
     initDefault() {
@@ -760,7 +790,7 @@ class jedliSlider {
     slideNext() {
         // Check if track should move
         if (this.ifShouldMove("next")) {
-            // Caluclate distance 
+            // Caluclate distance
             const distance = this.calculateChangeDistance('next', this.options.slidesToScroll);
 
             // Animate change
@@ -778,6 +808,8 @@ class jedliSlider {
                             // Remove attr preventing change and drag
                             this.item.setAttribute("jedli-prevent-change", "false");
                             this.item.setAttribute("jedli-prevent-drag", "false");
+
+                            this.eventAfterChange();
                         }
                     );
                 }
@@ -789,7 +821,7 @@ class jedliSlider {
     slidePrev() {
         // Check if track should move
         if (this.ifShouldMove("prev")) {
-            // Caluclate distance 
+            // Caluclate distance
             const distance = this.calculateChangeDistance('prev', this.options.slidesToScroll);
 
             // Animate change
@@ -807,6 +839,8 @@ class jedliSlider {
                             // Remove attr preventing change and drag
                             this.item.setAttribute("jedli-prevent-change", "false");
                             this.item.setAttribute("jedli-prevent-drag", "false");
+
+                            this.eventAfterChange();
                         }
                     );
                 }
@@ -823,8 +857,81 @@ class jedliSlider {
             wantedSlideDirection = specificDirection;
         }
         else {
-            // Check if this slide is "next" or "prev" to current slider position
-            wantedSlideDirection = this.checkWantedSlideDirection(slideIndex, isDragEvent);
+            // Check if slider is in infinite option and is not drag event
+            if (this.options.infinite === "true" && isDragEvent === false) {
+                // If true, calculate which slide is closer (because every slide is cloned two times)
+                // Get all slides with this index
+                const wantedSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-index='" + slideIndex + "']");
+                if (wantedSlides.length > 0) {
+                    // Get index of first and last visible slide
+                    const visibleSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
+                    const firstVisible = +visibleSlides[0].getAttribute("jedli-infinite-index");
+                    const lastVisible = +visibleSlides[visibleSlides.length - 1].getAttribute("jedli-infinite-index");
+                    // Check if any of slides is currently active
+                    let alreadyActive = false;
+                    wantedSlides.forEach((e) => {
+                        // If any of slides is currently active, add attr to prevent function
+                        if (e.getAttribute("jedli-active") === "true") {
+                            alreadyActive = true;
+                        }
+                    })
+
+                    // Prevent function if any of wanted slides is currently active
+                    if (alreadyActive === false) {
+                        // Get indexes of wanted slides
+                        // And:
+                        // Calculate distance to currently active slides
+                        let distancePrev = [+this.noOfSlides, 0];
+                        let distanceNext = [+this.noOfSlides];
+                        wantedSlides.forEach((e) => {
+                            let elementIndex = +e.getAttribute("jedli-infinite-index");
+
+                            // Distance prev
+                            let currentDistance = Math.abs(firstVisible - elementIndex);
+                            if (currentDistance < distancePrev[0]) {
+                                distancePrev[0] = currentDistance;
+                                distancePrev[1] = elementIndex;
+                            }
+
+                            // Distance next
+                            currentDistance = Math.abs(elementIndex - lastVisible);
+                            if (currentDistance < distanceNext[0]) {
+                                distanceNext[0] = currentDistance;
+                                distanceNext[1] = elementIndex;
+                            }
+                        });
+
+                        // Update slideDirection and slideIndex to infinite index
+                        if (distancePrev[0] === distanceNext[0]) {
+                            wantedSlideDirection = 'next';
+                            slideIndex = distanceNext[1];
+                        }
+
+                        if (distancePrev[0] < distanceNext[0]) {
+                            wantedSlideDirection = 'prev';
+                            slideIndex = distancePrev[1];
+                        }
+
+                        if (distancePrev[0] > distanceNext[0]) {
+                            wantedSlideDirection = 'next';
+                            slideIndex = distanceNext[1];
+                        }
+                    }
+                    else {
+                        // If wanted slide is already active, return false
+                        wantedSlideDirection = false;
+                    }
+                }
+                else {
+                    // If there is no such slides, return false
+                    wantedSlideDirection = false;
+                }
+            }
+            else {
+                // If not, calculate slide direction depends of given slide and if isDragEvent
+                // Check if this slide is "next" or "prev" to current slider position
+                wantedSlideDirection = this.checkWantedSlideDirection(slideIndex, isDragEvent);
+            }
         }
 
         // Check if wantedslideDirection is "false" which means that slide is not found, or is currently active
@@ -843,7 +950,7 @@ class jedliSlider {
                     this.updateInfiniteBlocksPosition();
                 }
 
-                // Caluclate distance 
+                // Caluclate distance
                 const distance = this.calculateChangeDistance(wantedSlideDirection, slidesToScroll);
 
                 // Animate change
@@ -861,6 +968,7 @@ class jedliSlider {
 
                                     // Update position of track to keep feeling of infinite carousel
                                     this.updateInfiniteTrackPosition();
+                                    this.eventAfterChange();
                                 }
 
                                 // Remove attr preventing change and drag
@@ -906,7 +1014,7 @@ class jedliSlider {
 
         if (this.item.querySelectorAll("[data-jedli='slide'][" + indexAttr + "='" + slideIndex + "']").length > 0) {
             // If true
-            // Get active slides 
+            // Get active slides
             const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
 
             // Check if index of wanted slide is smaller than index of first active slide
@@ -998,12 +1106,12 @@ class jedliSlider {
 
             // Check if mode is one of this where function should work
             // For this moment those mods are:
-            // default, 
+            // default,
             if (this.options.mode === "default") {
                 // Check if options.infinite is set to true
                 if (this.options.infinite === "false") {
                     // If not, check if next/prev slide is the last one to move
-                    // Get active slides 
+                    // Get active slides
                     const activeSlides = this.item.querySelectorAll("[data-jedli='slide'][jedli-active='true']");
                     if (direction === "next") {
                         // If direction is set to next
@@ -1208,7 +1316,7 @@ class jedliSlider {
                 direction = "next";
             }
 
-            // Caluclate distance 
+            // Caluclate distance
             const distance = this.calculateChangeDistance(direction, this.noOfSlides);
 
             // Move track, but without transition
@@ -1256,7 +1364,7 @@ class jedliSlider {
                 direction = "none"
         }
 
-        // Check if there is enough non-active slides 
+        // Check if there is enough non-active slides
         // (if number of non active slides is greater or equal options.slidesToScroll)
         // Get slides
         let slides = this.item.querySelectorAll("[data-jedli='slide']");
@@ -1448,6 +1556,9 @@ class jedliSlider {
             // Get track
             const track = this.item.querySelector("[data-jedli='track']");
 
+            // Fire event beforeChange
+            this.eventBeforeChange();
+
             // Check if attr prevAnimation is set to true
             if (prevAnimation === true) {
                 // If true, remove transition
@@ -1503,7 +1614,7 @@ class jedliSlider {
         // First value of initial position is X position, second is Y position
         let initialPosition;
 
-        // Drag start 
+        // Drag start
         track.addEventListener("touchstart", (e) => {
             initialPosition = this.dragStart(e, "touchstart");
         });
@@ -1593,7 +1704,7 @@ class jedliSlider {
             // Calculate difference between current and inital position
             const differenceX = (initialPosition[0] - currentPosition[0]);
             // Calculate difference between current and last position
-            const differenceCurrent = (+this.currentTransform[0] - currentPosition[0]);
+            let differenceCurrent = (+this.currentTransform[0] - currentPosition[0]);
 
             // Calculate distance to move
             // where distance to move is current transform position (defined from normal change) + diffrenceX
@@ -1611,7 +1722,8 @@ class jedliSlider {
 
             // If direction is equal to 0, go to last known direction
             if (differenceCurrent === 0) {
-                direction = this.lastDirection;
+                // direction = this.lastDirection;
+                differenceCurrent = differenceX;
             }
 
             // Direction prev if differenceX is negative number
@@ -1680,5 +1792,44 @@ class jedliSlider {
                 this.goToSlide(visibleSlides[visibleSlides.length - 1], true, "next");
             }
         }
+    }
+
+
+    // EVENTS
+
+    eventInit() {
+        const eventInit = new CustomEvent(
+            'init',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventInit);
+    }
+
+    eventBeforeChange() {
+        const eventBeforeChange = new CustomEvent(
+            'beforeChange',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventBeforeChange);
+    }
+
+    eventAfterChange() {
+        const eventAfterChange = new CustomEvent(
+            'afterChange',
+            {
+                bubbles: false,
+                cancelable: false,
+            }
+        )
+
+        this.item.dispatchEvent(eventAfterChange);
     }
 }

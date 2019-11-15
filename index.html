@@ -104,6 +104,7 @@
                     </li>
                     <li>Added function 'goToSlide' for default mode with inifnite option set to true</li>
                     <li>Added events 'init', 'beforeChange', 'afterChange'</li>
+                    <li>Added info to demo and README about events and functions</li>
                     <li>Fixed bug with dragging, where click was enough to move slider</li>
                 </ul>
             </div>
@@ -692,6 +693,72 @@ sliderEventsContainer.addEventListener('afterChange', () => {
     </section>
 
     <span class="break bg-alfa"></span>
+
+    <article id="events" class="section section-article section-options bg-alfa-alternative">
+        <div class="section-container">
+            <h2 class="section-title title-underline-delta">Events:</h2>
+            <div class="section-description text-beta">
+                <h3 class="text-beta weight-regular color-important">init</h3>
+                <span class="text-beta weight-regular">It's imortant to define eventListener for init event BEFORE
+                    initialization of slider</span>
+                <h3 class="text-beta weight-regular color-important">beforeChange</h3>
+                <h3 class="text-beta weight-regular color-important">afterChange</h3>
+                <p>Example:</p>
+                <div class="code-snippet">
+                    <pre>
+                        <code>
+*Catch event init 
+*You have to declarate init event before declaration of slider
+document.querySelector("[your-slider]").addEventListener('init', () => {
+    console.log("Init");
+})
+
+*Catch event beforeChange
+document.querySelector("[your-slider]").addEventListener('beforeChange', () => {
+    console.log("Before change");
+})
+
+*Catch event afterChange
+document.querySelector("[your-slider]").addEventListener('afterChange', () => {
+    console.log("After change");
+})
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article id="functions" class="section section-article section-options bg-alfa-alternative">
+        <div class="section-container">
+            <h2 class="section-title title-underline-delta">Functions:</h2>
+            <div class="section-description text-beta">
+                <h3 class="text-beta weight-regular color-important">slideNext()</h3>
+                <h3 class="text-beta weight-regular color-important">slidePrev()</h3>
+                <h3 class="text-beta weight-regular color-important">goToSlide(Here number of slide)</h3>
+                <p>Example:</p>
+                <div class="code-snippet">
+                    <pre>
+                        <code>
+Define your slider 
+let yourSlide = new jedliSlider(document.querySelector("[your-slider']"), {
+    options here
+})
+
+Go to prev slide or slides if 'slidesToScroll is greater than 1'
+yourSlide.slidePrev();
+
+Go to next slide or slides if 'slidesToScroll is greater than 1'
+yourSlide.slideNext();
+
+Go to specific slide
+yourSlide.goToSlide(value);
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </article>
 
     <article id="options" class="section section-article section-options bg-alfa-alternative">
         <div class="section-container">

@@ -359,12 +359,20 @@ body {
                         border: 0.1rem solid $color-delta;
                     }
                 }
+
+                &-fade {
+                    max-width: 20rem;
+                }
             }
 
             &-slide {
                 position: relative;
                 background: $color-eta;
                 border: 0.1rem solid $color-omega;
+
+                &-blue {
+                    background: $color-gamma;                    
+                }
 
                 &-auto {
                     display: block;
@@ -469,6 +477,17 @@ body {
 
     a {
         margin-top: 5px;
+    }
+}
+
+// Hide 
+.jedli-hide {
+    display: none;
+}
+
+.mt {
+    &-alfa {
+        margin-top: 20px;
     }
 }
 

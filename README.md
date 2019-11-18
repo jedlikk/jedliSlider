@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.10.16-blue.svg)
+![](https://img.shields.io/badge/version-0.11.16-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,23 +24,23 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.10.16
+### v. 0.11.16
+- Added 'animationChange' option, to change default transform between slides to fade effect
+- Fixed slideNext() and slidePrev() bug with update of track position in infinite mode
+
+### Previous update
 - Added option to generate nav, on your custom html. See example [here](http://jedlikk.github.io/jedliSlider/#generated-nav)
 - Added function 'goToSlide' for default mode with inifnite option set to true
 - Added events 'init', 'beforeChange', 'afterChange'
 - Fixed bug with dragging, where click was enough to move slider
 - Fixed bug with 'goToSlide' function for non infinite slider
 
-### Previous update
-- Added functionality for touch/drag in 'default' mode. With and without 'infinite' set to true
-- Updated 'How to use'
-- Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of slider in 'default' mode with infinite set to false
-
 
 ### Features soon:
 
 - Creating dots from options
 - Creating dots with custom html
+- Custom animation of changing slides
 - Filtering slides
 - 'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some levels of highlightness and animation between levels
 
@@ -89,7 +89,7 @@ See more [here](http://jedlikk.github.io/jedliSlider/#functions)
 
 - prevSlide() -> Go to prev slide or slides if 'slidesToScroll is greater than 1'
 - nextSlide() -> Go to next slide or slides if 'slidesToScroll is greater than 1'
-- goToSlide() -> Go to specific slide
+- goToSlide(Number of slide) -> Go to specific slide
 
 ## List of options
 
@@ -116,7 +116,8 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 | autoplayDirection     | right | Determinate if slider after specified amount of time should go to next or prev slide                                                                     |
 | arrows                | false | Determinate if slider should create arrows to navigate                                                                                                   |
 | arrowPrev / arrowNext | \-    | Allows to create arrows with custom html\. Attr to handle next/prev action will be added automatically\. It's necessary to set "arrows" option to true\. |
-| generateNave                | false | Determinate if slider should look for navContainer to generate nav                                                                                                 |
+| generateNav                | false | Determinate if slider should look for navContainer to generate nav                                                                                                 |
 | navContainer                | \- | Html element in which slider will look for elements with jedli-target attributes. Value of jedli-target in those elements will determinate index of slider to go To.                                                                                                 |
+| animationChange                | transform | Allows to define animation of changing slide                                                                                                  |
 
 

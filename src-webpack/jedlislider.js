@@ -1,4 +1,4 @@
-// JedliSlider v 0.10.16
+// JedliSlider v 0.11.16
 // By Bar†łomiej Jedlikowski
 
 import './jedlislider.scss';
@@ -26,6 +26,7 @@ class jedliSlider {
             "draggable": "true",
             "dots": "false",
             "easing": "linear",
+            "animationChange": "transform",
             "overflow": "hidden",
             "pauseOnHover": "false",
             "direction": "left",
@@ -217,6 +218,35 @@ class jedliSlider {
                     }
                 }
             )
+    }
+
+    // Destroy handler
+    destroyHandler() {
+        return new Promise((resolve, reject) => {
+
+            switch (this.options.mode) {
+                case "default":
+                    this.destroyDefault();
+
+                    break;
+
+                case "continuous":
+                    this.destroyContinuous();
+                    break;
+            }
+
+            resolve("destroyed");
+        });
+    }
+
+    // Reinit
+    reinitHandler() {
+        this.destroyHandler().then(
+            (resolve) => {
+                // console.log("destroyed as cat");
+                this.init();
+            }
+        );
     }
 
     // Breakpoint handler 
@@ -551,6 +581,24 @@ class jedliSlider {
         }
     }
 
+    // Destroy default slider
+    destroyDefault() {
+        return new Promise((resolve, reject) => {
+            // Remove cloned elements
+
+            // console.log("destroy default");
+
+            let cloned = this.item.querySelectorAll("[data-jedli='slides-block'][jedli-cloned='true']")
+            cloned.forEach((e) => {
+                e.remove();
+            });
+
+
+
+            resolve("default destroyed");
+        });
+    }
+
     // Create structure for default slider:
     defaultStructure() {
         return new Promise((resolve, reject) => {
@@ -567,6 +615,9 @@ class jedliSlider {
             slides.forEach((e, i) => {
                 // Add index number to slide
                 e.setAttribute("jedli-index", i + 1);
+
+                // Add attr that slide is not cloned
+                e.setAttribute("jedli-cloned", "false");
             })
 
             // Add attr and styles with transform to track
@@ -594,9 +645,17 @@ class jedliSlider {
                     block.appendChild(e);
                 })
 
+                // Create cloned block
+                const clonedBlock = block.cloneNode(true);
+                // Add attr jedli-cloned to slides
+                const clonedSlides = clonedBlock.querySelectorAll("[data-jedli='slide']");
+                clonedSlides.forEach((e) => {
+                    e.setAttribute("jedli-cloned", "true");
+                })
+
                 // Clone slides block to the start and end
-                const clonedBlockStart = block.cloneNode(true);
-                const clonedBlockEnd = block.cloneNode(true);
+                const clonedBlockStart = clonedBlock.cloneNode(true);
+                const clonedBlockEnd = clonedBlock.cloneNode(true);
 
                 // Add attributes and classes
                 clonedBlockStart.classList.add("jedli-cloned");
@@ -1221,7 +1280,6 @@ class jedliSlider {
         // Loop through slides
         slides.forEach((e, i) => {
             // Check if slides is in tracksContainer viewport
-
             if (this.ifVisible(e)) {
                 // if in viewport add index go array of visible slides
                 // If getInfiniteIndex is set to true, get infinite-index instead of index
@@ -1293,8 +1351,7 @@ class jedliSlider {
         // Element left value + element width is greater or equal to tracksContainer left value
         // Or 
         // Element right value - element width is smaller or equal to tracksContainer right value
-        if ((Math.round(elementRect.left) + elementWidth) >= Math.round(tracksContainerRect.left) && (Math.round(elementRect.right) - elementWidth) <= Math.round(tracksContainerRect.right)) {
-            // if in viewport return true
+        if ((Math.round(elementRect.left) + elementWidth) > Math.round(tracksContainerRect.left) && (Math.round(elementRect.right) - elementWidth) < Math.round(tracksContainerRect.right)) {
             return true
         }
         else {
@@ -1335,12 +1392,14 @@ class jedliSlider {
             // Caluclate distance
             const distance = this.calculateChangeDistance(direction, this.noOfSlides);
 
+
             // Move track, but without transition
             this.animateTrackChange(distance, true).then(
                 (resolve) => {
                     // Update active slides
                     this.updateActiveSlides().then(
                         (resolve) => {
+                            // console.log("resolved boi");
                             // Remove attr preventing change and drag
                             this.item.setAttribute("jedli-prevent-change", "false");
                             this.item.setAttribute("jedli-prevent-drag", "false");
@@ -1499,6 +1558,37 @@ class jedliSlider {
         }
     }
 
+    // Filter slides, show only wanted category
+    filter(category = 'all') {
+        // Get all non cloned slides
+        const slides = this.item.querySelectorAll("[data-jedli='slide'][jedli-cloned='false']");
+
+        // Loop through slides
+        slides.forEach((e) => {
+            // Check if slide is from wanted category
+            let slideCategory = e.getAttribute("jedli-category");
+
+            // If element is from this category, or category is set to all
+            if (slideCategory === category || category === "all") {
+                // Remobe attr to ignore this slide
+                e.setAttribute("jedli-ignore", "true");
+
+                // Remobe class to hide
+                e.classList.remove("jedli-hide");
+            }
+            else {
+                // Add attr to ignore this slide
+                e.setAttribute("jedli-ignore", "true");
+
+                // Add class to hide
+                e.classList.add("jedli-hide");
+            }
+        });
+
+        // Reinit structure
+        this.reinitHandler();
+    };
+
     // Prevent slider from overScroll - fix distance to scroll, so first/last slide will always at start/end of container
     preventOverScroll(direction, slidesToScroll) {
         // Get active slides
@@ -1579,24 +1669,55 @@ class jedliSlider {
             if (prevAnimation === true) {
                 // If true, remove transition
                 track.style.transition = "";
+                moveTransform();
             }
             else {
-                // If not, add transition
-                // Add transition to track
-                track.style.transition = "transform " + this.options.speed / 1000 + "s " + this.options.easing;
+                // If option animationChange is set to transform, add transition to track
+                if (this.options.animationChange === "transform") {
+                    // Add transition to track
+                    track.style.transition = "transform " + this.options.speed / 1000 + "s " + this.options.easing;
+                    moveTransform();
+                }
+
+                // If option animationChange is set to fade, animate with fade effect
+                if (this.options.animationChange === "fade") {
+                    // Add transition to animate opacity  by half of speed
+                    track.style.transition = "opacity " + this.options.speed / 1000 / 2 + "s " + this.options.easing;
+                    // Set opacity to 0
+                    track.style.opacity = 0;
+
+                    // Wait for element to hide
+                    setTimeout(() => {
+                        // Update transform
+
+                        moveTransform().then(
+                            (resolve) => {
+                                // After track update his position, show track
+                                track.style.opacity = 1;
+                            }
+                        );
+                    }, (this.options.speed / 2));
+                }
             }
 
-            // Get current transform position
-            const currentPosition = +track.getAttribute("jedli-transform").replace("%", "");
+            // Function to change transform position of track
+            function moveTransform() {
+                return new Promise((resolve, reject) => {
+                    // Get current transform position
+                    const currentPosition = +track.getAttribute("jedli-transform").replace("%", "");
 
-            // Calculate new position
-            const newPosition = currentPosition + distance + "%";
+                    // Calculate new position
+                    const newPosition = currentPosition + distance + "%";
 
-            // Set new position
-            track.style.transform = "translate3d(" + newPosition + ", 0, 0)";
+                    // Set new position
+                    track.style.transform = "translate3d(" + newPosition + ", 0, 0)";
 
-            // Update jedli-transform attr
-            track.setAttribute("jedli-transform", newPosition);
+                    // Update jedli-transform attr
+                    track.setAttribute("jedli-transform", newPosition);
+
+                    resolve("Transform updated");
+                });
+            }
 
             // Check if infinite is set to true
             if (this.options.infinite === "true" && isDragEvent === false) {
@@ -1632,17 +1753,27 @@ class jedliSlider {
 
         // Drag start
         track.addEventListener("touchstart", (e) => {
-            initialPosition = this.dragStart(e, "touchstart");
+            let dragStartValue;
+            dragStartValue = this.dragStart(e, "touchstart");
+            if (dragStartValue) {
+                direction = dragStartValue[1];
+                initialPosition = dragStartValue[0];
+            }
         });
 
         track.addEventListener("mousedown", (e) => {
-            initialPosition = this.dragStart(e, "mousedown");
+            let dragStartValue;
+            dragStartValue = this.dragStart(e, "mousedown");
+            if (dragStartValue) {
+                direction = dragStartValue[1];
+                initialPosition = dragStartValue[0];
+            }
         });
 
         // Move
 
         // return direction of move
-        var direction;
+        var direction = false;
         track.addEventListener("touchmove", (e) => {
             // Check if drag has started
             if (this.item.getAttribute("jedli-drag") === "true")
@@ -1668,6 +1799,9 @@ class jedliSlider {
     dragStart(event, type) {
         // Check if slider should move
         if (this.item.getAttribute("jedli-prevent-drag") !== "true") {
+            // Reset direction
+            const direction = false;
+
             // Add attr drag started to slider
             this.item.setAttribute("jedli-drag", "true");
 
@@ -1691,7 +1825,7 @@ class jedliSlider {
             // Update variable for custom transform
             this.currentTransform = initialPosition;
 
-            return initialPosition;
+            return [initialPosition, direction];
         }
     }
 
@@ -1719,6 +1853,7 @@ class jedliSlider {
 
             // Calculate difference between current and inital position
             const differenceX = (initialPosition[0] - currentPosition[0]);
+
             // Calculate difference between current and last position
             let differenceCurrent = (+this.currentTransform[0] - currentPosition[0]);
 
@@ -1730,7 +1865,10 @@ class jedliSlider {
 
             // Add new transform to track
             const transform = "translate3d(" + newDistance + ", 0, 0)"
-            track.style.transform = transform;
+            // If animationChange is set to fade, disble transform update
+            if (this.options.animationChange !== "fade") {
+                track.style.transform = transform;
+            };
 
             // Check direction of move
             // If there is no difference, return false
@@ -1798,14 +1936,67 @@ class jedliSlider {
 
             const visibleSlides = this.getVisibleSlides(ifInfinite);
 
-            if (direction === "prev") {
-                // If direction is "prev", move to first visible slide
-                this.goToSlide(+visibleSlides[0], true, "prev");
+            let preventGoto = false;
+
+            // If there is no visible slides or all visible slides are currently active
+            // BUT there was move (prev/next)
+            // Then trigger slideNext()/slidePrev() function
+            if (direction !== false) {
+                // Get correct index attr
+                let indexAttr;
+                if (this.options.infinite === "true") {
+                    indexAttr = "jedli-infinite-index";
+                }
+                else {
+                    indexAttr = "jedli-index";
+                }
+
+                // Variable if all slides are already visible
+                let allActive = true;
+
+                // Get slides
+                visibleSlides.map((e) => {
+                    // Find map with correct index
+                    let slide = this.item.querySelector("[" + indexAttr + "='" + e + "']");
+                    if (slide.getAttribute("jedli-active" !== "true")) {
+                        allActive = false;
+                    }
+                });
+
+                // If all slides are currently active, but there is direction of change
+                // trigger slideNext()/slidePrev() function
+                if (allActive === false) {
+                    // If not all slides are currently active allow normal goToSlide function
+                    preventGoto = false;
+                }
+                else {
+                    // Set attr to prevent normal 'goToSlide' function
+                    preventGoto = true;
+
+                    if (direction === "prev") {
+                        // If direction is "prev", move to prev slide (slides if 'slidesToScroll' was greater than 1)
+                        this.slidePrev();
+                    }
+
+                    if (direction === "next") {
+                        // If direction is "next", move to next slide (slides if 'slidesToScroll' was greater than 1)
+                        this.slideNext();
+                    }
+                }
             }
 
-            if (direction === "next") {
-                // If direction is "next", move to last visible slide
-                this.goToSlide(visibleSlides[visibleSlides.length - 1], true, "next");
+
+            // Check if attr to prevent goToSlide function is set, because slider already made slideNext/slidePrev action
+            if (preventGoto === false) {
+                if (direction === "prev") {
+                    // If direction is "prev", move to first visible slide
+                    this.goToSlide(+visibleSlides[0], true, "prev");
+                }
+
+                if (direction === "next") {
+                    // If direction is "next", move to last visible slide
+                    this.goToSlide(visibleSlides[visibleSlides.length - 1], true, "next");
+                }
             }
         }
     }

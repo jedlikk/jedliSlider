@@ -190,6 +190,63 @@ window.addEventListener('load', () => {
     document.querySelector("[data-action='slider-events-next']").addEventListener("click", () => {
         sliderEventsInit.slideNext();
     })
+
+    // Custom easing
+    let sliderCustomEasing = new jedliSlider(document.querySelector("[data-item='slider-custom-easing']"), {
+        "mode": "default",
+        "slidesWidth": "equal",
+        "infinite": "true",
+        "visibleSlides": 1,
+        "easing": "ease-out",
+        "slidesToScroll": 1,
+        "speed": "600",
+        "preventOverScroll": "false",
+        "animationChange": "fade"
+    })
+
+    document.querySelector("[data-action='slider-custom-easing-prev']").addEventListener("click", () => {
+        sliderCustomEasing.slidePrev();
+    })
+
+    // Next slide
+    document.querySelector("[data-action='slider-custom-easing-next']").addEventListener("click", () => {
+        sliderCustomEasing.slideNext();
+    })
+
+    // Filtering slides
+    // let sliderFilter = new jedliSlider(document.querySelector("[data-item='slider-filter']"), {
+    //     "mode": "default",
+    //     "slidesWidth": "equal",
+    //     "infinite": "true",
+    //     "visibleSlides": 5,
+    //     "easing": "ease-out",
+    //     "slidesToScroll": 2,
+    //     "speed": "600",
+    //     "preventOverScroll": "false",
+    // })
+
+    // // Filter category
+    // document.querySelector("[data-action='slider-filter-all']").addEventListener("click", () => {
+    //     sliderFilter.filter('all');
+    // })
+
+    // document.querySelector("[data-action='slider-filter-orange']").addEventListener("click", () => {
+    //     sliderFilter.filter('orange');
+    // })
+
+    // document.querySelector("[data-action='slider-filter-blue']").addEventListener("click", () => {
+    //     sliderFilter.filter('blue');
+    // })
+
+    // // Next/prev
+    // document.querySelector("[data-action='slider-filter-prev']").addEventListener("click", () => {
+    //     sliderFilter.slidePrev();
+    // })
+
+    // // Next slide
+    // document.querySelector("[data-action='slider-filter-next']").addEventListener("click", () => {
+    //     sliderFilter.slideNext();
+    // })
 })
 
 

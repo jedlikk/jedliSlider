@@ -97,7 +97,16 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.10.16</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.11.16</span>
+            <div class="section-description text-beta">
+                <ul>
+                    <li>Added 'animationChange' option, to change default transform between slides to fade effect</li>
+                    <li>Fixed slideNext() and slidePrev() bug with update of track position in infinite mode</li>
+                </ul>
+            </div>
+            <br>
+            <br>
+            <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
             <div class="section-description text-beta">
                 <ul>
                     <li>Added option to generate nav, on your custom html. See example <a href="#generated-nav">here</a>
@@ -107,20 +116,6 @@
                     <li>Added info to demo and README about events and functions</li>
                     <li>Fixed bug with dragging, where click was enough to move slider</li>
                     <li>Fixed bug with 'goToSlide' function for non infinite slider</li>
-                </ul>
-            </div>
-            <br>
-            <br>
-            <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
-            <div class="section-description text-beta">
-                <ul>
-                    <li><strong style="font-weight: bold;">Added functionality for touch/drag</strong> in 'default'
-                        mode. With and without
-                        'infinite' set to true
-                    </li>
-                    <li>Updated 'How to use'</li>
-                    <li>Fixed bug blocking slider on click goToPrev slide/goToNext slide while being at start/end of
-                        slider in 'default' mode with infinite set to false</li>
                 </ul>
             </div>
         </div>
@@ -133,6 +128,7 @@
                     <li>Creating dots from options</li>
                     <li>Creating dots with custom html</li>
                     <li>Filtering slides</li>
+                    <li>Custom animation of changing slides</li>
                     <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
                         levels
                         of highlightness and animation between levels</li>
@@ -687,6 +683,123 @@ sliderEventsContainer.addEventListener('afterChange', () => {
                                 </code>
                             </pre>
             </div>
+
+            <!-- Custom easing -->
+            <h3 class="text-beta weight-regular color-important">Fade animation</h3>
+            <div class="example-slider example-slider-inifnite example-slider-fade" data-item="slider-custom-easing">
+                <div class="example-slide">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide">
+                    <span>Slide 6</span>
+                </div>
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-custom-easing-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-custom-easing-next'>next</button>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                                <code>
+
+// Custom easing
+let sliderCustomEasing = new jedliSlider(document.querySelector("[data-item='slider-custom-easing']"), {
+    "mode": "default",
+    "slidesWidth": "equal",
+    "infinite": "true",
+    "visibleSlides": 1,
+    "easing": "ease-out",
+    "slidesToScroll": 1,
+    "speed": "600",
+    "preventOverScroll": "false",
+
+// HERE YOU DECLARATE ANIMATION:
+    "animationChange": "fade"
+})
+
+document.querySelector("[data-action='slider-custom-easing-prev']").addEventListener("click", () => {
+    sliderCustomEasing.slidePrev();
+})
+
+// Next slide
+document.querySelector("[data-action='slider-custom-easing-next']").addEventListener("click", () => {
+    sliderCustomEasing.slideNext();
+})
+                                </code>
+                            </pre>
+            </div>
+
+            <!-- Custom easing -->
+            <!-- <h3 class="text-beta weight-regular color-important">Filtering slides</h3>
+            <nav class="example-slider-nav mt-alfa">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-filter-all'>all</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-filter-orange'>orange only</button>
+                <button class="example-slider-nav-button example-slider-nav-next" data-action='slider-filter-blue'>blue
+                    only</button>
+            </nav>
+            <div class="example-slider example-slider-inifnite" data-item="slider-filter">
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 1</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 2</span>
+                </div>
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 3</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 4</span>
+                </div>
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 5</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 6</span>
+                </div>
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 7</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 8</span>
+                </div>
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 9</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 10</span>
+                </div>
+            </div>
+            <div class="example-slider-nav">
+                <button class="example-slider-nav-button example-slider-nav-prev"
+                    data-action='slider-filter-prev'>prev</button>
+                <button class="example-slider-nav-button example-slider-nav-next"
+                    data-action='slider-filter-next'>next</button>
+            </div>
+            <div class="code-snippet">
+                <pre>
+                                <code>
+
+CUSTOM EASING
+                                </code>
+                            </pre>
+            </div> -->
+
         </div> <!-- END OFsection container -->
         </div>
         </div>
@@ -923,6 +1036,15 @@ yourSlide.goToSlide(value);
                     <li>Se example <a href="#generated-nav" title="go to generated nav">here</a></li>
                 </ul>
 
+                <h3 class="subtitle text-beta weight-regular color-important">animationChange</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li>transform (default)</li>
+                    <li>fade</li>
+                </ul>
+
+
                 <h3 class="subtitle text-beta weight-regular color-important">direction</h3>
                 <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
                 <span class="text-beta weight-regular">availabile options:</span>
@@ -1069,6 +1191,32 @@ yourSlide.goToSlide(value);
                         <td>Allows to create arrows with custom html. Attr to handle next/prev action will be added
                             automatically. It's necessary to set "arrows" option to true.
                         </td>
+                    </tr>
+                    <tr>
+                        <td>animationChange</td>
+                        <td>transform</td>
+                        <td>Allows to define animation of changing slide</td>
+                    </tr>
+                    <tr>
+                        <td>animationChange</td>
+                        <td>transform</td>
+                        <td>Allows to define animation of changing slide</td>
+                    </tr>
+                    <tr>
+                        <td>animationChange</td>
+                        <td>transform</td>
+                        <td>Allows to define animation of changing slide</td>
+                    </tr>
+                    <tr>
+                        <td>generateNav</td>
+                        <td>false</td>
+                        <td>Determinate if slider should look for navContainer to generate nav</td>
+                    </tr>
+                    <tr>
+                        <td>navContainer</td>
+                        <td>--</td>
+                        <td>Html element in which slider will look for elements with jedli-target attributes. Value of
+                            jedli-target in those elements will determinate index of slider to go To. </td>
                     </tr>
                     <tr>
                         <td>responsive</td>

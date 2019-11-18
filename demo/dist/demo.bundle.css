@@ -181,10 +181,14 @@ body {
       .section-examples .example-slider-nav-input {
         padding: 5px 5px;
         border: 0.1rem solid #052B44; }
+    .section-examples .example-slider-fade {
+      max-width: 20rem; }
   .section-examples .example-slide {
     position: relative;
     background: #F2A341;
     border: 0.1rem solid #ffffff; }
+    .section-examples .example-slide-blue {
+      background: #0571a4; }
     .section-examples .example-slide-auto {
       display: block; }
       .section-examples .example-slide-auto:nth-of-type(1), .section-examples .example-slide-auto:nth-of-type(7) {
@@ -248,6 +252,12 @@ body {
   align-items: center; }
   .footer a {
     margin-top: 5px; }
+
+.jedli-hide {
+  display: none; }
+
+.mt-alfa {
+  margin-top: 20px; }
 
 .underline {
   position: relative;

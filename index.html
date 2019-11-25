@@ -97,11 +97,19 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.11.16</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.12.17</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Added 'animationChange' option, to change default transform between slides to fade effect</li>
-                    <li>Fixed slideNext() and slidePrev() bug with update of track position in infinite mode</li>
+                    <li>Added functionality to filter slides, show all or only from wanted category, with option to
+                        change category to show
+                        <a href="#filtering" title="Go to filtering">See example here</a>
+                    </li>
+                    <li>Added events 'dragStart', 'dragEnd'</li>
+                    <li>Added functionality to keep dragging slider when mouse is outside slider box</li>
+                    <li>Fixed bug when after drag there is no visible slides. Slider will now reset to first/last slide
+                    </li>
+                    <li>Fixed bug with dragging, and blocking of slider when slider was at start/end with infinite
+                        option set to false</li>
                 </ul>
             </div>
             <br>
@@ -109,13 +117,9 @@
             <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Added option to generate nav, on your custom html. See example <a href="#generated-nav">here</a>
+                    <li>Added 'animationChange' option, to change default transform between slides to fade effect
                     </li>
-                    <li>Added function 'goToSlide' for default mode with inifnite option set to true</li>
-                    <li>Added events 'init', 'beforeChange', 'afterChange'</li>
-                    <li>Added info to demo and README about events and functions</li>
-                    <li>Fixed bug with dragging, where click was enough to move slider</li>
-                    <li>Fixed bug with 'goToSlide' function for non infinite slider</li>
+                    <li>Fixed slideNext() and slidePrev() bug with update of track position in infinite mode</li>
                 </ul>
             </div>
         </div>
@@ -127,7 +131,7 @@
                 <ul>
                     <li>Creating dots from options</li>
                     <li>Creating dots with custom html</li>
-                    <li>Filtering slides</li>
+                    <li>Lazy load for images</li>
                     <li>Custom animation of changing slides</li>
                     <li>'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some
                         levels
@@ -744,7 +748,7 @@ document.querySelector("[data-action='slider-custom-easing-next']").addEventList
             </div>
 
             <!-- Custom easing -->
-            <!-- <h3 class="text-beta weight-regular color-important">Filtering slides</h3>
+            <h3 id="filtering" class="text-beta weight-regular color-important">Filtering slides</h3>
             <nav class="example-slider-nav mt-alfa">
                 <button class="example-slider-nav-button example-slider-nav-prev"
                     data-action='slider-filter-all'>all</button>
@@ -784,6 +788,12 @@ document.querySelector("[data-action='slider-custom-easing-next']").addEventList
                 <div class="example-slide" jedli-category="orange">
                     <span>Slide 10</span>
                 </div>
+                <div class="example-slide example-slide-blue" jedli-category="blue">
+                    <span>Slide 11</span>
+                </div>
+                <div class="example-slide" jedli-category="orange">
+                    <span>Slide 12</span>
+                </div>
             </div>
             <div class="example-slider-nav">
                 <button class="example-slider-nav-button example-slider-nav-prev"
@@ -794,11 +804,46 @@ document.querySelector("[data-action='slider-custom-easing-next']").addEventList
             <div class="code-snippet">
                 <pre>
                                 <code>
+// Create structure, add attr jedli-category to your slides. For example:
 
-CUSTOM EASING
+&lt;div data-item="slider"&gt;
+    &lt;div jedli-category="first-category" &gt;
+        slide 1
+    &lt;/div&gt;
+    &lt;div jedli-category="second-category" &gt;
+        slide 2
+    &lt;/div&gt;
+    &lt;div jedli-category="first-category" &gt;
+        slide 3
+    &lt;/div&gt;
+&lt;/div&gt;
+
+// Initialize your slider, there is no need for special options
+
+// And trigger by the way you want function filter() on slider object
+
+"all" to see all slides
+YourSlider.filter('all');
+
+YourSlider.filter('first-category');
+
+YourSlider.filter('second-category');
+
+// There is an option to set delay before filtering, so you could add custom animation of change or anything
+// Option to set delay:
+
+"filterDelay"
+
+for example: 
+"filterDelay": 300,
+
+// Events for filtering
+
+- "beforeFilter"
+- "afterFilter"
                                 </code>
                             </pre>
-            </div> -->
+            </div>
 
         </div> <!-- END OFsection container -->
         </div>
@@ -816,6 +861,10 @@ CUSTOM EASING
                     initialization of slider</span>
                 <h3 class="text-beta weight-regular color-important">beforeChange</h3>
                 <h3 class="text-beta weight-regular color-important">afterChange</h3>
+                <h3 class="text-beta weight-regular color-important">dragStart</h3>
+                <h3 class="text-beta weight-regular color-important">dragEnd</h3>
+                <h3 class="text-beta weight-regular color-important">beforeFilter</h3>
+                <h3 class="text-beta weight-regular color-important">afterFilter</h3>
                 <p>Example:</p>
                 <div class="code-snippet">
                     <pre>
@@ -853,6 +902,8 @@ document.querySelector("[your-slider]").addEventListener('afterChange', () => {
                 <h3 class="text-beta weight-regular color-important">slideNext()</h3>
                 <h3 class="text-beta weight-regular color-important">slidePrev()</h3>
                 <h3 class="text-beta weight-regular color-important">goToSlide(Here number of slide)</h3>
+                <h3 class="text-beta weight-regular color-important">filter(Here category name or "all" to see all
+                    slides)</h3>
                 <p>Example:</p>
                 <div class="code-snippet">
                     <pre>
@@ -912,6 +963,15 @@ yourSlide.goToSlide(value);
                 <span class="text-beta weight-regular">availabile options:</span>
                 <ul>
                     <li>Any int number greater than 0</li>
+                </ul>
+
+
+                <h3 class="subtitle text-beta weight-regular color-important">direction</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
+                <span class="text-beta weight-regular">availabile options:</span>
+                <ul>
+                    <li><span class="color-beta">left</span> - Make carousel rotate from right to left</li>
+                    <li><span class="color-beta">right</span> - Make carousel rotate from left to right</li>
                 </ul>
 
                 <h3 class="subtitle text-beta weight-regular color-important">draggable</h3>
@@ -1044,13 +1104,11 @@ yourSlide.goToSlide(value);
                     <li>fade</li>
                 </ul>
 
-
-                <h3 class="subtitle text-beta weight-regular color-important">direction</h3>
-                <span class="text-beta color-beta weight-regular">*Works in 'continuous' mode only*</span>
+                <h3 class="subtitle text-beta weight-regular color-important">filterDelay</h3>
+                <span class="text-beta color-beta weight-regular">*Works in 'default' mode only*</span>
                 <span class="text-beta weight-regular">availabile options:</span>
                 <ul>
-                    <li><span class="color-beta">left</span> - Make carousel rotate from right to left</li>
-                    <li><span class="color-beta">right</span> - Make carousel rotate from left to right</li>
+                    <li>Any int number grater or equal 0</li>
                 </ul>
 
                 <h3 class="subtitle text-beta weight-regular color-important">responsive</h3>
@@ -1217,6 +1275,11 @@ yourSlide.goToSlide(value);
                         <td>--</td>
                         <td>Html element in which slider will look for elements with jedli-target attributes. Value of
                             jedli-target in those elements will determinate index of slider to go To. </td>
+                    </tr>
+                    <tr>
+                        <td>filterDelay</td>
+                        <td>0</td>
+                        <td>Set delay before filtering, so you could add custom animation of change or anything</td>
                     </tr>
                     <tr>
                         <td>responsive</td>

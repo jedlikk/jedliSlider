@@ -1,13 +1,13 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.11.16-blue.svg)
+![](https://img.shields.io/badge/version-0.12.17-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
 
 ### What is jedliSlider?
 
-jedliSlider is lightweight carousel with multiple options and modes to use on your page, created in pure (vanilla) javascript and css.
+jedliSlider is interactive carousel with multiple options and modes to use on your page, created in pure (vanilla) javascript and css.
 
 ### Compatibility
 
@@ -15,7 +15,7 @@ Slider is built on css flexbox. So will be compatible with every browser that su
 
 ### Why jedliSlider?
 
-Because it’s lightweight, easy to use, modern and will have all options that you want. Some popular carousels still use floats and a lot of unnecessary scripts/styles. My intention was to create one slider, that will contain all things i missed in other carousels. With as low code and css as possible. So you don't need to override some default styles and download multiple libraries for specific types of carousels.
+Because it’s easy to use, modern and will have all options that you want. Some popular carousels still use floats and a lot of unnecessary scripts/styles. My intention was to create one slider, that will contain all things i missed in other carousels. With as low code and css as possible. So you don't need to override some default styles and download multiple libraries for specific types of carousels.
 
 ## Status
 There are currently two working modes:
@@ -24,17 +24,18 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.11.16
-- Added 'animationChange' option, to change default transform between slides to fade effect
-- Fixed slideNext() and slidePrev() bug with update of track position in infinite mode
+### v. 0.12.17
+- Added functionality to filter slides, show all or only from wanted category, with option to
+    change category to show [See example here](http://jedlikk.github.io/jedliSlider/#filtering)
+- Added events 'dragStart', 'dragEnd
+- Added functionality to keep dragging slider when mouse is outside slider box
+- Fixed bug when after drag there is no visible slides. Slider will now reset to first/last slide
+- Fixed bug with dragging, and blocking of slider when slider was at start/end with infinite
+    option set to fals
 
 ### Previous update
-- Added option to generate nav, on your custom html. See example [here](http://jedlikk.github.io/jedliSlider/#generated-nav)
-- Added function 'goToSlide' for default mode with inifnite option set to true
-- Added events 'init', 'beforeChange', 'afterChange'
-- Fixed bug with dragging, where click was enough to move slider
-- Fixed bug with 'goToSlide' function for non infinite slider
-
+- Added 'animationChange' option, to change default transform between slides to fade effect
+- Fixed slideNext() and slidePrev() bug with update of track position in infinite mode
 
 ### Features soon:
 
@@ -77,6 +78,10 @@ See more [here](http://jedlikk.github.io/jedliSlider/#events)
  (it's important to declarate init events before initialization of slider)
 - beforeChange
 - afterChange
+- dragStart
+- dragEnd
+- beforeFilter
+- afterFilter
 
 ### How to catch events?
 1. get your html element (for example by document.getElementById())
@@ -90,6 +95,7 @@ See more [here](http://jedlikk.github.io/jedliSlider/#functions)
 - prevSlide() -> Go to prev slide or slides if 'slidesToScroll is greater than 1'
 - nextSlide() -> Go to next slide or slides if 'slidesToScroll is greater than 1'
 - goToSlide(Number of slide) -> Go to specific slide
+- filter(Here category name or "all" to see all slides)
 
 ## List of options
 
@@ -119,5 +125,6 @@ More info on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 | generateNav                | false | Determinate if slider should look for navContainer to generate nav                                                                                                 |
 | navContainer                | \- | Html element in which slider will look for elements with jedli-target attributes. Value of jedli-target in those elements will determinate index of slider to go To.                                                                                                 |
 | animationChange                | transform | Allows to define animation of changing slide                                                                                                  |
+| filterDelay                | 0 | Set delay before filtering, so you could add custom animation of change or anything                                                                                                  |
 
 

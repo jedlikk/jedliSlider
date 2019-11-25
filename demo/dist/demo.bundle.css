@@ -253,9 +253,6 @@ body {
   .footer a {
     margin-top: 5px; }
 
-.jedli-hide {
-  display: none; }
-
 .mt-alfa {
   margin-top: 20px; }
 
@@ -395,6 +392,9 @@ body {
   position: absolute;
   left: 0;
   top: 0; }
+
+.jedli-hide {
+  display: none; }
 
 .jedli-mode-continuous .jedli-track {
   transform: translate3d(0, 0, 0);

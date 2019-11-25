@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.12.17-blue.svg)
+![](https://img.shields.io/badge/version-0.12.18-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,7 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.12.17
+### v. 0.12.18
 - Added functionality to filter slides, show all or only from wanted category, with option to
     change category to show [See example here](http://jedlikk.github.io/jedliSlider/#filtering)
 - Added events 'dragStart', 'dragEnd
@@ -42,7 +42,7 @@ There are currently two working modes:
 - Creating dots from options
 - Creating dots with custom html
 - Custom animation of changing slides
-- Filtering slides
+- Lazy load for images
 - 'Centered' mode, where some slides are bigger, smaller or highlighted by other way, with some levels of highlightness and animation between levels
 
 ## How to use

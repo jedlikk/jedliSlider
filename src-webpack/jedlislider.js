@@ -442,7 +442,7 @@ class jedliSlider {
         // Loop through specified number of slides
         slides.forEach((e, i) => {
             // Ignore cloned elements
-            if (!e.getAttribute('jedli-cloned')) {
+            if (e.getAttribute('jedli-cloned') !== "true") {
                 // Add to slidesWidth only specific amount of slides
                 if (i < visibleSlides)
                     slidesWidth += e.offsetWidth;

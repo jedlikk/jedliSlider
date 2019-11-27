@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.12.18-blue.svg)
+![](https://img.shields.io/badge/version-0.12.19-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -24,7 +24,10 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.12.18
+### v. 0.12.19
+- Fixed bug with 'auto' width of slides in 'countinous' mode after last update
+
+### Previous update
 - Added functionality to filter slides, show all or only from wanted category, with option to
     change category to show [See example here](http://jedlikk.github.io/jedliSlider/#filtering)
 - Added events 'dragStart', 'dragEnd
@@ -32,10 +35,6 @@ There are currently two working modes:
 - Fixed bug when after drag there is no visible slides. Slider will now reset to first/last slide
 - Fixed bug with dragging, and blocking of slider when slider was at start/end with infinite
     option set to fals
-
-### Previous update
-- Added 'animationChange' option, to change default transform between slides to fade effect
-- Fixed slideNext() and slidePrev() bug with update of track position in infinite mode
 
 ### Features soon:
 

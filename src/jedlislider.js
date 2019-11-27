@@ -1,4 +1,4 @@
-// JedliSlider v 0.12.18
+// JedliSlider v 0.12.19
 // By Bar†łomiej Jedlikowski
 
 class jedliSlider {
@@ -440,7 +440,7 @@ class jedliSlider {
         // Loop through specified number of slides
         slides.forEach((e, i) => {
             // Ignore cloned elements
-            if (!e.getAttribute('jedli-cloned')) {
+            if (e.getAttribute('jedli-cloned') !== "true") {
                 // Add to slidesWidth only specific amount of slides
                 if (i < visibleSlides)
                     slidesWidth += e.offsetWidth;

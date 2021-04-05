@@ -88,6 +88,8 @@ class jedliSlider {
         track.setAttribute("data-jedli", "track");
         track.classList.add("jedli-track");
 
+        this.track = track;
+
         // Wrap slides in track:
 
         // Append slides to track
@@ -101,6 +103,7 @@ class jedliSlider {
 
         // Wrap tracks inside special container
         let tracksContainer = document.createElement("div");
+
         // Add attributes and classes
         tracksContainer.setAttribute("data-jedli", "tracks-container");
         tracksContainer.classList.add("jedli-tracks-container");
@@ -802,19 +805,37 @@ class jedliSlider {
         // Add class continous to slider
         this.item.classList.add("jedli-mode-continuous");
 
-        // Check if there is enough slides to rotate
-        if (this.ifEnoughToRotate()) {
-            this.continuousStructure()
-                .then(
-                    (resolve) => {
-                        this.initContinuousAnimation().then(
-                            (resolve) => {
-                                // Fire after init event
-                                this.eventAfterInit();
-                            }
-                        );
+        // Check if slidesWidth is auto because if true
+        if (this.options.slidesWidth === "auto") {
+            // Check if there is enough slides to rotate
+            // If slidesWidth is set to auto, add resize listener so the library will auto update itself if size of elements inside change
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    if (entry.contentBoxSize) {
+                        // Firefox implements `contentBoxSize` as a single content rect, rather than an array
+                        const contentBoxSize = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
+
+                        this.resizeHandler()
                     }
-                );
+                }
+            });
+
+            resizeObserver.observe(this.track);
+        }
+        else {
+            if (this.ifEnoughToRotate()) {
+                this.continuousStructure()
+                    .then(
+                        (resolve) => {
+                            this.initContinuousAnimation().then(
+                                (resolve) => {
+                                    // Fire after init event
+                                    this.eventAfterInit();
+                                }
+                            );
+                        }
+                    );
+            }
         }
     }
 
@@ -2075,6 +2096,237 @@ class jedliSlider {
         )
 
         this.item.dispatchEvent(eventAfterFilter);
+    }
+}
+
+function jedliDragMove() {
+    const slider = window.jedliDragSlider;
+    const initialPosition = window.jedliInitialPosition
+    const type = event.type;
+    const track = window.jedliDragTrack;
+
+    if (event !== null) {
+        // Check if drag has started
+        if (slider.item.getAttribute("jedli-drag") === "true") {
+
+            // Remove transition from track
+            track.style.transition = "";
+
+            // Get current position
+            let currentPosition = [];
+
+            if (type === "touchmove") {
+                currentPosition[0] = +event.touches[0].clientX;
+                currentPosition[1] = +event.touches[0].clientY;
+            } else {
+                currentPosition[0] = +event.clientX;
+                currentPosition[1] = +event.clientY;
+            }
+
+            // Round position
+            currentPosition[0] = currentPosition[0].toFixed(2);
+            currentPosition[1] = currentPosition[1].toFixed(2);
+
+            // Calculate difference between current and inital position
+            const differenceX = (initialPosition[0] - currentPosition[0]);
+
+            // Calculate difference between current and last position
+            let differenceCurrent = (+slider.currentTransform[0] - currentPosition[0]);
+
+            // Calculate distance to move
+            // where distance to move is current transform position (defined from normal change) + diffrenceX
+            const currentTrackTransform = track.getAttribute("jedli-transform");
+
+            const newDistance = "calc(" + currentTrackTransform + " - " + differenceX + "px)";
+
+            // Add new transform to track
+            const transform = "translate3d(" + newDistance + ", 0, 0)"
+            // If animationChange is set to fade, disble transform update
+            if (slider.options.animationChange !== "fade") {
+                track.style.transform = transform;
+            };
+
+            // Check direction of move
+            // If there is no difference, return false
+            let direction = false;
+
+            // If direction is equal to 0, go to last known direction
+            if (differenceCurrent === 0) {
+                // direction = slider.lastDirection;
+                differenceCurrent = differenceX;
+            }
+
+            // Direction prev if differenceX is negative number
+            if (differenceCurrent < 0) {
+                direction = "prev";
+                slider.lastDirection = "prev"
+                // Update position of infinite blocks, depends of direction
+                if (slider.options.infinite == "true") {
+                    // Check if 'end' block is currently visible
+                    if (slider.checkIfBlockIsVisible("end") === false) {
+                        // If not, update blocks position
+                        slider.updateInfiniteBlocksPosition("prev");
+                        slider.resetInfiniteblocksPosition("start");
+                    }
+                }
+            }
+
+            // Direction next if differenceX is positive number
+            if (differenceCurrent > 0) {
+                direction = "next";
+                slider.lastDirection = "next";
+                // Update position of infinite blocks, depends of direction
+                if (slider.options.infinite == "true") {
+                    // Check if 'start' block is currently visible
+                    if (slider.checkIfBlockIsVisible("start") === false) {
+                        // If not, update blocks position
+                        slider.updateInfiniteBlocksPosition("next");
+                        slider.resetInfiniteblocksPosition("end");
+                    }
+                }
+            }
+
+            // Update current transform
+            slider.currentTransform = currentPosition;
+
+            // Add attr to window with direction 
+            window.jedliDragDirection = direction;
+        }
+    }
+}
+
+function jedliDragEnd() {
+    const direction = window.jedliDragDirection
+    const track = window.jedliDragTrack;
+    const slider = window.jedliDragSlider;
+
+    // Remvoe event listener to handle move of mouse
+    document.removeEventListener("touchmove", jedliDragMove, false);
+    document.removeEventListener("mousemove", jedliDragMove, false);
+
+    document.removeEventListener("touchend", jedliDragEnd, false);
+    document.removeEventListener("mouseup", jedliDragEnd, false);
+
+    // Fire event that drag has ended
+    slider.eventDragEnd();
+
+    // Remove attr drag started to slider
+    slider.item.setAttribute("jedli-drag", "false");
+
+    // Update position of slider depends of direction
+    // If direction is false, then do nothing
+    if (direction !== false) {
+        // Get visible slides
+
+        let ifInfinite;
+        if (slider.options.infinite == "true") {
+            ifInfinite = true;
+        }
+        else {
+            ifInfinite = false;
+        }
+
+        const visibleSlides = slider.getVisibleSlides(ifInfinite);
+
+        let preventGoto = false;
+
+        // If there is no visible slides or all visible slides are currently active
+        // BUT there was move (prev/next)
+        // Then trigger slideNext()/slidePrev() function
+        if (direction !== false) {
+            // Get correct index attr
+            let indexAttr;
+            if (slider.options.infinite === "true") {
+                indexAttr = "jedli-infinite-index";
+            }
+            else {
+                indexAttr = "jedli-index";
+            }
+
+            // Variable if all slides are already visible
+            let allActive = true;;
+
+            // Get slides
+            visibleSlides.map((e) => {
+                // Find slides with correct index
+                let slide = slider.item.querySelector("[" + indexAttr + "='" + e + "']");
+                if (slide.getAttribute("jedli-active") !== "true") {
+                    allActive = false;
+                }
+            });
+
+            // If all slides are currently active, but there is direction of change
+            // trigger slideNext()/slidePrev() function
+            if (allActive === false) {
+                // If not all slides are currently active allow normal goToSlide function
+                preventGoto = false;
+            }
+            else {
+                // Set attr to prevent normal 'goToSlide' function
+                preventGoto = true;
+
+                if (direction === "prev") {
+                    // Check if slider should trigger function to go to prev slide, or to stay
+                    if (!nonInfiniteEdgeHandler("prev", visibleSlides)) {
+                        // If direction is "prev", move to prev slide (slides if 'slidesToScroll' was greater than 1)
+                        slider.slidePrev();
+                    }
+                }
+
+                if (direction === "next") {
+                    // Check if slider should trigger function to go to prev slide, or to stay
+                    if (!nonInfiniteEdgeHandler("next", visibleSlides)) {
+                        // If direction is "next", move to next slide (slides if 'slidesToScroll' was greater than 1)
+                        slider.slideNext();
+                    }
+                }
+            }
+
+            // If option infinite is set to false, and slider is already at edge, reset slider to first/last slide
+            function nonInfiniteEdgeHandler(direction, visibleSlides) {
+                // Check depedns of direction if first/last slide is in visible slides
+                let ifShouldStay = false;
+
+                // If direction prev, check if first slide is in currently visible
+                if (direction === "prev") {
+                    if (visibleSlides.indexOf("1") >= 0)
+                        ifShouldStay = true;
+                }
+
+                // If direction prev, check if last slide is in currently visible
+                if (direction === "next") {
+                    if (visibleSlides.indexOf((slider.noOfSlides).toString()) >= 0)
+                        ifShouldStay = true;
+                }
+
+                // Or if there is no visible slides
+                if (visibleSlides.length === 0) {
+                    ifShouldStay = true;
+                }
+
+                // if slider should stay, set transform to current transform
+                track.style.transition = "transform " + slider.options.speed / 1000 + "s " + slider.options.easing;
+
+                const currentTransform = track.getAttribute("jedli-transform");
+                track.style.transform = "translate3d(" + currentTransform + ", 0, 0)";
+
+                return ifShouldStay;
+            }
+        }
+
+
+        // Check if attr to prevent goToSlide function is set, because slider already made slideNext/slidePrev action
+        if (preventGoto === false) {
+            if (direction === "prev") {
+                // If direction is "prev", move to first visible slide
+                slider.goToSlide(+visibleSlides[0], true, "prev");
+            }
+
+            if (direction === "next") {
+                // If direction is "next", move to last visible slide
+                slider.goToSlide(visibleSlides[visibleSlides.length - 1], true, "next");
+            }
+        }
     }
 }
 

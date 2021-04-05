@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.12.19-blue.svg)
+![](https://img.shields.io/badge/version-0.13.19-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -8,6 +8,7 @@
 ### What is jedliSlider?
 
 jedliSlider is interactive carousel with multiple options and modes to use on your page, created in pure (vanilla) javascript and css.
+IMPORTANT: FOR NOW ONLY THE CONTINUOUS MODE IS FULLY IMPLEMENTED! 
 
 ### Compatibility
 
@@ -18,23 +19,21 @@ Slider is built on css flexbox. So will be compatible with every browser that su
 Because it’s easy to use, modern and will have all options that you want. Some popular carousels still use floats and a lot of unnecessary scripts/styles. My intention was to create one slider, that will contain all things i missed in other carousels. With as low code and css as possible. So you don't need to override some default styles and download multiple libraries for specific types of carousels.
 
 ## Status
+IMPORTANT: FOR NOW ONLY THE CONTINUOUS MODE IS FULLY IMPLEMENTED! 
+React version [HERE](https://www.npmjs.com/package/react-jedlislider)
+
+
 There are currently two working modes:
 
 - continuous - fully implemented
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.12.19
-- Fixed bug with 'auto' width of slides in 'countinous' mode after last update
+### v. 0.13.19
+- Added resize observer to continuous mode when slidesWidth is set to "auto" so the slider will start rotate when width of slides inside change (for example image will be loaded later)
 
 ### Previous update
-- Added functionality to filter slides, show all or only from wanted category, with option to
-    change category to show [See example here](http://jedlikk.github.io/jedliSlider/#filtering)
-- Added events 'dragStart', 'dragEnd
-- Added functionality to keep dragging slider when mouse is outside slider box
-- Fixed bug when after drag there is no visible slides. Slider will now reset to first/last slide
-- Fixed bug with dragging, and blocking of slider when slider was at start/end with infinite
-    option set to fals
+- Fixed bug with 'auto' width of slides in 'countinous' mode after last update
 
 ### Features soon:
 

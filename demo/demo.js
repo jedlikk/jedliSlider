@@ -1,7 +1,6 @@
 import './demo.scss';
 import jedliSlider from '../src-webpack/jedlislider.js';
 
-
 // Initialize example sliders
 window.addEventListener('load', () => {
     let sliderContinuousEqual = new jedliSlider(document.querySelector("[data-item='slider-continuous-equal']"), {

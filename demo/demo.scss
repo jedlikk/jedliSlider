@@ -1,40 +1,53 @@
 // Variables
 $color-alfa: #fdfdfd;
 $color-alfa-alternative: #f6f6f6;
-$color-beta: #78E7D4;
+$color-beta: #78e7d4;
 $color-gamma: #0571a4;
-$color-delta: #052B44;
+$color-delta: #052b44;
 $color-epsilon: #087d2f;
-$color-zeta: #E3383F;
-$color-eta: #F2A341;
-$color-theta: #9E4705;
+$color-zeta: #e3383f;
+$color-eta: #f2a341;
+$color-theta: #9e4705;
 
-
-$color-important: #E3383F;
+$color-important: #e3383f;
 
 $color-psi: #000000;
 $color-omega: #ffffff;
 
-
 // Reset styles
-h1, h2, h3, h3, h5  p, span, li, ul, ol, a, pre, code{
+h1,
+h2,
+h3,
+h3,
+h5 p,
+span,
+li,
+ul,
+ol,
+a,
+pre,
+code {
     margin: 0;
     padding: 0;
 }
 
 a {
-    &, &:focus, &:active, &:hover {
+    &,
+    &:focus,
+    &:active,
+    &:hover {
         color: $color-gamma;
         text-decoration: none;
     }
 }
 
-ul, ol {
+ul,
+ol {
     text-align: left;
 }
 
 * {
-    font-family: 'Quicksand', sans-serif;
+    font-family: "Quicksand", sans-serif;
     font-weight: 300;
     box-sizing: border-box;
 }
@@ -93,7 +106,6 @@ body {
 // Colors
 .color {
     &-alfa {
-
     }
 
     &-beta {
@@ -150,16 +162,16 @@ body {
         position: relative;
 
         &::after {
-            content: '';
+            content: "";
             position: absolute;
             top: calc(100% + 2px);
             left: 50%;
             transform: translate(-50%);
             width: calc(100% + 20px);
-            height: 0.20rem;
+            height: 0.2rem;
 
             @media (max-width: 768px) {
-              height: 0.15rem;
+                height: 0.15rem;
             }
         }
 
@@ -269,7 +281,6 @@ body {
                 text-align: center;
 
                 tr {
-
                     &:nth-of-type(odd) {
                         background: rgba($color-psi, 0.05);
                     }
@@ -349,7 +360,9 @@ body {
                         font-size: 12px;
                         transition: background 0.3s ease-out;
 
-                        &:hover, &:focus, &:active {
+                        &:hover,
+                        &:focus,
+                        &:active {
                             background: $color-gamma;
                         }
                     }
@@ -371,57 +384,67 @@ body {
                 border: 0.1rem solid $color-omega;
 
                 &-blue {
-                    background: $color-gamma;                    
+                    background: $color-gamma;
                 }
 
                 &-auto {
                     display: block;
 
-                    &:nth-of-type(1), &:nth-of-type(7) {
+                    &:nth-of-type(1),
+                    &:nth-of-type(7) {
                         min-width: 200px;
                     }
 
-                    &:nth-of-type(2), &:nth-of-type(8) {
+                    &:nth-of-type(2),
+                    &:nth-of-type(8) {
                         min-width: 250px;
                     }
-                    
-                    &:nth-of-type(3), &:nth-of-type(9) {
+
+                    &:nth-of-type(3),
+                    &:nth-of-type(9) {
                         min-width: 150px;
                     }
 
-                    &:nth-of-type(4), &:nth-of-type(10) {
+                    &:nth-of-type(4),
+                    &:nth-of-type(10) {
                         min-width: 215px;
                     }
 
-                    &:nth-of-type(5), &:nth-of-type(11) {
+                    &:nth-of-type(5),
+                    &:nth-of-type(11) {
                         min-width: 180px;
                     }
 
-                    &:nth-of-type(6), &:nth-of-type(12) {
+                    &:nth-of-type(6),
+                    &:nth-of-type(12) {
                         min-width: 230px;
                     }
 
                     &-continuous {
-                        &:nth-of-type(1), &:nth-of-type(5) {
+                        &:nth-of-type(1),
+                        &:nth-of-type(5) {
                             min-width: 200px;
                         }
-    
-                        &:nth-of-type(2), &:nth-of-type(6) {
+
+                        &:nth-of-type(2),
+                        &:nth-of-type(6) {
                             min-width: 250px;
                         }
-                        
-                        &:nth-of-type(3), &:nth-of-type(7) {
+
+                        &:nth-of-type(3),
+                        &:nth-of-type(7) {
                             min-width: 150px;
                         }
-    
-                        &:nth-of-type(4), &:nth-of-type(8) {
+
+                        &:nth-of-type(4),
+                        &:nth-of-type(8) {
                             min-width: 215px;
                         }
                     }
                 }
 
                 &::before {
-                    content: '';
+                    content: "";
                     display: block;
                     width: 100%;
                     padding-top: 100%;
@@ -495,192 +518,185 @@ body {
     margin-bottom: 40px;
 
     @media (max-width: 768px) {
-      width: 100%;
-      margin: 0;
+        width: 100%;
+        margin: 0;
     }
 
     @media (max-width: 350px) {
     }
 
     .line {
-      position: absolute;
-      height: 0.20rem;
+        position: absolute;
+        height: 0.2rem;
 
-      @media (max-width: 768px) {
-        height: 0.15rem;
-      }
+        @media (max-width: 768px) {
+            height: 0.15rem;
+        }
 
-      &-1 {
-        width: 30%;
-        top: 0.8rem;
-        left: -2%;
-        background: $color-zeta;
-        animation: 35s line-animation-1 linear infinite;
-      }
+        &-1 {
+            width: 30%;
+            top: 0.8rem;
+            left: -2%;
+            background: $color-zeta;
+            animation: 35s line-animation-1 linear infinite;
+        }
 
-      &-2 {
-        width: 30%;
-        top: 1.2rem;
-        left: 40%;
-        background: $color-beta;
-        animation: 35s line-animation-2 linear infinite;
-      }
+        &-2 {
+            width: 30%;
+            top: 1.2rem;
+            left: 40%;
+            background: $color-beta;
+            animation: 35s line-animation-2 linear infinite;
+        }
 
-      &-3 {
-        width: 55%;
-        top: 2rem;
-        right: 5%;
-        background: $color-eta;
-        animation: 25s line-animation-3 linear infinite;
+        &-3 {
+            width: 55%;
+            top: 2rem;
+            right: 5%;
+            background: $color-eta;
+            animation: 25s line-animation-3 linear infinite;
+        }
 
-      }
+        &-4 {
+            width: 25%;
+            top: 0.4rem;
+            right: -5%;
+            background: $color-delta;
+            animation: 35s line-animation-4 linear infinite;
+        }
 
-      &-4 {
-        width: 25%;
-        top: 0.4rem;
-        right: -5%;
-        background: $color-delta;
-        animation: 35s line-animation-4 linear infinite;
+        &-5 {
+            width: 20%;
+            top: 1.6rem;
+            left: 17%;
+            background: $color-delta;
+            animation: 35s line-animation-5 linear infinite;
+        }
 
-      }
+        &-6 {
+            width: 15%;
+            top: 0;
+            left: 30%;
+            background: $color-eta;
+            animation: 35s line-animation-6 linear infinite;
+        }
 
-      &-5 {
-        width: 20%;
-        top: 1.6rem;
-        left: 17%;
-        background: $color-delta;
-        animation: 35s line-animation-5 linear infinite;
-      }
+        &-7 {
+            width: 20%;
+            top: 0;
+            left: 55%;
+            background: $color-zeta;
+            animation: 35s line-animation-7 linear infinite;
+        }
 
-      &-6 {
-        width: 15%;
-        top: 0;
-        left: 30%;
-        background: $color-eta;
-        animation: 35s line-animation-6 linear infinite;
-      }
-
-      &-7 {
-        width: 20%;
-        top: 0;
-        left: 55%;
-        background: $color-zeta;
-        animation: 35s line-animation-7 linear infinite;
-      }
-
-      &-8 {
-        width: 35%;
-        top: 2.5rem;
-        left: 0;
-        background: $color-beta;
-        animation: 35s line-animation-8 linear infinite;
-
-      }
+        &-8 {
+            width: 35%;
+            top: 2.5rem;
+            left: 0;
+            background: $color-beta;
+            animation: 35s line-animation-8 linear infinite;
+        }
     }
-  }
-
+}
 
 // Animations
 
 @keyframes line-animation-1 {
     50% {
-      left: 70%;
+        left: 70%;
     }
- 
+
     100% {
-      left: -2%;
+        left: -2%;
     }
- }
- 
- @keyframes line-animation-2 {
-   35% {
-     left: 5%;
-   }
- 
-   80% {
-     left: 70%;
-   }
- 
-   100% {
-     left: 40%;
-   }
- }
- 
- @keyframes line-animation-3 {
-   10% {
-     right: -5%;
-   }
- 
-   50% {
-     right: 45%;
-   }
- 
-   100% {
-     right: 5%;
-   }
- }
- 
- @keyframes line-animation-4 {
-   50% {
-     right: 80%;
-   }
- 
-   100% {
-     right: -5%;
-   }
- }
- 
- @keyframes line-animation-5 {
-   15% {
-     left: -5%;
-   }
- 
-   60% {
-     left: 90%;
-   }
- 
-   100% {
-     left: 17%;
-   }
- }
- 
- @keyframes line-animation-6 {
-   20% {
-     left: 90%;
-   }
- 
-   70% {
-     left: -5%;
-   }
- 
-   100% {
-     left: 30%;
-   }
- }
- 
- @keyframes line-animation-7 {
-   30% {
-     left: -5%;
-   }
- 
-   80% {
-     left: 80%;
-   }
- 
-   100% {
-     left: 55%;
-   }
- }
- 
- @keyframes line-animation-8 {
-   50% {
-     left: 80%;
-   }
- 
- 
-   100% {
-     left: 0;
-   }
- }
- 
- 
+}
+
+@keyframes line-animation-2 {
+    35% {
+        left: 5%;
+    }
+
+    80% {
+        left: 70%;
+    }
+
+    100% {
+        left: 40%;
+    }
+}
+
+@keyframes line-animation-3 {
+    10% {
+        right: -5%;
+    }
+
+    50% {
+        right: 45%;
+    }
+
+    100% {
+        right: 5%;
+    }
+}
+
+@keyframes line-animation-4 {
+    50% {
+        right: 80%;
+    }
+
+    100% {
+        right: -5%;
+    }
+}
+
+@keyframes line-animation-5 {
+    15% {
+        left: -5%;
+    }
+
+    60% {
+        left: 90%;
+    }
+
+    100% {
+        left: 17%;
+    }
+}
+
+@keyframes line-animation-6 {
+    20% {
+        left: 90%;
+    }
+
+    70% {
+        left: -5%;
+    }
+
+    100% {
+        left: 30%;
+    }
+}
+
+@keyframes line-animation-7 {
+    30% {
+        left: -5%;
+    }
+
+    80% {
+        left: 80%;
+    }
+
+    100% {
+        left: 55%;
+    }
+}
+
+@keyframes line-animation-8 {
+    50% {
+        left: 80%;
+    }
+
+    100% {
+        left: 0;
+    }
+}

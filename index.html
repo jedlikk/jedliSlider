@@ -6,7 +6,7 @@
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400&subset=latin-ext" rel="stylesheet">
 
-    <link rel="stylesheet" href="demo/dist/demo.bundle.css">
+    <link rel="stylesheet" href="dist/demo.bundle.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126822589-3"></script>
@@ -39,6 +39,9 @@
         <div class="section-container">
             <h2 class="section-title title-underline-delta">What is jedliSlider?</h2>
             <div class="section-description text-beta">
+                <p><strong style="font-weight: 700;">IMPORTANT: FOR NOW ONLY THE CONTINUOUS MODE IS FULLY
+                        IMPLEMENTED!</strong></p>
+                <br>
                 <p>jedliSlider is lightweight carousel with multiple options and modes to use on your page, created in
                     pure
                     (vanilla)
@@ -84,6 +87,11 @@
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">Status:</h2>
             <div class="section-description text-beta">
+                <p><strong style="font-weight: 700;">IMPORTANT: FOR NOW ONLY THE CONTINUOUS MODE IS FULLY
+                        IMPLEMENTED!</strong></p>
+                <p><strong style="font-weight: 700;">React version: <a
+                            href="https://www.npmjs.com/package/react-jedlislider" style="font-weight: 700;"
+                            title="go to react version">HERE</a></strong></p>
                 <p>There are currently two working modes:</p>
                 <ul>
                     <li>continuous - fully implemented</li>
@@ -97,10 +105,12 @@
     <article id="whats-new" class="section bg-alfa-alternative section-new">
         <div class="section-container">
             <h2 class="section-title color-important weight-regular">What's new?</h2>
-            <span class="section-subtitle text-epsilon weight-regular">v. 0.12.19</span>
+            <span class="section-subtitle text-epsilon weight-regular">v. 0.13.19</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Fixed bug with 'auto' width of slides in 'countinous' mode after last update</li>
+                    <li>Added resize observer to continuous mode when slidesWidth is set to "auto" so the slider will
+                        start rotate when width of slides inside change (for example image will be loaded later)
+                    </li>
                 </ul>
             </div>
             <br>
@@ -108,16 +118,7 @@
             <span class="section-subtitle text-epsilon weight-regular">Previous update:</span>
             <div class="section-description text-beta">
                 <ul>
-                    <li>Added functionality to filter slides, show all or only from wanted category, with option to
-                        change category to show
-                        <a href="#filtering" title="Go to filtering">See example here</a>
-                    </li>
-                    <li>Added events 'dragStart', 'dragEnd'</li>
-                    <li>Added functionality to keep dragging slider when mouse is outside slider box</li>
-                    <li>Fixed bug when after drag there is no visible slides. Slider will now reset to first/last slide
-                    </li>
-                    <li>Fixed bug with dragging, and blocking of slider when slider was at start/end with infinite
-                        option set to false</li>
+                    <li>Fixed bug with 'auto' width of slides in 'countinous' mode after last update</li>
                 </ul>
             </div>
         </div>
@@ -1295,7 +1296,7 @@ yourSlide.goToSlide(value);
             title="go to linkedin">https://www.linkedin.com/in/jedlibartlomiej/</a>
     </footer>
 
-    <script type="text/javascript" src="./demo/dist/demo.bundle.js"></script>
+    <script type="text/javascript" src="./dist/demo.bundle.js"></script>
 </body>
 
 </html>

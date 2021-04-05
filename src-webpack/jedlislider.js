@@ -90,6 +90,8 @@ class jedliSlider {
         track.setAttribute("data-jedli", "track");
         track.classList.add("jedli-track");
 
+        this.track = track;
+
         // Wrap slides in track:
 
         // Append slides to track
@@ -103,6 +105,7 @@ class jedliSlider {
 
         // Wrap tracks inside special container
         let tracksContainer = document.createElement("div");
+
         // Add attributes and classes
         tracksContainer.setAttribute("data-jedli", "tracks-container");
         tracksContainer.classList.add("jedli-tracks-container");
@@ -804,19 +807,37 @@ class jedliSlider {
         // Add class continous to slider
         this.item.classList.add("jedli-mode-continuous");
 
-        // Check if there is enough slides to rotate
-        if (this.ifEnoughToRotate()) {
-            this.continuousStructure()
-                .then(
-                    (resolve) => {
-                        this.initContinuousAnimation().then(
-                            (resolve) => {
-                                // Fire after init event
-                                this.eventAfterInit();
-                            }
-                        );
+        // Check if slidesWidth is auto because if true
+        if (this.options.slidesWidth === "auto") {
+            // Check if there is enough slides to rotate
+            // If slidesWidth is set to auto, add resize listener so the library will auto update itself if size of elements inside change
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    if (entry.contentBoxSize) {
+                        // Firefox implements `contentBoxSize` as a single content rect, rather than an array
+                        const contentBoxSize = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
+
+                        this.resizeHandler()
                     }
-                );
+                }
+            });
+
+            resizeObserver.observe(this.track);
+        }
+        else {
+            if (this.ifEnoughToRotate()) {
+                this.continuousStructure()
+                    .then(
+                        (resolve) => {
+                            this.initContinuousAnimation().then(
+                                (resolve) => {
+                                    // Fire after init event
+                                    this.eventAfterInit();
+                                }
+                            );
+                        }
+                    );
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 # jedliSlider
 
-![](https://img.shields.io/badge/version-0.13.21-blue.svg)
+![](https://img.shields.io/badge/version-0.13.22-blue.svg)
 
 ### DEMO page
 [DEMO](http://jedlikk.github.io/jedliSlider/)
@@ -31,7 +31,7 @@ There are currently two working modes:
 - default - check available options on [DEMO page](http://jedlikk.github.io/jedliSlider/#options)
 
 ## What's new?
-### v. 0.13.21
+### v. 0.13.22
 - Added resize observer to continuous mode when slidesWidth is set to "auto" so the slider will start rotate when width of slides inside change (for example image will be loaded later)
 
 ### Previous update

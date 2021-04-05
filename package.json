@@ -1,6 +1,6 @@
 {
   "name": "jedlislider",
-  "version": "0.13.21",
+  "version": "0.13.22",
   "description": "",
   "main": "jedlislider.js",
   "scripts": {
@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://Jedlikk@bitbucket.org/Jedlikk/jedlislider.git"
+    "url": "git+https://github.com/jedlikk/jedliSlider.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/Jedlikk/jedlislider#readme",
+  "license": "MIT",
+  "homepage": "https://jedlikk.github.io/jedliSlider/",
   "dependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
